@@ -1,0 +1,254 @@
+<header class="dw-header">
+  <a class="dw-header__brand" href="{{ routes.root_url }}">
+    <span class="dw-header__word">{{ section.settings.wordmark | default: shop.name }}</span>
+    <span class="dw-header__sub">{{ section.settings.subline }}</span>
+  </a>
+
+  {%- if section.settings.menu != blank -%}
+    <nav class="dw-header__nav" aria-label="Main menu">
+      {%- for link in section.settings.menu.links -%}
+        <a
+          href="{{ link.url }}"
+          {% if link.current %}
+            aria-current="page"
+          {% endif %}
+        >
+          {{- link.title -}}
+        </a>
+      {%- endfor -%}
+    </nav>
+  {%- endif -%}
+
+  <div class="dw-header__tools">
+    <form action="{{ routes.search_url }}" method="get" role="search" class="dw-header__search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"/><path d="m20 20-3.8-3.8"/>
+      </svg>
+      <input
+        type="search"
+        name="q"
+        value="{{ search.terms | escape }}"
+        placeholder="{{ section.settings.search_placeholder }}"
+        aria-label="{{ 'general.search.search' | t }}"
+      >
+      <input type="hidden" name="options[prefix]" value="last">
+    </form>
+
+    {%- if section.settings.notifications_page != blank -%}
+      <a class="dw-header__icon" href="{{ pages[section.settings.notifications_page].url }}" aria-label="Notifications">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M18 9a6 6 0 0 0-12 0c0 6-2 7-2 7h16s-2-1-2-7"/><path d="M10.3 20a2 2 0 0 0 3.4 0"/>
+        </svg>
+      </a>
+    {%- endif -%}
+
+    <a
+      href="{{ routes.cart_url }}"
+      class="dw-header__icon header__icon--cart link focus-inset"
+      id="cart-icon-bubble"
+    >
+      {% if cart == empty %}
+        <span class="svg-wrapper">{{ 'icon-cart-empty.svg' | inline_asset_content }}</span>
+      {% else %}
+        <span class="svg-wrapper">{{ 'icon-cart.svg' | inline_asset_content }}</span>
+      {% endif %}
+      <span class="visually-hidden">{{ 'templates.cart.cart' | t }}</span>
+      {%- if cart != empty -%}
+        <div class="cart-count-bubble">
+          {%- if cart.item_count < 100 -%}
+            <span aria-hidden="true">{{ cart.item_count }}</span>
+          {%- endif -%}
+          <span class="visually-hidden">{{ 'sections.header.cart_count' | t: count: cart.item_count }}</span>
+        </div>
+      {%- endif -%}
+    </a>
+
+    {%- if shop.customer_accounts_enabled -%}
+      <a
+        class="dw-header__icon"
+        href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}"
+        aria-label="{% if customer %}{{ 'customer.account_fallback' | t }}{% else %}{{ 'customer.log_in' | t }}{% endif %}"
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+          <circle cx="12" cy="8" r="4"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/>
+        </svg>
+      </a>
+    {%- endif -%}
+  </div>
+</header>
+
+{% style %}
+  .dw-header {
+    background: var(--dw-head-bg);
+    color: var(--dw-head-text);
+    min-height: 6rem;
+    padding: 0 2.4rem;
+    display: flex;
+    align-items: center;
+    gap: 2.4rem;
+    flex-wrap: wrap;
+  }
+  .dw-header__brand {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+    text-decoration: none;
+    color: inherit;
+    padding: 0.8rem 0;
+  }
+  .dw-header__word {
+    font-family: var(--dw-wordmark);
+    font-weight: 800;
+    font-size: 1.65rem;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .dw-header__sub {
+    font-family: var(--dw-mono);
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--dw-head-muted);
+  }
+  .dw-header__nav {
+    display: flex;
+    gap: 0.2rem;
+    flex: 1;
+    flex-wrap: wrap;
+  }
+  .dw-header__nav a {
+    color: var(--dw-head-muted);
+    text-decoration: none;
+    font-family: var(--dw-font);
+    font-size: 1.3rem;
+    font-weight: 500;
+    padding: 0.7rem 1.1rem;
+    border-radius: var(--dw-r);
+  }
+  .dw-header__nav a:hover,
+  .dw-header__nav a:focus-visible {
+    color: var(--dw-head-text);
+    outline: none;
+  }
+  .dw-header__nav a[aria-current='page'] {
+    color: var(--dw-head-text);
+    font-weight: 600;
+  }
+  .dw-header__tools {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .dw-header__search {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    border: 1px solid var(--dw-head-line);
+    border-radius: var(--dw-r);
+    padding: 0.6rem 1rem;
+    min-width: 24rem;
+    color: var(--dw-head-muted);
+  }
+  .dw-header__search:focus-within {
+    border-color: var(--dw-head-muted);
+  }
+  .dw-header__search input[type='search'] {
+    background: none;
+    border: 0;
+    outline: none;
+    color: var(--dw-head-text);
+    width: 100%;
+    font-family: var(--dw-font);
+    font-size: 1.25rem;
+  }
+  .dw-header__search input[type='search']::placeholder {
+    color: #7488ab;
+  }
+  .dw-header__icon {
+    background: none;
+    border: 0;
+    color: var(--dw-head-muted);
+    padding: 0.8rem;
+    border-radius: var(--dw-r);
+    position: relative;
+    display: grid;
+    place-items: center;
+    text-decoration: none;
+  }
+  .dw-header__icon:hover,
+  .dw-header__icon:focus-visible {
+    color: var(--dw-head-text);
+    outline: none;
+  }
+  .dw-header__icon .svg-wrapper svg {
+    width: 1.8rem;
+    height: 1.8rem;
+  }
+  .dw-header .cart-count-bubble {
+    position: absolute;
+    top: 0.2rem;
+    right: 0;
+    font-family: var(--dw-mono);
+    font-size: 0.95rem;
+    font-weight: 600;
+    background: var(--dw-head-text);
+    color: var(--dw-cta-text);
+    min-width: 1.4rem;
+    height: 1.4rem;
+    border-radius: var(--dw-r);
+    display: grid;
+    place-items: center;
+    padding: 0 0.3rem;
+  }
+  @media screen and (max-width: 749px) {
+    .dw-header {
+      gap: 1.2rem;
+      padding: 0.6rem 1.6rem;
+    }
+    .dw-header__search {
+      min-width: 0;
+      flex: 1;
+      order: 5;
+    }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "DW Header",
+  "settings": [
+    {
+      "type": "text",
+      "id": "wordmark",
+      "label": "Wordmark text",
+      "default": "Digital World Shop"
+    },
+    {
+      "type": "text",
+      "id": "subline",
+      "label": "Sub line",
+      "default": "B2B Electronics"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "Search placeholder",
+      "default": "Search SKU, model, brand"
+    },
+    {
+      "type": "text",
+      "id": "notifications_page",
+      "label": "Notifications page handle",
+      "info": "Page handle for the notification center, for example: notifications. Leave blank to hide the bell."
+    }
+  ]
+}
+{% endschema %}

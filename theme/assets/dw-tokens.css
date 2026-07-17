@@ -1,0 +1,172 @@
+/* Digital World Shop design language v3.
+   Cream ledger ground, navy structure, blue info, orange money actions.
+   All custom components are dw- prefixed to stay clear of Dawn's classes. */
+
+:root {
+  --dw-bg: #f8f4ec;
+  --dw-panel: #fffdf8;
+  --dw-panel-2: #f3ecdf;
+  --dw-line: #e6dfd2;
+  --dw-line-strong: #d4cab6;
+  --dw-text: #1c1b17;
+  --dw-text-2: #6e6a5f;
+  --dw-text-3: #a09a8c;
+  --dw-accent: #3a6ccc;
+  --dw-accent-hover: #2f5cb4;
+  --dw-accent-soft: #eaf0fb;
+  --dw-cta: #f97b28;
+  --dw-cta-hover: #ef6c15;
+  --dw-cta-soft: #fdeede;
+  --dw-cta-text: #c25107;
+  --dw-warn: #8a6d10;
+  --dw-warn-soft: #f5ecd8;
+  --dw-bad: #b3372e;
+  --dw-bad-soft: #f7e7e5;
+  --dw-head-bg: #1f3d6f;
+  --dw-head-text: #f4f1e8;
+  --dw-head-muted: #9fb3d4;
+  --dw-head-line: #35558c;
+  --dw-r: 4px;
+  --dw-font: "Geist", system-ui, sans-serif;
+  --dw-mono: "Geist Mono", ui-monospace, monospace;
+  --dw-wordmark: "Archivo", "Geist", sans-serif;
+}
+
+body {
+  background-color: var(--dw-bg);
+}
+
+/* ---------- shared primitives ---------- */
+.dw-mono {
+  font-family: var(--dw-mono);
+  font-variant-numeric: tabular-nums;
+}
+.dw-lbl {
+  font-family: var(--dw-font);
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--dw-text-2);
+}
+.dw-btn-money {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  border: 1px solid var(--dw-cta);
+  background: var(--dw-cta-soft);
+  color: var(--dw-cta-text);
+  border-radius: var(--dw-r);
+  font-family: var(--dw-font);
+  font-size: 1.2rem;
+  font-weight: 700;
+  padding: 0.6rem 1.2rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.dw-btn-money:hover {
+  background: #fce0c6;
+  border-color: var(--dw-cta-hover);
+}
+.dw-btn-line {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  border: 1px solid var(--dw-line-strong);
+  background: var(--dw-panel);
+  color: var(--dw-text);
+  border-radius: var(--dw-r);
+  font-family: var(--dw-font);
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding: 0.6rem 1.2rem;
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
+}
+.dw-btn-line:hover {
+  border-color: var(--dw-accent);
+  color: var(--dw-accent);
+}
+.dw-btn-ink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: var(--dw-text);
+  color: #fdf8ef;
+  border-radius: var(--dw-r);
+  font-family: var(--dw-font);
+  font-size: 1.2rem;
+  font-weight: 700;
+  padding: 0.6rem 1.2rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.dw-btn-money:active,
+.dw-btn-line:active,
+.dw-btn-ink:active {
+  transform: translateY(1px);
+}
+.dw-panel-box {
+  border: 1px solid var(--dw-line);
+  border-radius: var(--dw-r);
+  background: var(--dw-panel);
+}
+.dw-flag {
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  border-radius: var(--dw-r);
+  padding: 0.1rem 0.6rem;
+  display: inline-block;
+}
+.dw-flag--drop {
+  background: var(--dw-cta-soft);
+  color: var(--dw-cta-text);
+}
+.dw-flag--launch {
+  background: transparent;
+  border: 1px solid var(--dw-accent);
+  color: var(--dw-accent);
+  padding: 0 0.5rem;
+}
+.dw-cond {
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: var(--dw-r);
+  display: inline-grid;
+  place-items: center;
+  font-family: var(--dw-mono);
+  font-size: 1.15rem;
+  font-weight: 700;
+  border: 1px solid;
+}
+.dw-cond--n {
+  color: var(--dw-accent);
+  border-color: var(--dw-accent);
+  background: var(--dw-accent-soft);
+}
+.dw-cond--r {
+  color: var(--dw-warn);
+  border-color: var(--dw-warn);
+  background: var(--dw-warn-soft);
+}
+.dw-soldtag {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--dw-bad);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dw-btn-money:active,
+  .dw-btn-line:active,
+  .dw-btn-ink:active {
+    transform: none;
+  }
+}

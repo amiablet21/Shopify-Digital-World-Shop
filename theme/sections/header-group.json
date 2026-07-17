@@ -1,0 +1,24 @@
+{
+  "name": "t:sections.header.name",
+  "type": "header",
+  "sections": {
+    "announcement": {
+      "type": "dw-announcement",
+      "settings": {
+        "bold_text": "Wholesale pricing for approved business accounts.",
+        "text": "Free freight over $5,000."
+      }
+    },
+    "header": {
+      "type": "dw-header",
+      "settings": {
+        "wordmark": "Digital World Shop",
+        "subline": "B2B Electronics",
+        "menu": "main-menu",
+        "search_placeholder": "Search SKU, model, brand",
+        "notifications_page": ""
+      }
+    }
+  },
+  "order": ["announcement", "header"]
+}

@@ -1,0 +1,16 @@
+{
+  "sections": {
+    "inventory": {
+      "type": "dw-main-inventory",
+      "settings": {
+        "heading": "Live Inventory",
+        "products_per_page": 50,
+        "low_stock_threshold": 15,
+        "enable_gating": false,
+        "approved_tag": "approved",
+        "waitlist_email": ""
+      }
+    }
+  },
+  "order": ["inventory"]
+}

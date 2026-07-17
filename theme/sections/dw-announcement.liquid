@@ -1,0 +1,43 @@
+<div class="dw-announce">
+  {%- if section.settings.bold_text != blank -%}
+    <b>{{ section.settings.bold_text }}</b>
+  {%- endif -%}
+  {{ section.settings.text }}
+</div>
+
+{% style %}
+  .dw-announce {
+    background: var(--dw-bg);
+    color: var(--dw-text-2);
+    border-bottom: 1px solid var(--dw-line);
+    text-align: center;
+    padding: 0.6rem 1.6rem;
+    font-family: var(--dw-font);
+    font-size: 1.2rem;
+  }
+  .dw-announce b {
+    color: var(--dw-text);
+    font-weight: 600;
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "DW Announcement",
+  "settings": [
+    {
+      "type": "text",
+      "id": "bold_text",
+      "label": "Bold lead text",
+      "default": "Wholesale pricing for approved business accounts."
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text",
+      "default": "Free freight over $5,000."
+    }
+  ],
+  "presets": [{ "name": "DW Announcement" }]
+}
+{% endschema %}
