@@ -1,0 +1,418 @@
+<title>Digital World Shop, Past Purchases (Design v1)</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600;700&family=Archivo:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+
+<style>
+  /* Digital World Shop design language v3: cream ledger, navy structure, orange money actions. */
+  :root {
+    --bg: #f8f4ec;
+    --panel: #fffdf8;
+    --panel-2: #f3ecdf;
+    --line: #e6dfd2;
+    --line-strong: #d4cab6;
+    --text: #1c1b17;
+    --text-2: #6e6a5f;
+    --text-3: #a09a8c;
+    --accent: #3a6ccc;
+    --accent-hover: #2f5cb4;
+    --accent-soft: #eaf0fb;
+    --cta: #f97b28;
+    --cta-hover: #ef6c15;
+    --cta-soft: #fdeede;
+    --cta-text: #c25107;
+    --warn: #8a6d10;
+    --warn-soft: #f5ecd8;
+    --bad: #b3372e;
+    --bad-soft: #f7e7e5;
+    --head-bg: #1f3d6f;
+    --head-text: #f4f1e8;
+    --head-muted: #9fb3d4;
+    --head-line: #35558c;
+    --r: 4px;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font: 13.5px/1.45 "Geist", system-ui, sans-serif;
+  }
+  button { font: inherit; cursor: pointer; color: inherit; }
+  button:active { transform: translateY(1px); }
+  input, select { font: inherit; color: inherit; }
+  .mono { font-family: "Geist Mono", ui-monospace, monospace; font-variant-numeric: tabular-nums; }
+  .lbl {
+    font-size: 10.5px; font-weight: 600; letter-spacing: .07em;
+    text-transform: uppercase; color: var(--text-2);
+  }
+  i.ph, i.ph-fill { font-size: 16px; line-height: 1; }
+
+  .announce {
+    background: var(--bg); color: var(--text-2);
+    border-bottom: 1px solid var(--line);
+    text-align: center; padding: 6px 16px; font-size: 12px;
+  }
+  .announce b { color: var(--text); font-weight: 600; }
+
+  header.site {
+    background: var(--head-bg); color: var(--head-text);
+    height: 60px; padding: 0 24px;
+    display: flex; align-items: center; gap: 24px;
+  }
+  .brandmark { display: flex; flex-direction: column; line-height: 1.1; user-select: none; }
+  .brandmark .word {
+    font-family: "Archivo", "Geist", sans-serif; font-weight: 800;
+    font-size: 16.5px; letter-spacing: .02em; text-transform: uppercase; white-space: nowrap;
+  }
+  .brandmark .sub {
+    font-family: "Geist Mono", monospace; font-size: 9px; font-weight: 500;
+    letter-spacing: .22em; text-transform: uppercase; color: var(--head-muted);
+  }
+  nav.main { display: flex; gap: 2px; flex: 1; }
+  nav.main a {
+    color: var(--head-muted); text-decoration: none; font-size: 13px; font-weight: 500;
+    padding: 7px 11px; border-radius: var(--r);
+  }
+  nav.main a:hover, nav.main a:focus-visible { color: var(--head-text); outline: none; }
+  nav.main a[aria-current] { color: var(--head-text); font-weight: 600; }
+  .head-tools { display: flex; align-items: center; gap: 6px; }
+  .icon-btn {
+    background: none; border: 0; color: var(--head-muted);
+    padding: 8px; border-radius: var(--r); position: relative; display: grid; place-items: center;
+  }
+  .icon-btn:hover, .icon-btn:focus-visible { color: var(--head-text); outline: none; }
+  .icon-btn .n {
+    position: absolute; top: 2px; right: 0;
+    font-family: "Geist Mono", monospace; font-size: 9.5px; font-weight: 600;
+    background: var(--head-text); color: var(--cta-text);
+    min-width: 14px; height: 14px; border-radius: var(--r);
+    display: grid; place-items: center; padding: 0 3px;
+  }
+
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 18px 24px 64px; }
+  .page-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; }
+  .page-head h1 { font-size: 19px; font-weight: 700; letter-spacing: -.02em; margin: 0; }
+  .page-head .sub { color: var(--text-2); font-size: 12.5px; }
+  .page-head .stamp { margin-left: auto; color: var(--text-3); font-size: 12px; }
+
+  /* stats strip */
+  .stats { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+  .stat {
+    border: 1px solid var(--line); background: var(--panel); border-radius: var(--r);
+    padding: 9px 14px; display: flex; flex-direction: column; gap: 1px; min-width: 130px;
+  }
+  .stat .v { font-family: "Geist Mono", monospace; font-variant-numeric: tabular-nums; font-size: 16px; font-weight: 700; }
+  .stat .k { font-size: 11px; color: var(--text-2); }
+
+  .toolbar-line { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+  .views { display: inline-flex; border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+  .views button {
+    background: var(--panel); border: 0; padding: 8px 14px;
+    font-size: 12.5px; font-weight: 600; color: var(--text-2);
+    display: flex; align-items: center; gap: 7px;
+  }
+  .views button + button { border-left: 1px solid var(--line); }
+  .views button:hover { color: var(--text); }
+  .views button .c { font-family: "Geist Mono", monospace; font-variant-numeric: tabular-nums; font-size: 11px; color: var(--text-3); }
+  .views button.active { background: var(--head-bg); color: var(--head-text); }
+  .views button.active .c { color: inherit; opacity: .7; }
+  .searchbox {
+    display: flex; align-items: center; gap: 7px; margin-left: auto;
+    border: 1px solid var(--line-strong); background: var(--panel); border-radius: var(--r);
+    padding: 6px 10px; min-width: 240px; color: var(--text-3);
+  }
+  .searchbox input { border: 0; outline: none; background: none; width: 100%; font-size: 12.5px; color: var(--text); }
+  .searchbox:focus-within { border-color: var(--accent); }
+
+  /* orders panel */
+  .panel { border: 1px solid var(--line); border-radius: var(--r); background: var(--panel); overflow: hidden; }
+  .cols {
+    display: grid; align-items: center; gap: 12px;
+    grid-template-columns: 96px 92px minmax(220px, 1fr) 60px 100px 110px 108px 132px 30px;
+    padding: 0 14px;
+  }
+  .cols.head { background: var(--panel-2); border-bottom: 1px solid var(--line); }
+  .cols.head > span { padding: 7px 0; }
+  .cols.head .rr { text-align: right; }
+  .order-row { border-top: 1px solid var(--line); }
+  .panel .order-row:first-of-type { border-top: 0; }
+  .order-row > .cols { padding-top: 9px; padding-bottom: 9px; cursor: pointer; }
+  .order-row > .cols:hover { background: var(--panel-2); }
+  .onum { font-family: "Geist Mono", monospace; font-size: 12px; font-weight: 600; }
+  .odate { font-size: 12px; color: var(--text-2); }
+  .osum { font-size: 12.5px; color: var(--text-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .num { font-family: "Geist Mono", monospace; font-variant-numeric: tabular-nums; font-size: 12.5px; }
+  .num.b { font-weight: 700; font-size: 13px; }
+  .rr { text-align: right; }
+  .status { font-size: 10.5px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; border-radius: var(--r); padding: 2px 7px; display: inline-block; }
+  .status.processing { background: var(--warn-soft); color: var(--warn); }
+  .status.shipped { background: var(--accent-soft); color: var(--accent-hover); }
+  .status.delivered { background: var(--panel-2); color: var(--text-2); border: 1px solid var(--line-strong); }
+  .status.cancelled { background: var(--bad-soft); color: var(--bad); }
+  .track { font-size: 12px; color: var(--accent); text-decoration: none; font-weight: 600; }
+  .track:hover { text-decoration: underline; }
+  .no-track { font-size: 12px; color: var(--text-3); }
+  .btn-main {
+    border: 1px solid var(--cta); background: var(--cta-soft); color: var(--cta-text);
+    border-radius: var(--r); font-size: 12px; font-weight: 700; padding: 6px 12px;
+    display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
+  }
+  .btn-main:hover { background: #fce0c6; border-color: var(--cta-hover); }
+  .btn-line {
+    border: 1px solid var(--line-strong); background: var(--panel); color: var(--text);
+    border-radius: var(--r); font-size: 12px; font-weight: 600; padding: 6px 12px;
+    display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
+  }
+  .btn-line:hover { border-color: var(--accent); color: var(--accent); }
+  .chev { color: var(--text-3); transition: transform .12s; }
+  .order-row.open .chev { transform: rotate(180deg); }
+
+  /* line items */
+  .items { display: none; border-top: 1px dashed var(--line-strong); background: var(--panel-2); padding: 10px 16px 14px; }
+  .order-row.open .items { display: block; }
+  .icols {
+    display: grid; align-items: center; gap: 12px;
+    grid-template-columns: minmax(260px, 1fr) 140px 60px 92px 100px 110px;
+    padding: 6px 0;
+  }
+  .icols.ihead { border-bottom: 1px solid var(--line); }
+  .icols + .icols { border-top: 1px solid var(--line); }
+  .icols.ihead + .icols { border-top: 0; }
+  .ititle { font-size: 12.5px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .isku { font-family: "Geist Mono", monospace; font-size: 11px; color: var(--text-3); }
+  .items-foot { display: flex; align-items: center; gap: 8px; margin-top: 12px; }
+  .items-foot .note { font-size: 12px; color: var(--text-2); margin-left: auto; }
+
+  #toast {
+    position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(6px);
+    background: var(--head-bg); color: var(--head-text); border: 1px solid var(--head-line);
+    border-radius: var(--r); padding: 10px 16px; font-size: 12.5px; font-weight: 500;
+    opacity: 0; pointer-events: none; transition: opacity .15s, transform .15s;
+    max-width: 90vw;
+  }
+  #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  .empty { text-align: center; color: var(--text-3); padding: 44px 0; font-size: 13px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, #toast { transition: none !important; }
+    button:active { transform: none; }
+  }
+</style>
+
+<div class="announce"><b>Reorder any past purchase in one click.</b> Prices update to current wholesale rates.</div>
+
+<header class="site">
+  <div class="brandmark">
+    <span class="word">Digital World Shop</span>
+    <span class="sub">B2B Electronics</span>
+  </div>
+  <nav class="main" aria-label="Main">
+    <a href="01-main-selling-page.html">Shop</a>
+    <a href="#">Price List</a>
+    <a href="#" aria-current="page">Past Purchases</a>
+    <a href="02-my-offers.html">My Offers</a>
+  </nav>
+  <div class="head-tools">
+    <button class="icon-btn" aria-label="Notifications, 3 unread">
+      <i class="ph ph-bell" aria-hidden="true"></i><span class="n">3</span>
+    </button>
+    <button class="icon-btn" aria-label="Cart, 2 items">
+      <i class="ph ph-shopping-cart-simple" aria-hidden="true"></i><span class="n">2</span>
+    </button>
+    <button class="icon-btn" aria-label="Account">
+      <i class="ph ph-user-circle" aria-hidden="true"></i>
+    </button>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="page-head">
+    <h1>Past Purchases</h1>
+    <span class="sub">Orders placed by Digital World Trading LLC</span>
+    <span class="stamp">Net 30 terms active</span>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><span class="v">14</span><span class="k">Orders this year</span></div>
+    <div class="stat"><span class="v">$86,410</span><span class="k">Spent this year</span></div>
+    <div class="stat"><span class="v">2</span><span class="k">Orders in transit</span></div>
+    <div class="stat"><span class="v">$12,380</span><span class="k">Open invoices</span></div>
+  </div>
+
+  <div class="toolbar-line">
+    <div class="views" role="tablist" aria-label="Order filters">
+      <button class="active" data-view="all">All Orders <span class="c">5</span></button>
+      <button data-view="open">Processing <span class="c">1</span></button>
+      <button data-view="transit">Shipped <span class="c">2</span></button>
+      <button data-view="done">Delivered <span class="c">2</span></button>
+    </div>
+    <label class="searchbox">
+      <i class="ph ph-magnifying-glass" aria-hidden="true"></i>
+      <input type="search" id="q" placeholder="Search order number or SKU" aria-label="Search orders">
+    </label>
+  </div>
+
+  <div class="panel">
+    <div class="cols head">
+      <span class="lbl">Order</span>
+      <span class="lbl">Date</span>
+      <span class="lbl">Items</span>
+      <span class="lbl rr">Units</span>
+      <span class="lbl rr">Total</span>
+      <span class="lbl">Status</span>
+      <span class="lbl">Tracking</span>
+      <span class="lbl">Reorder</span>
+      <span class="lbl" aria-hidden="true"></span>
+    </div>
+    <div id="list"></div>
+    <div class="empty" id="empty" hidden>No orders match.</div>
+  </div>
+</main>
+
+<div id="toast" role="status"></div>
+
+<script>
+  const ORDERS = [
+    {
+      num: "DW-1207", date: "Jul 14, 2026", status: "processing", tracking: null,
+      items: [
+        { sku: "SDSSDE62-2T00-GAO", title: "SanDisk Extreme Portable SSD 2TB USB-C, Bulk Brown Box", qty: 50, price: 109 },
+        { sku: "MTJV3AM/A", title: "Apple AirPods Pro 2 USB-C, Master Carton of 10", qty: 20, price: 168 },
+      ]
+    },
+    {
+      num: "DW-1198", date: "Jul 8, 2026", status: "shipped", tracking: "1Z999AA10123456784",
+      items: [
+        { sku: "A05FXUA#ABA", title: "HP 17-CN4047 Core 7 150U 512GB SSD 16GB 17.3\" FHD WIN11 Natural Silver", qty: 30, price: 495 },
+      ]
+    },
+    {
+      num: "DW-1193", date: "Jul 2, 2026", status: "shipped", tracking: "1Z999AA10123419522",
+      items: [
+        { sku: "SM-X210NZAAXAR", title: "Samsung Galaxy Tab A9+ 11\" 64GB Wi-Fi Graphite, Retail Packaging", qty: 60, price: 152 },
+        { sku: "82XF002GUS", title: "Lenovo IdeaPad Slim 5 16IRL8 Core i7-1355U 512GB SSD 16GB", qty: 12, price: 449 },
+      ]
+    },
+    {
+      num: "DW-1184", date: "Jun 24, 2026", status: "delivered", tracking: "1Z999AA10123301118",
+      items: [
+        { sku: "MRXV3LL/A", title: "Apple MacBook Air 13.6\" M3 8-Core 256GB SSD 8GB Midnight", qty: 10, price: 872 },
+      ]
+    },
+    {
+      num: "DW-1177", date: "Jun 17, 2026", status: "delivered", tracking: "1Z999AA10123255610",
+      items: [
+        { sku: "V3607VM-DS79", title: "ASUS V16 V3607VM-DS79 Gaming Core 7 240H 1TB SSD 32GB RTX 5060", qty: 6, price: 1355 },
+        { sku: "I5645-A712SLV", title: "Dell Inspiron 16 5645 Ryzen 7 8840HS 1TB SSD 16GB", qty: 16, price: 618 },
+        { sku: "9V2K8UA#ABA", title: "HP Spectre x360 16-AA0000 2-in-1 Core Ultra 7 155H 1TB SSD 16GB", qty: 5, price: 799 },
+      ]
+    },
+  ];
+
+  const fmt = n => "$" + n.toLocaleString("en-US", { minimumFractionDigits: n % 1 ? 2 : 0 });
+  const VIEW_MAP = {
+    all: () => true,
+    open: o => o.status === "processing",
+    transit: o => o.status === "shipped",
+    done: o => o.status === "delivered",
+  };
+  const STATUS_LABEL = { processing: "Processing", shipped: "Shipped", delivered: "Delivered", cancelled: "Cancelled" };
+  let view = "all", query = "";
+  const openNums = new Set(["DW-1207"]);
+
+  document.querySelectorAll(".views button").forEach(t => t.onclick = () => {
+    document.querySelectorAll(".views button").forEach(x => x.classList.remove("active"));
+    t.classList.add("active");
+    view = t.dataset.view;
+    render();
+  });
+  document.getElementById("q").oninput = e => { query = e.target.value.trim().toLowerCase(); render(); };
+
+  const orderUnits = o => o.items.reduce((s, i) => s + i.qty, 0);
+  const orderTotal = o => o.items.reduce((s, i) => s + i.qty * i.price, 0);
+
+  function render() {
+    const list = document.getElementById("list");
+    list.innerHTML = "";
+    const rows = ORDERS.filter(VIEW_MAP[view]).filter(o =>
+      !query || o.num.toLowerCase().includes(query) || o.items.some(i => i.sku.toLowerCase().includes(query)));
+    document.getElementById("empty").hidden = rows.length > 0;
+
+    rows.forEach(o => {
+      const el = document.createElement("div");
+      el.className = "order-row" + (openNums.has(o.num) ? " open" : "");
+      const summary = o.items.length === 1 ? o.items[0].title : `${o.items[0].title.split(",")[0]} and ${o.items.length - 1} more`;
+      el.innerHTML = `
+        <div class="cols" role="button" tabindex="0" aria-expanded="${openNums.has(o.num)}" aria-label="Order ${o.num}, ${STATUS_LABEL[o.status]}">
+          <span class="onum">${o.num}</span>
+          <span class="odate">${o.date}</span>
+          <span class="osum">${summary}</span>
+          <span class="num rr">${orderUnits(o)}</span>
+          <span class="num b rr">${fmt(orderTotal(o))}</span>
+          <span><span class="status ${o.status}">${STATUS_LABEL[o.status]}</span></span>
+          <span>${o.tracking ? `<a class="track" href="#" onclick="event.stopPropagation()">${o.status === "delivered" ? "Delivered" : "Track"} <i class="ph ph-arrow-square-out" style="font-size:12px" aria-hidden="true"></i></a>` : '<span class="no-track">Preparing</span>'}</span>
+          <span><button class="btn-main" data-reorder><i class="ph ph-arrow-counter-clockwise" aria-hidden="true"></i> Reorder All</button></span>
+          <i class="ph ph-caret-down chev" aria-hidden="true"></i>
+        </div>
+        <div class="items">
+          <div class="icols ihead">
+            <span class="lbl">Item</span><span class="lbl">SKU</span>
+            <span class="lbl rr">Qty</span><span class="lbl rr">Unit Price</span>
+            <span class="lbl rr">Line Total</span><span class="lbl"></span>
+          </div>
+          ${o.items.map((i, idx) => `
+            <div class="icols">
+              <span class="ititle">${i.title}</span>
+              <span class="isku">${i.sku}</span>
+              <span class="num rr">${i.qty}</span>
+              <span class="num rr">${fmt(i.price)}</span>
+              <span class="num b rr">${fmt(i.qty * i.price)}</span>
+              <span class="rr"><button class="btn-line" data-line="${idx}"><i class="ph ph-shopping-cart-simple" aria-hidden="true"></i> Add Again</button></span>
+            </div>`).join("")}
+          <div class="items-foot">
+            <button class="btn-line" data-invoice><i class="ph ph-file-pdf" aria-hidden="true"></i> Invoice PDF</button>
+            <span class="note">Reordering uses current wholesale prices, which may differ from what you paid.</span>
+          </div>
+        </div>`;
+
+      const head = el.querySelector('[role="button"]');
+      const toggle = () => {
+        openNums.has(o.num) ? openNums.delete(o.num) : openNums.add(o.num);
+        el.classList.toggle("open");
+        head.setAttribute("aria-expanded", String(openNums.has(o.num)));
+      };
+      head.onclick = e => { if (!e.target.closest("button, a")) toggle(); };
+      head.onkeydown = e => { if ((e.key === "Enter" || e.key === " ") && !e.target.closest("button, a")) { e.preventDefault(); toggle(); } };
+
+      el.querySelector("[data-reorder]").onclick = e => {
+        e.stopPropagation();
+        toast(`${orderUnits(o)} units from ${o.num} added to cart at current prices`);
+      };
+      el.querySelectorAll("[data-line]").forEach(b => b.onclick = e => {
+        e.stopPropagation();
+        const i = o.items[+b.dataset.line];
+        toast(`Added ${i.qty} × ${i.sku} to cart`);
+      });
+      el.querySelector("[data-invoice]").onclick = e => { e.stopPropagation(); toast(`Downloading invoice for ${o.num}`); };
+
+      list.appendChild(el);
+    });
+  }
+
+  let toastTimer;
+  function toast(msg) {
+    const t = document.getElementById("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove("show"), 2600);
+  }
+
+  render();
+</script>
