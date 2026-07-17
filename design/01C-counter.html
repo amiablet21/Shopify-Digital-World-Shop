@@ -1,0 +1,581 @@
+<title>Digital World Shop, Main Selling Page (Variant C: Counter)</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+
+<style>
+  :root {
+    --bg: #f6f1e7;
+    --panel: #fdfaf3;
+    --panel-2: #efe8da;
+    --line: #ddd5c4;
+    --ink: #171511;
+    --text: #171511;
+    --text-2: #6b665a;
+    --text-3: #9d968a;
+    --accent: #c22a20;
+    --accent-hov: #a82118;
+    --accent-ink: #f6f1e7;
+    --accent-soft: #f7e6e3;
+    --good: #1c7a4a;
+    --good-soft: #e4f1e9;
+    --warn: #9c6702;
+    --warn-soft: #f4ecd7;
+    --head-bg: #171511;
+    --head-text: #f4efe4;
+    --head-muted: #8f897b;
+    --r: 0px;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font: 13.5px/1.45 "Archivo", system-ui, sans-serif;
+  }
+  button { font: inherit; cursor: pointer; color: inherit; border-radius: 0; }
+  button:active { transform: translateY(1px); }
+  input, select { font: inherit; color: inherit; border-radius: 0; }
+  .mono { font-family: "JetBrains Mono", ui-monospace, monospace; font-variant-numeric: tabular-nums; }
+  .lbl {
+    font-size: 10.5px; font-weight: 600; letter-spacing: .07em;
+    text-transform: uppercase; color: var(--text-2);
+  }
+  i.ph, i.ph-fill { font-size: 16px; line-height: 1; }
+  :focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; }
+
+  /* ---------- announcement ---------- */
+  .announce {
+    background: var(--bg); color: var(--ink);
+    border-bottom: 1px solid var(--ink);
+    text-align: center; padding: 6px 16px; font-size: 12px;
+  }
+  .announce b { color: var(--ink); font-weight: 700; }
+
+  /* ---------- header ---------- */
+  header.site {
+    background: var(--head-bg); color: var(--head-text);
+    height: 60px; padding: 0 24px;
+    display: flex; align-items: center; gap: 24px;
+  }
+  header.site :focus-visible { outline: 2px solid var(--head-text); outline-offset: 1px; }
+  .brandmark { display: flex; flex-direction: column; line-height: 1.15; user-select: none; }
+  .brandmark b {
+    font-size: 15px; font-weight: 800; letter-spacing: .02em;
+    text-transform: uppercase; white-space: nowrap;
+  }
+  .brandmark span {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 9.5px; letter-spacing: .12em; color: var(--head-muted);
+  }
+  nav.main { display: flex; gap: 2px; flex: 1; }
+  nav.main a {
+    color: var(--head-muted); text-decoration: none; font-size: 13px; font-weight: 600;
+    padding: 7px 11px; border-radius: 0;
+  }
+  nav.main a:hover, nav.main a:focus-visible { color: var(--head-text); outline: none; }
+  nav.main a[aria-current] { color: var(--head-text); box-shadow: inset 0 -2px 0 var(--accent); }
+  .head-tools { display: flex; align-items: center; gap: 6px; }
+  .search {
+    display: flex; align-items: center; gap: 8px;
+    background: transparent; border: 1px solid #3a362c; border-radius: 0;
+    padding: 6px 10px; min-width: 240px; color: var(--head-muted);
+  }
+  .search:focus-within { border-color: var(--head-text); }
+  .search input {
+    background: none; border: 0; outline: none; color: var(--head-text);
+    width: 100%; font-size: 12.5px;
+  }
+  .search input::placeholder { color: #6b665a; }
+  .icon-btn {
+    background: none; border: 0; color: var(--head-muted);
+    padding: 8px; border-radius: 0; position: relative; display: grid; place-items: center;
+  }
+  .icon-btn:hover, .icon-btn:focus-visible { color: var(--head-text); outline: none; }
+  .icon-btn .n {
+    position: absolute; top: 2px; right: 0;
+    font-family: "JetBrains Mono", monospace; font-size: 9.5px; font-weight: 700;
+    background: var(--accent); color: var(--accent-ink);
+    min-width: 14px; height: 14px; border-radius: 0;
+    display: grid; place-items: center; padding: 0 3px;
+  }
+
+  /* ---------- workspace ---------- */
+  .wrap { max-width: 1480px; margin: 0 auto; padding: 18px 24px 64px; }
+  .page-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; }
+  .page-head h1 { font-size: 19px; font-weight: 800; letter-spacing: -.01em; text-transform: uppercase; margin: 0; }
+  .page-head .sub { color: var(--text-2); font-size: 12.5px; }
+  .page-head .stamp { margin-left: auto; color: var(--text-3); font-size: 12px; }
+
+  /* segmented quick views */
+  .views { display: inline-flex; border: 1px solid var(--ink); border-radius: 0; overflow: hidden; margin-bottom: 12px; }
+  .views button {
+    background: var(--panel); border: 0; padding: 8px 14px;
+    font-size: 12.5px; font-weight: 600; color: var(--text-2);
+    display: flex; align-items: center; gap: 7px;
+  }
+  .views button + button { border-left: 1px solid var(--ink); }
+  .views button:hover { color: var(--ink); }
+  .views button .c { font-family: "JetBrains Mono", monospace; font-variant-numeric: tabular-nums; font-size: 11px; color: var(--text-3); }
+  .views button.active { background: var(--ink); color: var(--head-text); }
+  .views button.active .c { color: inherit; opacity: .7; }
+
+  /* brand rail */
+  .brands { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+  .brand {
+    border: 1px solid var(--ink); background: var(--panel);
+    border-radius: 0; padding: 5px 11px;
+    font-size: 12.5px; font-weight: 600; display: flex; gap: 7px; align-items: baseline;
+  }
+  .brand .c { font-family: "JetBrains Mono", monospace; font-variant-numeric: tabular-nums; font-size: 11px; color: var(--text-3); }
+  .brand:hover { background: var(--panel-2); }
+  .brand.active { background: var(--ink); border-color: var(--ink); color: var(--head-text); }
+  .brand.active .c { color: inherit; opacity: .75; }
+
+  /* toolbar */
+  .toolbar {
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    border: 1.5px solid var(--ink); border-bottom: 0; background: var(--panel-2);
+    border-radius: 0; padding: 8px 12px;
+  }
+  .toolbar select {
+    background: var(--panel); border: 1px solid var(--ink); border-radius: 0;
+    padding: 5px 8px; font-size: 12.5px;
+  }
+  .toolbar select:focus-visible { outline: 2px solid var(--ink); outline-offset: -1px; }
+  .toggle { display: flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 600; }
+  .switch { position: relative; width: 34px; height: 18px; }
+  .switch input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
+  .switch .track { position: absolute; inset: 0; background: var(--line); border: 1px solid var(--ink); border-radius: 0; transition: background .12s; }
+  .switch .knob {
+    position: absolute; top: 2px; left: 2px; width: 14px; height: 14px;
+    background: var(--panel); border: 1px solid var(--ink); border-radius: 0; transition: transform .12s;
+  }
+  .switch input:checked + .track { background: var(--ink); }
+  .switch input:checked + .track + .knob { transform: translateX(16px); }
+  .switch input:focus-visible + .track { outline: 2px solid var(--ink); outline-offset: 2px; }
+  .toolbar .grow { flex: 1; }
+  .btn-ghost {
+    display: flex; align-items: center; gap: 6px;
+    border: 1px solid var(--ink); background: var(--panel); color: var(--ink);
+    border-radius: 0; padding: 5px 11px; font-size: 12.5px; font-weight: 600;
+  }
+  .btn-ghost:hover { background: var(--panel-2); }
+
+  /* ---------- data grid ---------- */
+  .panel { border: 1.5px solid var(--ink); border-radius: 0; background: var(--panel); overflow-x: auto; }
+  .gridrows { min-width: 1150px; }
+  .cols {
+    display: grid; align-items: center; gap: 12px;
+    grid-template-columns: minmax(330px, 1fr) 44px 64px 92px 82px 64px 34px 104px 138px;
+    padding: 0 14px;
+  }
+  .cols.head { background: var(--panel-2); border-bottom: 1px solid var(--ink); }
+  .cols.head > span { padding: 7px 0; }
+  .cols.head .lbl {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 10.5px; font-weight: 700; letter-spacing: .09em; color: var(--text-2);
+  }
+  .cols.head .r { text-align: right; }
+  .row { border-top: 1px solid var(--line); padding-top: 8px; padding-bottom: 8px; }
+  .gridrows .row:first-of-type { border-top: 0; }
+  .row:hover { background: var(--panel-2); }
+  .row.soldout .title, .row.soldout .sku { color: var(--text-3); }
+  .p-name { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .title {
+    font-weight: 500; font-size: 13px; line-height: 1.35;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .p-meta { display: flex; align-items: center; gap: 8px; }
+  .sku { font-family: "JetBrains Mono", monospace; font-size: 11px; color: var(--text-3); }
+  .flag { font-size: 10.5px; font-weight: 600; letter-spacing: .03em; text-transform: uppercase; border-radius: 0; padding: 1px 6px; }
+  .flag.drop { background: var(--good-soft); color: var(--good); }
+  .flag.launch { background: var(--panel); color: var(--ink); border: 1px solid var(--ink); padding: 0 5px; }
+  .cond {
+    width: 24px; height: 24px; border-radius: 0;
+    display: grid; place-items: center;
+    font-family: "JetBrains Mono", monospace; font-size: 11.5px; font-weight: 700;
+    border: 1.5px solid;
+  }
+  .cond.N { color: var(--ink); border-color: var(--ink); background: var(--bg); }
+  .cond.R { color: var(--warn); border-color: var(--warn); background: var(--warn-soft); }
+  .r { text-align: right; }
+  .moq { font-family: "JetBrains Mono", monospace; font-variant-numeric: tabular-nums; font-size: 12px; color: var(--text-2); }
+  .price { font-family: "JetBrains Mono", monospace; font-variant-numeric: tabular-nums; font-size: 15px; font-weight: 700; color: var(--ink); }
+  .price .was { display: block; font-size: 10.5px; font-weight: 500; color: var(--text-3); text-decoration: line-through; }
+  .loc { font-size: 12px; color: var(--text-2); }
+  .qty { font-family: "JetBrains Mono", monospace; font-variant-numeric: tabular-nums; font-size: 12.5px; font-weight: 600; }
+  .qty.low { color: var(--warn); }
+  .qty small { display: block; font-family: "Archivo", sans-serif; font-size: 10px; font-weight: 600; color: var(--text-3); }
+  .soldtag { font-size: 11px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: .04em; }
+  .bell {
+    background: none; border: 1px solid var(--ink); color: var(--text-3);
+    width: 28px; height: 28px; border-radius: 0; display: grid; place-items: center; padding: 0;
+  }
+  .bell:hover { color: var(--ink); background: var(--panel-2); }
+  .bell.on { border-color: var(--ink); color: var(--ink); background: var(--panel-2); }
+  .btn-offer {
+    border: 1px solid var(--ink); background: var(--panel); color: var(--ink);
+    border-radius: 0; padding: 6px 0; width: 100%; font-size: 12px; font-weight: 600;
+  }
+  .btn-offer:hover:not(:disabled) { background: var(--ink); color: var(--head-text); }
+  .btn-offer:disabled { opacity: .4; cursor: not-allowed; }
+  .cart-cell { display: flex; gap: 6px; }
+  .qty-in {
+    width: 46px; text-align: center; border: 1px solid var(--ink); border-radius: 0;
+    background: var(--panel); padding: 5px 2px; font-size: 12.5px;
+    font-family: "JetBrains Mono", monospace; font-variant-numeric: tabular-nums;
+  }
+  .qty-in:focus { outline: 2px solid var(--ink); outline-offset: -1px; }
+  .btn-cart {
+    flex: 1; border: 0; background: var(--accent); color: var(--accent-ink);
+    border-radius: 0; font-size: 12px; font-weight: 700; padding: 6px 2px; white-space: nowrap;
+  }
+  .btn-cart:hover { background: var(--accent-hov); }
+  .btn-wait {
+    flex: 1; border: 0; background: var(--ink); color: var(--head-text);
+    border-radius: 0; font-size: 12px; font-weight: 700; padding: 6px 2px; white-space: nowrap;
+  }
+  .btn-wait:hover { background: #2b2820; }
+  .empty { text-align: center; color: var(--text-3); padding: 44px 0; font-size: 13px; }
+
+  /* ---------- offer modal ---------- */
+  dialog#offer {
+    border: 1.5px solid var(--ink); border-radius: 0; padding: 0;
+    width: 380px; max-width: calc(100vw - 32px);
+    background: var(--panel); color: var(--text);
+    box-shadow: 0 18px 50px rgba(23, 21, 17, .35);
+  }
+  dialog#offer::backdrop { background: rgba(23, 21, 17, .5); }
+  .om-head { display: flex; align-items: center; justify-content: space-between; padding: 16px 18px 0; }
+  .om-head h2 { margin: 0; font-size: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: .01em; }
+  .om-slots { font-family: "JetBrains Mono", monospace; font-variant-numeric: tabular-nums; font-size: 11px; font-weight: 600; color: var(--ink); background: var(--panel-2); border: 1px solid var(--ink); border-radius: 0; padding: 2px 8px; }
+  .om-body { padding: 12px 18px 18px; display: flex; flex-direction: column; gap: 11px; }
+  .om-product { font-size: 12px; color: var(--text-2); line-height: 1.45; margin: 0; }
+  .om-field label { display: block; margin-bottom: 4px; }
+  .om-field input, .om-field select {
+    width: 100%; border: 1px solid var(--ink); border-radius: 0;
+    background: var(--panel); padding: 8px 10px; font-size: 13px;
+  }
+  .om-field input { font-family: "JetBrains Mono", monospace; font-variant-numeric: tabular-nums; }
+  .om-field input:focus, .om-field select:focus { outline: 2px solid var(--ink); outline-offset: -1px; }
+  .om-total { display: flex; justify-content: space-between; align-items: baseline; border-top: 1px solid var(--line); padding-top: 11px; font-weight: 600; }
+  .om-total .mono { font-size: 17px; font-weight: 700; }
+  .om-actions { display: flex; gap: 8px; }
+  .om-actions .btn-cart { padding: 9px; font-size: 13px; }
+  .om-actions .btn-ghost { justify-content: center; padding: 9px 14px; }
+
+  /* toast */
+  #toast {
+    position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(6px);
+    background: var(--ink); color: var(--head-text); border: 0;
+    border-radius: 0; padding: 10px 16px; font-size: 12.5px; font-weight: 500;
+    opacity: 0; pointer-events: none; transition: opacity .15s, transform .15s;
+    max-width: 90vw;
+  }
+  #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, #toast { transition: none !important; }
+    button:active { transform: none; }
+  }
+</style>
+
+<div class="announce"><b>Wholesale pricing for approved business accounts.</b> Free freight over $5,000.</div>
+
+<header class="site">
+  <div class="brandmark">
+    <b>Digital World Shop</b>
+    <span>B2B ELECTRONICS</span>
+  </div>
+  <nav class="main" aria-label="Main">
+    <a href="#" aria-current="page">Shop</a>
+    <a href="#">Price List</a>
+    <a href="#">Past Purchases</a>
+    <a href="#">My Offers</a>
+  </nav>
+  <div class="head-tools">
+    <div class="search">
+      <i class="ph ph-magnifying-glass" aria-hidden="true"></i>
+      <input type="search" placeholder="Search SKU, model, brand" aria-label="Search products">
+    </div>
+    <button class="icon-btn" aria-label="Notifications, 3 unread">
+      <i class="ph ph-bell" aria-hidden="true"></i><span class="n">3</span>
+    </button>
+    <button class="icon-btn" aria-label="Cart, 2 items">
+      <i class="ph ph-shopping-cart-simple" aria-hidden="true"></i><span class="n">2</span>
+    </button>
+    <button class="icon-btn" aria-label="Account">
+      <i class="ph ph-user-circle" aria-hidden="true"></i>
+    </button>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="page-head">
+    <h1>Live Inventory</h1>
+    <span class="sub" id="rowcount"></span>
+    <span class="stamp">Updated 4 min ago</span>
+  </div>
+
+  <div class="views" role="tablist" aria-label="Quick views">
+    <button class="active" data-view="all">All Inventory <span class="c" id="count-all">0</span></button>
+    <button data-view="deals">Today's Deals <span class="c">14</span></button>
+    <button data-view="drop">Price Drop <span class="c" id="count-drop">0</span></button>
+    <button data-view="launch">Just Launched <span class="c" id="count-launch">0</span></button>
+  </div>
+
+  <div class="brands" id="brands" role="group" aria-label="Filter by brand"></div>
+
+  <div class="toolbar">
+    <span class="lbl">Filter</span>
+    <select id="f-cond" aria-label="Condition">
+      <option value="">All Conditions</option>
+      <option value="N">New</option>
+      <option value="R">Refurbished</option>
+    </select>
+    <select id="f-sort" aria-label="Sort">
+      <option value="recent">Sort: Most Recent</option>
+      <option value="price-asc">Sort: Price, low to high</option>
+      <option value="price-desc">Sort: Price, high to low</option>
+      <option value="qty">Sort: Qty Available</option>
+    </select>
+    <label class="toggle">
+      <span class="switch">
+        <input type="checkbox" id="f-stock">
+        <span class="track"></span><span class="knob"></span>
+      </span>
+      In stock only
+    </label>
+    <div class="grow"></div>
+    <button class="btn-ghost" id="export">
+      <i class="ph ph-download-simple" aria-hidden="true"></i> Export CSV
+    </button>
+  </div>
+
+  <div class="panel"><div class="gridrows">
+    <div class="cols head">
+      <span class="lbl">Product</span>
+      <span class="lbl">Cond</span>
+      <span class="lbl">MOQ</span>
+      <span class="lbl r">Unit Price</span>
+      <span class="lbl">Warehouse</span>
+      <span class="lbl r">Avail</span>
+      <span class="lbl" aria-hidden="true"></span>
+      <span class="lbl">Offer</span>
+      <span class="lbl">Order</span>
+    </div>
+    <div id="grid"></div>
+    <div class="empty" id="empty" hidden>No products match these filters.</div>
+  </div></div>
+</main>
+
+<dialog id="offer" aria-labelledby="om-title">
+  <div class="om-head">
+    <h2 id="om-title">Make an Offer</h2>
+    <span class="om-slots" id="om-slots">3 slots left</span>
+  </div>
+  <form class="om-body" method="dialog" id="om-form">
+    <p class="om-product" id="om-product"></p>
+    <div class="om-field">
+      <label class="lbl" for="om-qty">Quantity, MOQ applies</label>
+      <input type="number" id="om-qty" min="1" value="1" required>
+    </div>
+    <div class="om-field">
+      <label class="lbl" for="om-price">Your unit price, USD</label>
+      <input type="number" id="om-price" min="1" step="0.01" required>
+    </div>
+    <div class="om-field">
+      <label class="lbl" for="om-exp">Offer valid for</label>
+      <select id="om-exp">
+        <option>24 hours</option>
+        <option>48 hours</option>
+        <option>7 days</option>
+      </select>
+    </div>
+    <div class="om-total">
+      <span>Total offer</span>
+      <span class="mono" id="om-total">$0.00</span>
+    </div>
+    <div class="om-actions">
+      <button type="button" class="btn-ghost" id="om-cancel">Cancel</button>
+      <button type="submit" class="btn-cart">Send Offer</button>
+    </div>
+  </form>
+</dialog>
+
+<div id="toast" role="status"></div>
+
+<script>
+  const PRODUCTS = [
+    { brand: "HP", title: "HP Spectre x360 16-AA0000 2-in-1 Core Ultra 7 155H 1TB SSD 16GB 16\" 2.8K Touch WIN11 RTX 4050 Nightfall Black", sku: "9V2K8UA#ABA", cond: "N", moq: 5, price: 789, was: 845, loc: "Miami, FL", qty: 61, flags: ["drop"] },
+    { brand: "HP", title: "HP 17-CN4047 Core 7 150U 512GB SSD 16GB 17.3\" FHD WIN11 Natural Silver, US Sales Only", sku: "A05FXUA#ABA", cond: "R", moq: 10, price: 489, was: 519, loc: "Miami, FL", qty: 140, flags: ["drop"] },
+    { brand: "HP", title: "HP OmniBook 3 15-FN0105 AMD Ryzen AI 5 330 512GB SSD 16GB 15.6\" FHD Touch WIN11 Glacier Silver FP Reader", sku: "C20WBUA#ABA", cond: "N", moq: 10, price: 459, was: null, loc: "Miami, FL", qty: 72, flags: ["launch"] },
+    { brand: "Dell", title: "Dell Inspiron 16 5645 Ryzen 7 8840HS 1TB SSD 16GB 16\" FHD+ WIN11 Platinum Silver", sku: "I5645-A712SLV", cond: "N", moq: 8, price: 612, was: null, loc: "Newark, NJ", qty: 96, flags: [] },
+    { brand: "Lenovo", title: "Lenovo IdeaPad Slim 5 16IRL8 Core i7-1355U 512GB SSD 16GB 16\" WUXGA WIN11 Cloud Grey", sku: "82XF002GUS", cond: "R", moq: 12, price: 438, was: 472, loc: "Newark, NJ", qty: 34, flags: ["drop"] },
+    { brand: "Apple", title: "Apple MacBook Air 13.6\" M3 8-Core 256GB SSD 8GB Midnight, Sealed, US Spec", sku: "MRXV3LL/A", cond: "N", moq: 5, price: 869, was: null, loc: "Miami, FL", qty: 48, flags: [] },
+    { brand: "Samsung", title: "Samsung Galaxy Tab A9+ 11\" 64GB Wi-Fi Graphite, Retail Packaging", sku: "SM-X210NZAAXAR", cond: "N", moq: 20, price: 148, was: 159, loc: "Dallas, TX", qty: 320, flags: ["drop"] },
+    { brand: "Asus", title: "ASUS V16 V3607VM-DS79 Gaming Core 7 240H 1TB SSD 32GB 16\" WUXGA 144Hz WIN11 RTX 5060 Black", sku: "V3607VM-DS79", cond: "N", moq: 3, price: 1338, was: null, loc: "Miami, FL", qty: 23, flags: ["launch"] },
+    { brand: "MSI", title: "MSI Codex R2 AI A2NVM7-469 Gaming Desktop Core Ultra 7 265 2TB 32GB WIN11 RTX 5060 Ti Black", sku: "A2NVM7-469US", cond: "N", moq: 2, price: 1890, was: null, loc: "Miami, FL", qty: 0, flags: [] },
+    { brand: "SanDisk", title: "SanDisk Extreme Portable SSD 2TB USB-C 3.2 Gen 2 IP65, Bulk Brown Box", sku: "SDSSDE62-2T00-GAO", cond: "N", moq: 25, price: 118, was: 131, loc: "Dallas, TX", qty: 410, flags: ["drop"] },
+    { brand: "Lenovo", title: "Lenovo ThinkPad E16 Gen 2 Core Ultra 5 125U 512GB SSD 16GB 16\" WUXGA WIN11 Pro Black", sku: "21M5004QUS", cond: "N", moq: 6, price: 724, was: null, loc: "Newark, NJ", qty: 12, flags: ["launch"] },
+    { brand: "Apple", title: "Apple AirPods Pro 2 USB-C, Master Carton of 10, Sealed", sku: "MTJV3AM/A", cond: "N", moq: 10, price: 168, was: 174, loc: "Miami, FL", qty: 8, flags: ["drop"] },
+  ];
+
+  const fmt = n => "$" + n.toLocaleString("en-US", { minimumFractionDigits: n % 1 ? 2 : 0 });
+  const state = { brand: "", cond: "", sort: "recent", stockOnly: false, view: "all" };
+  const watching = new Set();
+  let offerSlots = 3;
+
+  /* brand rail */
+  const brandCounts = {};
+  PRODUCTS.forEach(p => brandCounts[p.brand] = (brandCounts[p.brand] || 0) + 1);
+  const brandsEl = document.getElementById("brands");
+  const allBtn = document.createElement("button");
+  allBtn.className = "brand active";
+  allBtn.innerHTML = `All Brands <span class="c">${PRODUCTS.length}</span>`;
+  allBtn.onclick = () => { state.brand = ""; render(); };
+  brandsEl.appendChild(allBtn);
+  Object.entries(brandCounts).forEach(([b, c]) => {
+    const el = document.createElement("button");
+    el.className = "brand";
+    el.innerHTML = `${b} <span class="c">${c}</span>`;
+    el.onclick = () => { state.brand = state.brand === b ? "" : b; render(); };
+    el.dataset.brand = b;
+    brandsEl.appendChild(el);
+  });
+
+  /* filters */
+  document.getElementById("f-cond").onchange = e => { state.cond = e.target.value; render(); };
+  document.getElementById("f-sort").onchange = e => { state.sort = e.target.value; render(); };
+  document.getElementById("f-stock").onchange = e => { state.stockOnly = e.target.checked; render(); };
+  document.querySelectorAll(".views button").forEach(t => t.onclick = () => {
+    document.querySelectorAll(".views button").forEach(x => x.classList.remove("active"));
+    t.classList.add("active");
+    state.view = t.dataset.view;
+    render();
+  });
+  document.getElementById("export").onclick = () => toast("Filtered price list exported as CSV");
+
+  document.getElementById("count-all").textContent = PRODUCTS.length;
+  document.getElementById("count-drop").textContent = PRODUCTS.filter(p => p.flags.includes("drop")).length;
+  document.getElementById("count-launch").textContent = PRODUCTS.filter(p => p.flags.includes("launch")).length;
+
+  function filtered() {
+    let list = PRODUCTS.filter(p =>
+      (!state.brand || p.brand === state.brand) &&
+      (!state.cond || p.cond === state.cond) &&
+      (!state.stockOnly || p.qty > 0) &&
+      (state.view === "all" || state.view === "deals" || p.flags.includes(state.view))
+    );
+    if (state.sort === "price-asc") list = [...list].sort((a, b) => a.price - b.price);
+    if (state.sort === "price-desc") list = [...list].sort((a, b) => b.price - a.price);
+    if (state.sort === "qty") list = [...list].sort((a, b) => b.qty - a.qty);
+    return list;
+  }
+
+  function render() {
+    document.querySelectorAll(".brand").forEach(b =>
+      b.classList.toggle("active", (b.dataset.brand || "") === state.brand));
+    const grid = document.getElementById("grid");
+    grid.innerHTML = "";
+    const list = filtered();
+    document.getElementById("empty").hidden = list.length > 0;
+    document.getElementById("rowcount").textContent =
+      `${list.length} of ${PRODUCTS.length} SKUs · EXW pricing`;
+
+    list.forEach(p => {
+      const soldout = p.qty === 0;
+      const low = p.qty > 0 && p.qty < 15;
+      const row = document.createElement("div");
+      row.className = "cols row" + (soldout ? " soldout" : "");
+      row.innerHTML = `
+        <div class="p-name">
+          <span class="title">${p.title}</span>
+          <span class="p-meta">
+            <span class="sku">${p.sku}</span>
+            ${p.flags.includes("drop") ? '<span class="flag drop">Price Drop</span>' : ""}
+            ${p.flags.includes("launch") ? '<span class="flag launch">Just Launched</span>' : ""}
+          </span>
+        </div>
+        <span class="cond ${p.cond}" title="${p.cond === "N" ? "New" : "Refurbished"}">${p.cond}</span>
+        <span class="moq">${p.moq}</span>
+        <span class="price r">${fmt(p.price)}${p.was ? `<span class="was">${fmt(p.was)}</span>` : ""}</span>
+        <span class="loc">${p.loc}</span>
+        <span class="qty r ${low ? "low" : ""}">${soldout ? '<span class="soldtag">Sold out</span>' : p.qty}${low ? "<small>low stock</small>" : ""}</span>
+        <button class="bell ${watching.has(p.sku) ? "on" : ""}" title="Alerts: restock and price drop" aria-label="Toggle alerts for ${p.sku}" aria-pressed="${watching.has(p.sku)}">
+          <i class="ph${watching.has(p.sku) ? "-fill" : ""} ph-bell" style="font-size:14px" aria-hidden="true"></i>
+        </button>
+        <button class="btn-offer" ${soldout ? "disabled" : ""}>Make Offer</button>
+        <span class="cart-cell">
+          ${soldout
+            ? '<button class="btn-wait">Join Waitlist</button>'
+            : `<input class="qty-in" type="number" min="${p.moq}" step="${p.moq}" value="${p.moq}" aria-label="Quantity for ${p.sku}"><button class="btn-cart">Add to Cart</button>`}
+        </span>`;
+
+      row.querySelector(".bell").onclick = e => {
+        const btn = e.currentTarget;
+        const on = watching.has(p.sku);
+        on ? watching.delete(p.sku) : watching.add(p.sku);
+        btn.classList.toggle("on", !on);
+        btn.setAttribute("aria-pressed", String(!on));
+        btn.querySelector("i").className = `ph${!on ? "-fill" : ""} ph-bell`;
+        btn.querySelector("i").style.fontSize = "14px";
+        toast(!on ? `Watching ${p.sku}: restock and price-drop alerts on` : `Alerts off for ${p.sku}`);
+      };
+      const offerBtn = row.querySelector(".btn-offer");
+      if (!soldout) offerBtn.onclick = () => openOffer(p);
+      const cartBtn = row.querySelector(".btn-cart");
+      if (cartBtn) cartBtn.onclick = () => {
+        const q = row.querySelector(".qty-in").value;
+        toast(`Added ${q} × ${p.sku} to cart (${fmt(q * p.price)})`);
+      };
+      const waitBtn = row.querySelector(".btn-wait");
+      if (waitBtn) waitBtn.onclick = () => toast(`${p.sku} added to your waitlist`);
+      grid.appendChild(row);
+    });
+  }
+
+  /* offer modal */
+  const dlg = document.getElementById("offer");
+  let offerProduct = null;
+  function openOffer(p) {
+    if (offerSlots === 0) { toast("No offer slots left. Wait for a pending offer to resolve"); return; }
+    offerProduct = p;
+    document.getElementById("om-product").textContent = `${p.title}. List ${fmt(p.price)} per unit, MOQ ${p.moq}.`;
+    const qty = document.getElementById("om-qty"), price = document.getElementById("om-price");
+    qty.min = p.moq; qty.step = p.moq; qty.value = p.moq;
+    price.value = (p.price * 0.95).toFixed(2); price.max = p.price;
+    updateTotal();
+    dlg.showModal();
+  }
+  function updateTotal() {
+    const q = +document.getElementById("om-qty").value || 0;
+    const pr = +document.getElementById("om-price").value || 0;
+    document.getElementById("om-total").textContent = fmt(+(q * pr).toFixed(2));
+  }
+  document.getElementById("om-qty").oninput = updateTotal;
+  document.getElementById("om-price").oninput = updateTotal;
+  document.getElementById("om-cancel").onclick = () => dlg.close();
+  document.getElementById("om-form").onsubmit = () => {
+    offerSlots--;
+    document.getElementById("om-slots").textContent = `${offerSlots} slot${offerSlots === 1 ? "" : "s"} left`;
+    toast(`Offer sent for ${offerProduct.sku}. Sales responds within 24 hours`);
+  };
+
+  /* toast */
+  let toastTimer;
+  function toast(msg) {
+    const t = document.getElementById("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove("show"), 2600);
+  }
+
+  render();
+</script>

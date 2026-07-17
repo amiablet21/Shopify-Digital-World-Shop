@@ -1,0 +1,69 @@
+<title>Variant Compare, Main Selling Page</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    font: 13px/1.4 system-ui, sans-serif;
+    background: #eceae4; color: #1c1b17;
+    display: flex; flex-direction: column; height: 100vh;
+  }
+  header {
+    padding: 10px 16px; display: flex; align-items: center; gap: 12px;
+    border-bottom: 1px solid #d6d2c8; background: #f4f2ec;
+  }
+  header h1 { font-size: 14px; margin: 0; font-weight: 700; }
+  .tabs { display: flex; gap: 6px; }
+  .tabs button {
+    font: inherit; font-weight: 600; cursor: pointer;
+    border: 1px solid #c8c3b6; background: #fff; color: #1c1b17;
+    padding: 5px 12px; border-radius: 2px;
+  }
+  .tabs button.active { background: #1c1b17; color: #f4f2ec; border-color: #1c1b17; }
+  .hint { margin-left: auto; color: #7a756a; font-size: 12px; }
+  .stage { flex: 1; display: flex; gap: 1px; background: #d6d2c8; min-height: 0; }
+  .pane { flex: 1; display: flex; flex-direction: column; background: #eceae4; min-width: 0; }
+  .pane .cap {
+    padding: 6px 10px; font-size: 11.5px; font-weight: 700; letter-spacing: .06em;
+    text-transform: uppercase; color: #55514a; background: #f4f2ec;
+    border-bottom: 1px solid #d6d2c8;
+  }
+  .pane iframe { flex: 1; border: 0; width: 100%; background: #fff; }
+  body.solo .pane { display: none; }
+  body.solo .pane.show { display: flex; }
+</style>
+
+<header>
+  <h1>Main Selling Page, pick a direction</h1>
+  <div class="tabs">
+    <button data-v="all" class="active">All 3</button>
+    <button data-v="a">A: Ledger</button>
+    <button data-v="b">B: Cloud</button>
+    <button data-v="c">C: Counter</button>
+  </div>
+  <span class="hint">Variants are fully interactive inside each frame</span>
+</header>
+
+<div class="stage">
+  <div class="pane" data-p="a">
+    <div class="cap">A: Ledger, evergreen + cream</div>
+    <iframe src="01A-ledger.html" title="Variant A: Ledger"></iframe>
+  </div>
+  <div class="pane" data-p="b">
+    <div class="cap">B: Cloud, cobalt + white cards</div>
+    <iframe src="01B-cloud.html" title="Variant B: Cloud"></iframe>
+  </div>
+  <div class="pane" data-p="c">
+    <div class="cap">C: Counter, black + red</div>
+    <iframe src="01C-counter.html" title="Variant C: Counter"></iframe>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll(".tabs button").forEach(b => b.onclick = () => {
+    document.querySelectorAll(".tabs button").forEach(x => x.classList.remove("active"));
+    b.classList.add("active");
+    const v = b.dataset.v;
+    document.body.classList.toggle("solo", v !== "all");
+    document.querySelectorAll(".pane").forEach(p => p.classList.toggle("show", p.dataset.p === v));
+  });
+</script>

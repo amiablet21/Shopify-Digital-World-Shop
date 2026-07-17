@@ -1,0 +1,476 @@
+<title>Digital World Shop, My Offers (Design v1)</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600;700&family=Archivo:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+
+<style>
+  /* Digital World Shop design language v3: cream ledger, navy structure, orange money actions. */
+  :root {
+    --bg: #f8f4ec;
+    --panel: #fffdf8;
+    --panel-2: #f3ecdf;
+    --line: #e6dfd2;
+    --line-strong: #d4cab6;
+    --text: #1c1b17;
+    --text-2: #6e6a5f;
+    --text-3: #a09a8c;
+    --accent: #3a6ccc;
+    --accent-hover: #2f5cb4;
+    --accent-soft: #eaf0fb;
+    --cta: #f97b28;
+    --cta-hover: #ef6c15;
+    --cta-soft: #fdeede;
+    --cta-text: #c25107;
+    --warn: #8a6d10;
+    --warn-soft: #f5ecd8;
+    --bad: #b3372e;
+    --bad-soft: #f7e7e5;
+    --head-bg: #1f3d6f;
+    --head-text: #f4f1e8;
+    --head-muted: #9fb3d4;
+    --head-line: #35558c;
+    --r: 4px;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font: 13.5px/1.45 "Geist", system-ui, sans-serif;
+  }
+  button { font: inherit; cursor: pointer; color: inherit; }
+  button:active { transform: translateY(1px); }
+  input, select { font: inherit; color: inherit; }
+  .mono { font-family: "Geist Mono", ui-monospace, monospace; font-variant-numeric: tabular-nums; }
+  .lbl {
+    font-size: 10.5px; font-weight: 600; letter-spacing: .07em;
+    text-transform: uppercase; color: var(--text-2);
+  }
+  i.ph, i.ph-fill { font-size: 16px; line-height: 1; }
+
+  .announce {
+    background: var(--bg); color: var(--text-2);
+    border-bottom: 1px solid var(--line);
+    text-align: center; padding: 6px 16px; font-size: 12px;
+  }
+  .announce b { color: var(--text); font-weight: 600; }
+
+  header.site {
+    background: var(--head-bg); color: var(--head-text);
+    height: 60px; padding: 0 24px;
+    display: flex; align-items: center; gap: 24px;
+  }
+  .brandmark { display: flex; flex-direction: column; line-height: 1.1; user-select: none; }
+  .brandmark .word {
+    font-family: "Archivo", "Geist", sans-serif; font-weight: 800;
+    font-size: 16.5px; letter-spacing: .02em; text-transform: uppercase; white-space: nowrap;
+  }
+  .brandmark .sub {
+    font-family: "Geist Mono", monospace; font-size: 9px; font-weight: 500;
+    letter-spacing: .22em; text-transform: uppercase; color: var(--head-muted);
+  }
+  nav.main { display: flex; gap: 2px; flex: 1; }
+  nav.main a {
+    color: var(--head-muted); text-decoration: none; font-size: 13px; font-weight: 500;
+    padding: 7px 11px; border-radius: var(--r);
+  }
+  nav.main a:hover, nav.main a:focus-visible { color: var(--head-text); outline: none; }
+  nav.main a[aria-current] { color: var(--head-text); font-weight: 600; }
+  .head-tools { display: flex; align-items: center; gap: 6px; }
+  .icon-btn {
+    background: none; border: 0; color: var(--head-muted);
+    padding: 8px; border-radius: var(--r); position: relative; display: grid; place-items: center;
+  }
+  .icon-btn:hover, .icon-btn:focus-visible { color: var(--head-text); outline: none; }
+  .icon-btn .n {
+    position: absolute; top: 2px; right: 0;
+    font-family: "Geist Mono", monospace; font-size: 9.5px; font-weight: 600;
+    background: var(--head-text); color: var(--cta-text);
+    min-width: 14px; height: 14px; border-radius: var(--r);
+    display: grid; place-items: center; padding: 0 3px;
+  }
+
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 18px 24px 64px; }
+  .page-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 4px; }
+  .page-head h1 { font-size: 19px; font-weight: 700; letter-spacing: -.02em; margin: 0; }
+  .page-head .stamp { margin-left: auto; color: var(--text-3); font-size: 12px; }
+  .slots-line { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; color: var(--text-2); font-size: 12.5px; }
+  .slots { display: inline-flex; gap: 4px; }
+  .slot { width: 22px; height: 8px; border-radius: var(--r); background: var(--line); border: 1px solid var(--line-strong); }
+  .slot.used { background: var(--accent); border-color: var(--accent); }
+
+  .views { display: inline-flex; border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; margin-bottom: 12px; }
+  .views button {
+    background: var(--panel); border: 0; padding: 8px 14px;
+    font-size: 12.5px; font-weight: 600; color: var(--text-2);
+    display: flex; align-items: center; gap: 7px;
+  }
+  .views button + button { border-left: 1px solid var(--line); }
+  .views button:hover { color: var(--text); }
+  .views button .c { font-family: "Geist Mono", monospace; font-variant-numeric: tabular-nums; font-size: 11px; color: var(--text-3); }
+  .views button.active { background: var(--head-bg); color: var(--head-text); }
+  .views button.active .c { color: inherit; opacity: .7; }
+
+  /* offers panel */
+  .panel { border: 1px solid var(--line); border-radius: var(--r); background: var(--panel); overflow: hidden; }
+  .cols {
+    display: grid; align-items: center; gap: 12px;
+    grid-template-columns: 74px minmax(240px, 1fr) 64px 96px 96px 100px 110px 92px 30px;
+    padding: 0 14px;
+  }
+  .cols.head { background: var(--panel-2); border-bottom: 1px solid var(--line); }
+  .cols.head > span { padding: 7px 0; }
+  .cols.head .rr { text-align: right; }
+  .offer-row { border-top: 1px solid var(--line); }
+  .panel .offer-row:first-of-type { border-top: 0; }
+  .offer-row > .cols { padding-top: 9px; padding-bottom: 9px; cursor: pointer; }
+  .offer-row > .cols:hover { background: var(--panel-2); }
+  .oid { font-family: "Geist Mono", monospace; font-size: 11.5px; color: var(--text-2); }
+  .p-name { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .title {
+    font-weight: 500; font-size: 13px; line-height: 1.3;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .sku { font-family: "Geist Mono", monospace; font-size: 11px; color: var(--text-3); }
+  .num { font-family: "Geist Mono", monospace; font-variant-numeric: tabular-nums; font-size: 12.5px; }
+  .num.b { font-weight: 700; font-size: 13px; }
+  .rr { text-align: right; }
+  .status { font-size: 10.5px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; border-radius: var(--r); padding: 2px 7px; display: inline-block; }
+  .status.pending { background: var(--warn-soft); color: var(--warn); }
+  .status.countered { background: var(--accent-soft); color: var(--accent-hover); }
+  .status.accepted { background: var(--cta-soft); color: var(--cta-text); }
+  .status.declined { background: var(--bad-soft); color: var(--bad); }
+  .status.expired { background: var(--panel-2); color: var(--text-3); }
+  .exp { font-size: 12px; color: var(--text-2); }
+  .exp.soon { color: var(--bad); font-weight: 600; }
+  .chev { color: var(--text-3); transition: transform .12s; }
+  .offer-row.open .chev { transform: rotate(180deg); }
+
+  /* thread */
+  .thread { display: none; border-top: 1px dashed var(--line-strong); background: var(--panel-2); padding: 14px 16px; }
+  .offer-row.open .thread { display: block; }
+  .msgs { display: flex; flex-direction: column; gap: 8px; max-width: 620px; }
+  .msg { display: flex; flex-direction: column; gap: 2px; max-width: 78%; }
+  .msg .who { font-size: 10.5px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--text-3); }
+  .msg .bubble {
+    border: 1px solid var(--line); background: var(--panel);
+    border-radius: var(--r); padding: 8px 11px; font-size: 12.5px; line-height: 1.45;
+  }
+  .msg.you { align-self: flex-end; text-align: right; }
+  .msg.you .bubble { background: var(--accent-soft); border-color: var(--accent); }
+  .msg .bubble .amount { font-family: "Geist Mono", monospace; font-weight: 700; }
+  .thread-actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+  .btn-main {
+    border: 1px solid var(--cta); background: var(--cta-soft); color: var(--cta-text);
+    border-radius: var(--r); font-size: 12.5px; font-weight: 700; padding: 7px 14px;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .btn-main:hover { background: #fce0c6; border-color: var(--cta-hover); }
+  .btn-line {
+    border: 1px solid var(--line-strong); background: var(--panel); color: var(--text);
+    border-radius: var(--r); font-size: 12.5px; font-weight: 600; padding: 7px 14px;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .btn-line:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-quiet {
+    border: 0; background: none; color: var(--text-2);
+    border-radius: var(--r); font-size: 12.5px; font-weight: 600; padding: 7px 10px;
+  }
+  .btn-quiet:hover { color: var(--bad); }
+  .paynote { font-size: 12px; color: var(--text-2); margin-top: 8px; }
+  .empty { text-align: center; color: var(--text-3); padding: 44px 0; font-size: 13px; }
+
+  /* counter modal */
+  dialog#counter {
+    border: 1px solid var(--line-strong); border-radius: var(--r); padding: 0;
+    width: 360px; max-width: calc(100vw - 32px);
+    background: var(--panel); color: var(--text);
+    box-shadow: 0 18px 50px rgba(28, 27, 23, .28);
+  }
+  dialog#counter::backdrop { background: rgba(31, 61, 111, .45); }
+  .cm-body { padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 11px; }
+  .cm-body h2 { margin: 0; font-size: 15px; font-weight: 700; }
+  .cm-sub { font-size: 12px; color: var(--text-2); margin: 0; }
+  .cm-field label { display: block; margin-bottom: 4px; }
+  .cm-field input {
+    width: 100%; border: 1px solid var(--line-strong); border-radius: var(--r);
+    background: var(--panel); padding: 8px 10px; font-size: 13px;
+    font-family: "Geist Mono", monospace; font-variant-numeric: tabular-nums;
+  }
+  .cm-field input:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+  .cm-total { display: flex; justify-content: space-between; border-top: 1px solid var(--line); padding-top: 10px; font-weight: 600; }
+  .cm-actions { display: flex; gap: 8px; justify-content: flex-end; }
+
+  #toast {
+    position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(6px);
+    background: var(--head-bg); color: var(--head-text); border: 1px solid var(--head-line);
+    border-radius: var(--r); padding: 10px 16px; font-size: 12.5px; font-weight: 500;
+    opacity: 0; pointer-events: none; transition: opacity .15s, transform .15s;
+    max-width: 90vw;
+  }
+  #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, #toast { transition: none !important; }
+    button:active { transform: none; }
+  }
+</style>
+
+<div class="announce"><b>Offers are answered by our sales team within 24 hours.</b> Accepted prices are held for 48 hours.</div>
+
+<header class="site">
+  <div class="brandmark">
+    <span class="word">Digital World Shop</span>
+    <span class="sub">B2B Electronics</span>
+  </div>
+  <nav class="main" aria-label="Main">
+    <a href="01-main-selling-page.html">Shop</a>
+    <a href="#">Price List</a>
+    <a href="#">Past Purchases</a>
+    <a href="#" aria-current="page">My Offers</a>
+  </nav>
+  <div class="head-tools">
+    <button class="icon-btn" aria-label="Notifications, 3 unread">
+      <i class="ph ph-bell" aria-hidden="true"></i><span class="n">3</span>
+    </button>
+    <button class="icon-btn" aria-label="Cart, 2 items">
+      <i class="ph ph-shopping-cart-simple" aria-hidden="true"></i><span class="n">2</span>
+    </button>
+    <button class="icon-btn" aria-label="Account">
+      <i class="ph ph-user-circle" aria-hidden="true"></i>
+    </button>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="page-head">
+    <h1>My Offers</h1>
+    <span class="stamp">Updated 2 min ago</span>
+  </div>
+  <div class="slots-line">
+    <span class="slots" aria-label="2 of 3 offer slots in use">
+      <span class="slot used"></span><span class="slot used"></span><span class="slot"></span>
+    </span>
+    2 of 3 offer slots in use. Slots free up when an offer is accepted, declined or expires.
+  </div>
+
+  <div class="views" role="tablist" aria-label="Offer filters">
+    <button class="active" data-view="all">All <span class="c">5</span></button>
+    <button data-view="active">Awaiting Action <span class="c">2</span></button>
+    <button data-view="accepted">Accepted <span class="c">1</span></button>
+    <button data-view="history">History <span class="c">2</span></button>
+  </div>
+
+  <div class="panel">
+    <div class="cols head">
+      <span class="lbl">Offer</span>
+      <span class="lbl">Product</span>
+      <span class="lbl rr">Qty</span>
+      <span class="lbl rr">Your Price</span>
+      <span class="lbl rr">Their Price</span>
+      <span class="lbl rr">Total</span>
+      <span class="lbl">Status</span>
+      <span class="lbl">Expires</span>
+      <span class="lbl" aria-hidden="true"></span>
+    </div>
+    <div id="list"></div>
+    <div class="empty" id="empty" hidden>No offers in this view.</div>
+  </div>
+</main>
+
+<dialog id="counter" aria-labelledby="cm-title">
+  <form class="cm-body" method="dialog" id="cm-form">
+    <h2 id="cm-title">Counter Offer</h2>
+    <p class="cm-sub" id="cm-sub"></p>
+    <div class="cm-field">
+      <label class="lbl" for="cm-price">Your new unit price, USD</label>
+      <input type="number" id="cm-price" min="1" step="0.01" required>
+    </div>
+    <div class="cm-total"><span>New total</span><span class="mono" id="cm-total">$0.00</span></div>
+    <div class="cm-actions">
+      <button type="button" class="btn-line" id="cm-cancel">Cancel</button>
+      <button type="submit" class="btn-main">Send Counter</button>
+    </div>
+  </form>
+</dialog>
+
+<div id="toast" role="status"></div>
+
+<script>
+  const OFFERS = [
+    {
+      id: 1042, sku: "A05FXUA#ABA",
+      title: "HP 17-CN4047 Core 7 150U 512GB SSD 16GB 17.3\" FHD WIN11 Natural Silver",
+      qty: 20, mine: 462, theirs: 475, status: "countered", expires: "14h", soon: false,
+      thread: [
+        { who: "you", when: "Jul 16, 2:10 PM", text: "Offered <span class='amount'>$462.00</span> per unit for 20 units." },
+        { who: "sales", when: "Jul 17, 9:05 AM", text: "We can do <span class='amount'>$475.00</span> per unit at that quantity. At 50 units we can revisit your number." },
+      ],
+      actions: ["accept", "counter", "withdraw"]
+    },
+    {
+      id: 1041, sku: "SM-X210NZAAXAR",
+      title: "Samsung Galaxy Tab A9+ 11\" 64GB Wi-Fi Graphite, Retail Packaging",
+      qty: 40, mine: 139, theirs: null, status: "pending", expires: "22h", soon: false,
+      thread: [
+        { who: "you", when: "Jul 17, 8:41 AM", text: "Offered <span class='amount'>$139.00</span> per unit for 40 units." },
+        { who: "sales", when: "", text: "Awaiting response from sales." },
+      ],
+      actions: ["withdraw"]
+    },
+    {
+      id: 1038, sku: "SDSSDE62-2T00-GAO",
+      title: "SanDisk Extreme Portable SSD 2TB USB-C, Bulk Brown Box",
+      qty: 50, mine: 109, theirs: 109, status: "accepted", expires: "pay by Jul 19", soon: true,
+      thread: [
+        { who: "you", when: "Jul 15, 4:22 PM", text: "Offered <span class='amount'>$109.00</span> per unit for 50 units." },
+        { who: "sales", when: "Jul 16, 10:02 AM", text: "Accepted at <span class='amount'>$109.00</span>. An invoice is ready, the price is held for 48 hours." },
+      ],
+      actions: ["pay"]
+    },
+    {
+      id: 1033, sku: "MRXV3LL/A",
+      title: "Apple MacBook Air 13.6\" M3 8-Core 256GB SSD 8GB Midnight",
+      qty: 10, mine: 815, theirs: null, status: "declined", expires: "Jul 14", soon: false,
+      thread: [
+        { who: "you", when: "Jul 13, 11:20 AM", text: "Offered <span class='amount'>$815.00</span> per unit for 10 units." },
+        { who: "sales", when: "Jul 14, 9:12 AM", text: "We cannot meet this price on sealed US-spec units right now." },
+      ],
+      actions: []
+    },
+    {
+      id: 1029, sku: "MTJV3AM/A",
+      title: "Apple AirPods Pro 2 USB-C, Master Carton of 10",
+      qty: 30, mine: 155, theirs: null, status: "expired", expires: "Jul 12", soon: false,
+      thread: [
+        { who: "you", when: "Jul 11, 3:37 PM", text: "Offered <span class='amount'>$155.00</span> per unit for 30 units." },
+        { who: "sales", when: "", text: "Offer expired with no response. Your slot was returned." },
+      ],
+      actions: []
+    },
+  ];
+
+  const fmt = n => "$" + n.toLocaleString("en-US", { minimumFractionDigits: n % 1 ? 2 : 0 });
+  const VIEW_MAP = {
+    all: () => true,
+    active: o => o.status === "pending" || o.status === "countered",
+    accepted: o => o.status === "accepted",
+    history: o => o.status === "declined" || o.status === "expired",
+  };
+  const STATUS_LABEL = { pending: "Pending", countered: "Countered", accepted: "Accepted", declined: "Declined", expired: "Expired" };
+  let view = "all";
+  const openIds = new Set([1042]);
+
+  document.querySelectorAll(".views button").forEach(t => t.onclick = () => {
+    document.querySelectorAll(".views button").forEach(x => x.classList.remove("active"));
+    t.classList.add("active");
+    view = t.dataset.view;
+    render();
+  });
+
+  function actionButtons(o) {
+    const btns = [];
+    if (o.actions.includes("pay")) btns.push(`<button class="btn-main" data-act="pay"><i class="ph ph-receipt" aria-hidden="true"></i> Pay Invoice, ${fmt(o.qty * o.theirs)}</button>`);
+    if (o.actions.includes("accept")) btns.push(`<button class="btn-main" data-act="accept"><i class="ph ph-check" aria-hidden="true"></i> Accept ${fmt(o.theirs)}</button>`);
+    if (o.actions.includes("counter")) btns.push(`<button class="btn-line" data-act="counter"><i class="ph ph-arrows-left-right" aria-hidden="true"></i> Counter</button>`);
+    if (o.actions.includes("withdraw")) btns.push(`<button class="btn-quiet" data-act="withdraw">Withdraw Offer</button>`);
+    return btns.join("");
+  }
+
+  function render() {
+    const list = document.getElementById("list");
+    list.innerHTML = "";
+    const rows = OFFERS.filter(VIEW_MAP[view]);
+    document.getElementById("empty").hidden = rows.length > 0;
+
+    rows.forEach(o => {
+      const el = document.createElement("div");
+      el.className = "offer-row" + (openIds.has(o.id) ? " open" : "");
+      el.innerHTML = `
+        <div class="cols" role="button" tabindex="0" aria-expanded="${openIds.has(o.id)}" aria-label="Offer ${o.id}, ${STATUS_LABEL[o.status]}">
+          <span class="oid">#${o.id}</span>
+          <span class="p-name"><span class="title">${o.title}</span><span class="sku">${o.sku}</span></span>
+          <span class="num rr">${o.qty}</span>
+          <span class="num rr">${fmt(o.mine)}</span>
+          <span class="num rr ${o.theirs ? "b" : ""}">${o.theirs ? fmt(o.theirs) : "•"}</span>
+          <span class="num b rr">${fmt(o.qty * (o.theirs || o.mine))}</span>
+          <span><span class="status ${o.status}">${STATUS_LABEL[o.status]}</span></span>
+          <span class="exp ${o.soon ? "soon" : ""}">${o.expires}</span>
+          <i class="ph ph-caret-down chev" aria-hidden="true"></i>
+        </div>
+        <div class="thread">
+          <div class="msgs">
+            ${o.thread.map(m => `
+              <div class="msg ${m.who === "you" ? "you" : ""}">
+                <span class="who">${m.who === "you" ? "You" : "DW Sales"}${m.when ? ", " + m.when : ""}</span>
+                <span class="bubble">${m.text}</span>
+              </div>`).join("")}
+          </div>
+          <div class="thread-actions">${actionButtons(o)}</div>
+          ${o.status === "accepted" ? '<p class="paynote">Paying creates your order at the agreed price through normal checkout.</p>' : ""}
+        </div>`;
+
+      const head = el.querySelector('[role="button"]');
+      const toggle = () => {
+        openIds.has(o.id) ? openIds.delete(o.id) : openIds.add(o.id);
+        el.classList.toggle("open");
+        head.setAttribute("aria-expanded", String(openIds.has(o.id)));
+      };
+      head.onclick = toggle;
+      head.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(); } };
+
+      el.querySelectorAll("[data-act]").forEach(b => b.onclick = ev => {
+        ev.stopPropagation();
+        const act = b.dataset.act;
+        if (act === "accept") { o.status = "accepted"; o.actions = ["pay"]; o.expires = "pay by Jul 19"; o.soon = true; render(); toast(`Offer #${o.id} accepted at ${fmt(o.theirs)} per unit`); }
+        if (act === "pay") toast(`Opening invoice for offer #${o.id}`);
+        if (act === "counter") openCounter(o);
+        if (act === "withdraw") { o.status = "expired"; o.actions = []; o.expires = "withdrawn"; render(); toast(`Offer #${o.id} withdrawn, slot returned`); }
+      });
+
+      list.appendChild(el);
+    });
+  }
+
+  /* counter modal */
+  const dlg = document.getElementById("counter");
+  let counterOffer = null;
+  function openCounter(o) {
+    counterOffer = o;
+    document.getElementById("cm-sub").textContent = `${o.sku}, ${o.qty} units. Their price ${fmt(o.theirs)} per unit.`;
+    const inp = document.getElementById("cm-price");
+    inp.value = ((o.mine + o.theirs) / 2).toFixed(2);
+    updateCmTotal();
+    dlg.showModal();
+  }
+  function updateCmTotal() {
+    const v = +document.getElementById("cm-price").value || 0;
+    document.getElementById("cm-total").textContent = fmt(+(v * (counterOffer ? counterOffer.qty : 0)).toFixed(2));
+  }
+  document.getElementById("cm-price").oninput = updateCmTotal;
+  document.getElementById("cm-cancel").onclick = () => dlg.close();
+  document.getElementById("cm-form").onsubmit = () => {
+    const v = +document.getElementById("cm-price").value;
+    counterOffer.mine = v;
+    counterOffer.thread.push({ who: "you", when: "Just now", text: `Countered at <span class='amount'>${fmt(v)}</span> per unit.` });
+    counterOffer.status = "pending";
+    counterOffer.actions = ["withdraw"];
+    render();
+    toast(`Counter sent for offer #${counterOffer.id}`);
+  };
+
+  let toastTimer;
+  function toast(msg) {
+    const t = document.getElementById("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove("show"), 2600);
+  }
+
+  render();
+</script>
