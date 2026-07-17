@@ -1,0 +1,555 @@
+<title>HP Spectre x360 16, Digital World Shop</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600;700&family=Archivo:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+
+<style>
+  /* Digital World Shop design language v3: cream ledger, navy structure, orange money actions. */
+  :root {
+    --bg: #f8f4ec;
+    --panel: #fffdf8;
+    --panel-2: #f3ecdf;
+    --line: #e6dfd2;
+    --line-strong: #d4cab6;
+    --text: #1c1b17;
+    --text-2: #6e6a5f;
+    --text-3: #a09a8c;
+    --accent: #3a6ccc;          /* blue: structure, info, filters, badges */
+    --accent-hover: #2f5cb4;
+    --accent-soft: #eaf0fb;
+    --cta: #f97b28;             /* orange: Add to Cart, Send Offer, deal flags, count badges */
+    --cta-hover: #ef6c15;
+    --cta-soft: #fdeede;
+    --cta-text: #c25107;        /* orange as text on light grounds */
+    --cta-ink: #26150a;         /* text on orange fills */
+    --warn: #8a6d10;
+    --warn-soft: #f5ecd8;
+    --bad: #b3372e;
+    --bad-soft: #f7e7e5;
+    --cream-ink: #fdf8ef;       /* text on navy and orange fills */
+    --head-bg: #1f3d6f;
+    --head-text: #f4f1e8;
+    --head-muted: #9fb3d4;
+    --head-line: #35558c;
+    --r: 4px;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font: 13.5px/1.45 "Geist", system-ui, sans-serif;
+  }
+  button { font: inherit; cursor: pointer; color: inherit; }
+  button:active { transform: translateY(1px); }
+  input, select { font: inherit; color: inherit; }
+  .mono { font-family: "Geist Mono", ui-monospace, monospace; font-variant-numeric: tabular-nums; }
+  .lbl {
+    font-size: 10.5px; font-weight: 600; letter-spacing: .07em;
+    text-transform: uppercase; color: var(--text-2);
+  }
+  i.ph, i.ph-fill { font-size: 16px; line-height: 1; }
+
+  /* ---------- announcement ---------- */
+  .announce {
+    background: var(--bg); color: var(--text-2);
+    border-bottom: 1px solid var(--line);
+    text-align: center; padding: 6px 16px; font-size: 12px;
+  }
+  .announce b { color: var(--text); font-weight: 600; }
+
+  /* ---------- header ---------- */
+  header.site {
+    background: var(--head-bg); color: var(--head-text);
+    height: 60px; padding: 0 24px;
+    display: flex; align-items: center; gap: 24px;
+  }
+  .brandmark { display: flex; flex-direction: column; line-height: 1.1; user-select: none; }
+  .brandmark .word {
+    font-family: "Archivo", "Geist", sans-serif; font-weight: 800;
+    font-size: 16.5px; letter-spacing: .02em; text-transform: uppercase; white-space: nowrap;
+  }
+  .brandmark .sub {
+    font-family: "Geist Mono", monospace; font-size: 9px; font-weight: 500;
+    letter-spacing: .22em; text-transform: uppercase; color: var(--head-muted);
+  }
+  nav.main { display: flex; gap: 2px; flex: 1; }
+  nav.main a {
+    color: var(--head-muted); text-decoration: none; font-size: 13px; font-weight: 500;
+    padding: 7px 11px; border-radius: var(--r);
+  }
+  nav.main a:hover, nav.main a:focus-visible { color: var(--head-text); outline: none; }
+  nav.main a[aria-current] { color: var(--head-text); font-weight: 600; }
+  .head-tools { display: flex; align-items: center; gap: 6px; }
+  .search {
+    display: flex; align-items: center; gap: 8px;
+    background: transparent; border: 1px solid var(--head-line); border-radius: var(--r);
+    padding: 6px 10px; min-width: 240px; color: var(--head-muted);
+  }
+  .search:focus-within { border-color: var(--head-muted); }
+  .search input {
+    background: none; border: 0; outline: none; color: var(--head-text);
+    width: 100%; font-size: 12.5px;
+  }
+  .search input::placeholder { color: #7488ab; }
+  .icon-btn {
+    background: none; border: 0; color: var(--head-muted); text-decoration: none;
+    padding: 8px; border-radius: var(--r); position: relative; display: grid; place-items: center;
+  }
+  .icon-btn:hover, .icon-btn:focus-visible { color: var(--head-text); outline: none; }
+  .icon-btn .n {
+    position: absolute; top: 2px; right: 0;
+    font-family: "Geist Mono", monospace; font-size: 9.5px; font-weight: 600;
+    background: var(--head-text); color: var(--cta-text);
+    min-width: 14px; height: 14px; border-radius: var(--r);
+    display: grid; place-items: center; padding: 0 3px;
+  }
+
+  /* ---------- page ---------- */
+  .wrap { max-width: 1020px; margin: 0 auto; padding: 18px 24px 64px; }
+
+  .crumbs { font-size: 12px; color: var(--text-2); margin-bottom: 12px; }
+  .crumbs a { color: var(--accent); text-decoration: none; font-weight: 600; }
+  .crumbs a:hover { text-decoration: underline; }
+  .crumbs .sep { color: var(--text-3); padding: 0 5px; }
+
+  .title-block { margin-bottom: 18px; }
+  .title-block h1 {
+    margin: 0 0 7px; font-size: 18px; font-weight: 700; line-height: 1.35;
+    letter-spacing: -.01em;
+  }
+  .title-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .sku { font-family: "Geist Mono", monospace; font-variant-numeric: tabular-nums; font-size: 12px; color: var(--text-2); }
+  .flag { font-size: 10.5px; font-weight: 600; letter-spacing: .03em; text-transform: uppercase; border-radius: var(--r); padding: 1px 6px; }
+  .flag.drop { background: var(--cta-soft); color: var(--cta-text); }
+  .cond {
+    width: 24px; height: 24px; border-radius: var(--r);
+    display: grid; place-items: center;
+    font-family: "Geist Mono", monospace; font-size: 11.5px; font-weight: 700;
+    border: 1px solid;
+  }
+  .cond.N { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
+  .cond.R { color: var(--warn); border-color: var(--warn); background: var(--warn-soft); }
+  .ships { font-size: 12px; color: var(--text-2); display: inline-flex; align-items: center; gap: 5px; }
+  .ships i { font-size: 13px; color: var(--text-3); }
+
+  /* ---------- two-column layout ---------- */
+  .layout { display: grid; grid-template-columns: 1fr 340px; gap: 24px; align-items: start; }
+  @media (max-width: 860px) {
+    .layout { grid-template-columns: 1fr; }
+    .buybox-wrap { position: static; }
+  }
+
+  /* ---------- ledger panels ---------- */
+  .panel { border: 1px solid var(--line); border-radius: var(--r); background: var(--panel); overflow: hidden; }
+  .panel + .panel { margin-top: 18px; }
+  .panel-head {
+    background: var(--panel-2); border-bottom: 1px solid var(--line);
+    padding: 7px 14px;
+  }
+
+  /* spec rows */
+  .spec-row {
+    display: grid; grid-template-columns: 150px 1fr; gap: 12px; align-items: baseline;
+    padding: 8px 14px; border-top: 1px solid var(--line);
+  }
+  .spec-row:first-of-type { border-top: 0; }
+  .spec-row .val { font-size: 13px; }
+  .spec-row .val.mono { font-size: 12.5px; }
+
+  /* warehouse rows */
+  .wh-row {
+    display: grid; grid-template-columns: 1fr 90px; gap: 12px; align-items: center;
+    padding: 9px 14px; border-top: 1px solid var(--line);
+  }
+  .wh-row:first-of-type { border-top: 0; }
+  .wh-name { font-size: 13px; font-weight: 500; }
+  .qty { font-family: "Geist Mono", monospace; font-variant-numeric: tabular-nums; font-size: 13px; font-weight: 700; text-align: right; }
+  .qty.low { color: var(--warn); }
+  .qty small { display: block; font-family: "Geist", sans-serif; font-size: 10px; font-weight: 600; color: var(--text-3); }
+  .qty.low small { color: var(--warn); }
+  .wh-foot {
+    display: grid; grid-template-columns: 1fr 90px; gap: 12px;
+    padding: 8px 14px; border-top: 1px solid var(--line-strong); background: var(--panel-2);
+  }
+  .wh-foot .qty { font-size: 12.5px; }
+
+  /* ---------- buy box ---------- */
+  .buybox-wrap { position: sticky; top: 18px; }
+  .buybox { padding: 14px; display: flex; flex-direction: column; gap: 12px; }
+  .price-line { display: flex; align-items: baseline; gap: 9px; }
+  .price-now { font-family: "Geist Mono", monospace; font-variant-numeric: tabular-nums; font-size: 22px; font-weight: 700; }
+  .price-was { font-family: "Geist Mono", monospace; font-variant-numeric: tabular-nums; font-size: 13px; color: var(--text-3); text-decoration: line-through; }
+  .price-note { font-size: 11.5px; color: var(--text-2); margin-top: -8px; }
+  .moq-line { font-size: 12px; color: var(--text-2); }
+  .moq-line b { color: var(--text); font-weight: 600; }
+
+  .qty-block { display: flex; align-items: center; gap: 10px; }
+  .stepper { display: flex; border: 1px solid var(--line-strong); border-radius: var(--r); overflow: hidden; }
+  .stepper button {
+    background: var(--panel-2); border: 0; width: 34px; height: 34px;
+    display: grid; place-items: center; color: var(--text-2);
+  }
+  .stepper button:hover { color: var(--text); background: var(--line); }
+  .stepper input {
+    width: 62px; text-align: center; border: 0; outline: none;
+    border-left: 1px solid var(--line-strong); border-right: 1px solid var(--line-strong);
+    background: var(--panel); font-size: 13.5px; font-weight: 600;
+    font-family: "Geist Mono", monospace; font-variant-numeric: tabular-nums;
+    -moz-appearance: textfield; appearance: textfield;
+  }
+  .stepper input::-webkit-outer-spin-button, .stepper input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .stepper input:focus { outline: 2px solid var(--accent); outline-offset: -2px; }
+  .line-total { margin-left: auto; text-align: right; }
+  .line-total .v { font-family: "Geist Mono", monospace; font-variant-numeric: tabular-nums; font-size: 15px; font-weight: 700; display: block; }
+  .line-total .k { font-size: 10.5px; color: var(--text-2); }
+
+  .btn-cart {
+    width: 100%; border: 1px solid var(--cta); background: var(--cta-soft); color: var(--cta-text);
+    border-radius: var(--r); font-size: 13px; font-weight: 700; padding: 9px;
+    display: flex; align-items: center; justify-content: center; gap: 7px;
+  }
+  .btn-cart:hover { background: #fce0c6; border-color: var(--cta-hover); }
+  .btn-offer {
+    width: 100%; border: 1px solid var(--text); background: var(--panel); color: var(--text);
+    border-radius: var(--r); padding: 8px; font-size: 12.5px; font-weight: 600;
+  }
+  .btn-offer:hover { border-color: var(--accent); color: var(--accent); }
+
+  .watch-row { display: flex; align-items: center; gap: 9px; border-top: 1px solid var(--line); padding-top: 12px; }
+  .bell {
+    background: none; border: 1px solid var(--line-strong); color: var(--text-3);
+    width: 30px; height: 30px; border-radius: var(--r); display: grid; place-items: center; padding: 0;
+    flex: none;
+  }
+  .bell:hover { border-color: var(--accent); color: var(--accent); }
+  .bell.on { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+  .watch-row .wl { font-size: 12px; font-weight: 600; color: var(--text-2); }
+  .bell.on + .wl { color: var(--accent); }
+
+  .tier-note { font-size: 11.5px; color: var(--text-2); margin-top: 10px; line-height: 1.5; }
+  .tier-note b { font-weight: 600; color: var(--text); }
+
+  /* ---------- related table ---------- */
+  .related { margin-top: 28px; }
+  .rel-cols {
+    display: grid; align-items: center; gap: 12px;
+    grid-template-columns: 132px minmax(200px, 1fr) 44px 52px 84px 60px 74px;
+    padding: 0 14px;
+  }
+  .rel-cols.head { background: var(--panel-2); border-bottom: 1px solid var(--line); }
+  .rel-cols.head > span { padding: 7px 0; }
+  .rel-cols.head .r { text-align: right; }
+  .rel-row { border-top: 1px solid var(--line); padding-top: 9px; padding-bottom: 9px; }
+  .panel .rel-row:first-of-type { border-top: 0; }
+  .rel-row:hover { background: var(--panel-2); }
+  .rel-sku { font-family: "Geist Mono", monospace; font-variant-numeric: tabular-nums; font-size: 11.5px; color: var(--text-2); }
+  .rel-title { font-size: 12.5px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .r { text-align: right; }
+  .moq { font-family: "Geist Mono", monospace; font-variant-numeric: tabular-nums; font-size: 12px; color: var(--text-2); }
+  .price { font-family: "Geist Mono", monospace; font-variant-numeric: tabular-nums; font-size: 13px; font-weight: 700; }
+  .btn-view {
+    border: 1px solid var(--line-strong); background: var(--panel); color: var(--text);
+    border-radius: var(--r); font-size: 12px; font-weight: 600; padding: 5px 14px; width: 100%;
+  }
+  .btn-view:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ---------- offer modal ---------- */
+  dialog#offer {
+    border: 1px solid var(--line-strong); border-radius: var(--r); padding: 0;
+    width: 380px; max-width: calc(100vw - 32px);
+    background: var(--panel); color: var(--text);
+    box-shadow: 0 18px 50px rgba(28, 27, 23, .28);
+  }
+  dialog#offer::backdrop { background: rgba(23, 44, 82, .45); }
+  .om-head { display: flex; align-items: center; justify-content: space-between; padding: 16px 18px 0; }
+  .om-head h2 { margin: 0; font-size: 15px; font-weight: 700; }
+  .om-slots { font-family: "Geist Mono", monospace; font-variant-numeric: tabular-nums; font-size: 11px; font-weight: 600; color: var(--accent); background: var(--accent-soft); border-radius: var(--r); padding: 3px 8px; }
+  .om-body { padding: 12px 18px 18px; display: flex; flex-direction: column; gap: 11px; }
+  .om-product { font-size: 12px; color: var(--text-2); line-height: 1.45; margin: 0; }
+  .om-field label { display: block; margin-bottom: 4px; }
+  .om-field input, .om-field select {
+    width: 100%; border: 1px solid var(--line-strong); border-radius: var(--r);
+    background: var(--panel); padding: 8px 10px; font-size: 13px;
+  }
+  .om-field input { font-family: "Geist Mono", monospace; font-variant-numeric: tabular-nums; }
+  .om-field input:focus, .om-field select:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+  .om-total { display: flex; justify-content: space-between; align-items: baseline; border-top: 1px solid var(--line); padding-top: 11px; font-weight: 600; }
+  .om-total .mono { font-size: 17px; font-weight: 700; }
+  .om-actions { display: flex; gap: 8px; }
+  .om-actions .btn-send {
+    flex: 1; border: 1px solid var(--cta); background: var(--cta-soft); color: var(--cta-text);
+    border-radius: var(--r); font-size: 13px; font-weight: 700; padding: 9px;
+  }
+  .om-actions .btn-send:hover { background: #fce0c6; border-color: var(--cta-hover); }
+  .om-actions .btn-ghost {
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    border: 1px solid var(--line-strong); background: var(--panel);
+    border-radius: var(--r); padding: 9px 14px; font-size: 12.5px; font-weight: 600;
+  }
+  .om-actions .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* toast */
+  #toast {
+    position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(6px);
+    background: var(--head-bg); color: var(--head-text); border: 1px solid var(--head-line);
+    border-radius: var(--r); padding: 10px 16px; font-size: 12.5px; font-weight: 500;
+    opacity: 0; pointer-events: none; transition: opacity .15s, transform .15s;
+    max-width: 90vw;
+  }
+  #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, #toast { transition: none !important; }
+    button:active { transform: none; }
+  }
+</style>
+
+<div class="announce"><b>Wholesale pricing for approved business accounts.</b> Free freight over $5,000.</div>
+
+<header class="site">
+  <div class="brandmark">
+    <span class="word">Digital World Shop</span>
+    <span class="sub">B2B Electronics</span>
+  </div>
+  <nav class="main" aria-label="Main">
+    <a href="01-main-selling-page.html" aria-current="page">Shop</a>
+    <a href="04-price-list.html">Price List</a>
+    <a href="03-past-purchases.html">Past Purchases</a>
+    <a href="02-my-offers.html">My Offers</a>
+  </nav>
+  <div class="head-tools">
+    <div class="search">
+      <i class="ph ph-magnifying-glass" aria-hidden="true"></i>
+      <input type="search" placeholder="Search SKU, model, brand" aria-label="Search products">
+    </div>
+    <a class="icon-btn" href="05-notifications.html" aria-label="Notifications, 3 unread">
+      <i class="ph ph-bell" aria-hidden="true"></i><span class="n">3</span>
+    </a>
+    <button class="icon-btn" aria-label="Cart, 2 items">
+      <i class="ph ph-shopping-cart-simple" aria-hidden="true"></i><span class="n">2</span>
+    </button>
+    <a class="icon-btn" href="06-account-apply.html" aria-label="Account">
+      <i class="ph ph-user-circle" aria-hidden="true"></i>
+    </a>
+  </div>
+</header>
+
+<main class="wrap">
+  <nav class="crumbs" aria-label="Breadcrumb">
+    <a href="01-main-selling-page.html">Shop</a><span class="sep">/</span>Laptops<span class="sep">/</span>HP
+  </nav>
+
+  <div class="title-block">
+    <h1>HP Spectre x360 16-AA0000 2-in-1 Core Ultra 7 155H 1TB SSD 16GB 16" 2.8K Touch WIN11 RTX 4050 Nightfall Black</h1>
+    <div class="title-meta">
+      <span class="sku">9V2K8UA#ABA</span>
+      <span class="cond N" title="New">N</span>
+      <span class="flag drop">Price Drop</span>
+      <span class="ships"><i class="ph ph-map-pin" aria-hidden="true"></i> Ships from Miami, FL</span>
+    </div>
+  </div>
+
+  <div class="layout">
+    <div class="left-col">
+      <section class="panel" aria-labelledby="spec-h">
+        <div class="panel-head"><span class="lbl" id="spec-h">Specifications</span></div>
+        <div class="spec-row"><span class="lbl">Form Factor</span><span class="val">2-in-1 Convertible</span></div>
+        <div class="spec-row"><span class="lbl">Processor</span><span class="val mono">Intel Core Ultra 7 155H</span></div>
+        <div class="spec-row"><span class="lbl">Memory</span><span class="val mono">16 GB</span></div>
+        <div class="spec-row"><span class="lbl">Storage</span><span class="val mono">1 TB SSD</span></div>
+        <div class="spec-row"><span class="lbl">Display</span><span class="val mono">16 inch 2.8K (2880x1800) Touch</span></div>
+        <div class="spec-row"><span class="lbl">Graphics</span><span class="val mono">NVIDIA RTX 4050 6 GB</span></div>
+        <div class="spec-row"><span class="lbl">OS</span><span class="val">Windows 11</span></div>
+        <div class="spec-row"><span class="lbl">Color</span><span class="val">Nightfall Black</span></div>
+        <div class="spec-row"><span class="lbl">Keyboard</span><span class="val">Backlit</span></div>
+        <div class="spec-row"><span class="lbl">Packaging</span><span class="val">US spec, sealed</span></div>
+      </section>
+
+      <section class="panel" aria-labelledby="wh-h">
+        <div class="panel-head"><span class="lbl" id="wh-h">Warehouse availability</span></div>
+        <div class="wh-row"><span class="wh-name">Miami, FL</span><span class="qty">38</span></div>
+        <div class="wh-row"><span class="wh-name">Newark, NJ</span><span class="qty">15</span></div>
+        <div class="wh-row"><span class="wh-name">Dallas, TX</span><span class="qty low">8<small>low stock</small></span></div>
+        <div class="wh-foot"><span class="lbl">Total available</span><span class="qty">61</span></div>
+      </section>
+    </div>
+
+    <div class="buybox-wrap">
+      <section class="panel" aria-labelledby="buy-h">
+        <div class="panel-head"><span class="lbl" id="buy-h">Order this SKU</span></div>
+        <div class="buybox">
+          <div class="price-line">
+            <span class="price-now">$789</span>
+            <span class="price-was">$845</span>
+          </div>
+          <div class="price-note">per unit, EXW</div>
+          <div class="moq-line"><b>MOQ 5</b>, sold in multiples of 5</div>
+          <div class="qty-block">
+            <div class="stepper">
+              <button type="button" id="q-minus" aria-label="Decrease quantity by 5"><i class="ph ph-minus" aria-hidden="true"></i></button>
+              <input type="number" id="q-in" min="5" step="5" value="5" aria-label="Quantity, minimum 5, multiples of 5">
+              <button type="button" id="q-plus" aria-label="Increase quantity by 5"><i class="ph ph-plus" aria-hidden="true"></i></button>
+            </div>
+            <div class="line-total">
+              <span class="v" id="line-total">$3,945</span>
+              <span class="k">line total</span>
+            </div>
+          </div>
+          <button class="btn-cart" id="add-cart"><i class="ph ph-shopping-cart-simple" aria-hidden="true"></i> Add to Cart</button>
+          <button class="btn-offer" id="open-offer">Make Offer</button>
+          <div class="watch-row">
+            <button class="bell" id="watch" aria-pressed="false" aria-label="Watch price and stock for 9V2K8UA#ABA">
+              <i class="ph ph-bell" style="font-size:14px" aria-hidden="true"></i>
+            </button>
+            <span class="wl">Watch price and stock</span>
+          </div>
+        </div>
+      </section>
+      <p class="tier-note">Volume above 50 units? Make an offer for tier pricing.</p>
+    </div>
+  </div>
+
+  <section class="related" aria-labelledby="rel-h">
+    <div class="panel">
+      <div class="rel-cols head">
+        <span class="lbl" id="rel-h">More HP in stock</span>
+        <span class="lbl">Product</span>
+        <span class="lbl">Cond</span>
+        <span class="lbl">MOQ</span>
+        <span class="lbl r">Unit Price</span>
+        <span class="lbl r">Avail</span>
+        <span class="lbl" aria-hidden="true"></span>
+      </div>
+      <div class="rel-cols rel-row">
+        <span class="rel-sku">A05FXUA#ABA</span>
+        <span class="rel-title">HP 17-CN4047 Core 7 150U 512GB SSD 16GB 17.3" FHD WIN11 Natural Silver, US Sales Only</span>
+        <span class="cond R" title="Refurbished">R</span>
+        <span class="moq">10</span>
+        <span class="price r">$489</span>
+        <span class="qty">140</span>
+        <span><button class="btn-view" type="button">View</button></span>
+      </div>
+      <div class="rel-cols rel-row">
+        <span class="rel-sku">C20WBUA#ABA</span>
+        <span class="rel-title">HP OmniBook 3 15-FN0105 AMD Ryzen AI 5 330 512GB SSD 16GB 15.6" FHD Touch WIN11 Glacier Silver FP Reader</span>
+        <span class="cond N" title="New">N</span>
+        <span class="moq">10</span>
+        <span class="price r">$459</span>
+        <span class="qty">72</span>
+        <span><button class="btn-view" type="button">View</button></span>
+      </div>
+    </div>
+  </section>
+</main>
+
+<dialog id="offer" aria-labelledby="om-title">
+  <div class="om-head">
+    <h2 id="om-title">Make an Offer</h2>
+    <span class="om-slots">3 slots left</span>
+  </div>
+  <form class="om-body" method="dialog" id="om-form">
+    <p class="om-product" id="om-product"></p>
+    <div class="om-field">
+      <label class="lbl" for="om-qty">Quantity, MOQ applies</label>
+      <input type="number" id="om-qty" min="5" step="5" value="5" required>
+    </div>
+    <div class="om-field">
+      <label class="lbl" for="om-price">Your unit price, USD</label>
+      <input type="number" id="om-price" min="1" step="0.01" required>
+    </div>
+    <div class="om-field">
+      <label class="lbl" for="om-exp">Offer valid for</label>
+      <select id="om-exp">
+        <option>24 hours</option>
+        <option>48 hours</option>
+        <option>7 days</option>
+      </select>
+    </div>
+    <div class="om-total">
+      <span>Total offer</span>
+      <span class="mono" id="om-total">$0.00</span>
+    </div>
+    <div class="om-actions">
+      <button type="button" class="btn-ghost" id="om-cancel">Cancel</button>
+      <button type="submit" class="btn-send">Send Offer</button>
+    </div>
+  </form>
+</dialog>
+
+<div id="toast" role="status"></div>
+
+<script>
+  const P = {
+    title: "HP Spectre x360 16-AA0000 2-in-1 Core Ultra 7 155H 1TB SSD 16GB 16\" 2.8K Touch WIN11 RTX 4050 Nightfall Black",
+    sku: "9V2K8UA#ABA", moq: 5, price: 789, avail: 61
+  };
+  const fmt = n => "$" + n.toLocaleString("en-US", { minimumFractionDigits: n % 1 ? 2 : 0 });
+
+  /* stepper: min 5, multiples of 5, live line total */
+  const qIn = document.getElementById("q-in");
+  function clampQty() {
+    let v = Math.round((+qIn.value || P.moq) / P.moq) * P.moq;
+    if (v < P.moq) v = P.moq;
+    qIn.value = v;
+    document.getElementById("line-total").textContent = fmt(v * P.price);
+  }
+  document.getElementById("q-minus").onclick = () => { qIn.value = +qIn.value - P.moq; clampQty(); };
+  document.getElementById("q-plus").onclick = () => { qIn.value = +qIn.value + P.moq; clampQty(); };
+  qIn.onchange = clampQty;
+  clampQty();
+
+  /* add to cart */
+  document.getElementById("add-cart").onclick = () => {
+    clampQty();
+    const q = +qIn.value;
+    toast(`Added ${q} × ${P.sku} to cart (${fmt(q * P.price)})`);
+  };
+
+  /* offer modal */
+  const dlg = document.getElementById("offer");
+  document.getElementById("open-offer").onclick = () => {
+    document.getElementById("om-product").textContent = `${P.title}. List ${fmt(P.price)} per unit, MOQ ${P.moq}.`;
+    const oq = document.getElementById("om-qty"), op = document.getElementById("om-price");
+    oq.min = P.moq; oq.step = P.moq; oq.value = Math.max(+qIn.value || P.moq, P.moq);
+    op.value = (P.price * 0.95).toFixed(2); op.max = P.price;
+    updateTotal();
+    dlg.showModal();
+  };
+  function updateTotal() {
+    const q = +document.getElementById("om-qty").value || 0;
+    const pr = +document.getElementById("om-price").value || 0;
+    document.getElementById("om-total").textContent = fmt(+(q * pr).toFixed(2));
+  }
+  document.getElementById("om-qty").oninput = updateTotal;
+  document.getElementById("om-price").oninput = updateTotal;
+  document.getElementById("om-cancel").onclick = () => dlg.close();
+  document.getElementById("om-form").onsubmit = () => {
+    toast(`Offer sent for ${P.sku}. Sales responds within 24 hours`);
+  };
+
+  /* watch toggle */
+  const watchBtn = document.getElementById("watch");
+  watchBtn.onclick = () => {
+    const on = watchBtn.classList.toggle("on");
+    watchBtn.setAttribute("aria-pressed", String(on));
+    const ic = watchBtn.querySelector("i");
+    ic.className = `ph${on ? "-fill" : ""} ph-bell`;
+    ic.style.fontSize = "14px";
+    toast(on ? `Watching ${P.sku}: restock and price-drop alerts on` : `Alerts off for ${P.sku}`);
+  };
+
+  /* toast */
+  let toastTimer;
+  function toast(msg) {
+    const t = document.getElementById("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove("show"), 2600);
+  }
+</script>

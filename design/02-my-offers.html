@@ -82,7 +82,7 @@
   nav.main a[aria-current] { color: var(--head-text); font-weight: 600; }
   .head-tools { display: flex; align-items: center; gap: 6px; }
   .icon-btn {
-    background: none; border: 0; color: var(--head-muted);
+    background: none; border: 0; color: var(--head-muted); text-decoration: none;
     padding: 8px; border-radius: var(--r); position: relative; display: grid; place-items: center;
   }
   .icon-btn:hover, .icon-btn:focus-visible { color: var(--head-text); outline: none; }
@@ -229,20 +229,20 @@
   </div>
   <nav class="main" aria-label="Main">
     <a href="01-main-selling-page.html">Shop</a>
-    <a href="#">Price List</a>
-    <a href="#">Past Purchases</a>
+    <a href="04-price-list.html">Price List</a>
+    <a href="03-past-purchases.html">Past Purchases</a>
     <a href="#" aria-current="page">My Offers</a>
   </nav>
   <div class="head-tools">
-    <button class="icon-btn" aria-label="Notifications, 3 unread">
+    <a class="icon-btn" href="05-notifications.html" aria-label="Notifications, 3 unread">
       <i class="ph ph-bell" aria-hidden="true"></i><span class="n">3</span>
-    </button>
+    </a>
     <button class="icon-btn" aria-label="Cart, 2 items">
       <i class="ph ph-shopping-cart-simple" aria-hidden="true"></i><span class="n">2</span>
     </button>
-    <button class="icon-btn" aria-label="Account">
+    <a class="icon-btn" href="06-account-apply.html" aria-label="Account">
       <i class="ph ph-user-circle" aria-hidden="true"></i>
-    </button>
+    </a>
   </div>
 </header>
 

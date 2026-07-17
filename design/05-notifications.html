@@ -1,0 +1,436 @@
+<title>Digital World Shop, Notifications (Design v1)</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600;700&family=Archivo:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+
+<style>
+  /* Digital World Shop design language v3: cream ledger, navy structure, orange money actions. */
+  :root {
+    --bg: #f8f4ec;
+    --panel: #fffdf8;
+    --panel-2: #f3ecdf;
+    --line: #e6dfd2;
+    --line-strong: #d4cab6;
+    --text: #1c1b17;
+    --text-2: #6e6a5f;
+    --text-3: #a09a8c;
+    --accent: #3a6ccc;
+    --accent-hover: #2f5cb4;
+    --accent-soft: #eaf0fb;
+    --cta: #f97b28;
+    --cta-hover: #ef6c15;
+    --cta-soft: #fdeede;
+    --cta-text: #c25107;
+    --warn: #8a6d10;
+    --warn-soft: #f5ecd8;
+    --bad: #b3372e;
+    --bad-soft: #f7e7e5;
+    --head-bg: #1f3d6f;
+    --head-text: #f4f1e8;
+    --head-muted: #9fb3d4;
+    --head-line: #35558c;
+    --r: 4px;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font: 13.5px/1.45 "Geist", system-ui, sans-serif;
+  }
+  button { font: inherit; cursor: pointer; color: inherit; }
+  button:active { transform: translateY(1px); }
+  input, select { font: inherit; color: inherit; }
+  .mono { font-family: "Geist Mono", ui-monospace, monospace; font-variant-numeric: tabular-nums; }
+  .lbl {
+    font-size: 10.5px; font-weight: 600; letter-spacing: .07em;
+    text-transform: uppercase; color: var(--text-2);
+  }
+  i.ph, i.ph-fill { font-size: 16px; line-height: 1; }
+
+  .announce {
+    background: var(--bg); color: var(--text-2);
+    border-bottom: 1px solid var(--line);
+    text-align: center; padding: 6px 16px; font-size: 12px;
+  }
+  .announce b { color: var(--text); font-weight: 600; }
+
+  header.site {
+    background: var(--head-bg); color: var(--head-text);
+    height: 60px; padding: 0 24px;
+    display: flex; align-items: center; gap: 24px;
+  }
+  .brandmark { display: flex; flex-direction: column; line-height: 1.1; user-select: none; }
+  .brandmark .word {
+    font-family: "Archivo", "Geist", sans-serif; font-weight: 800;
+    font-size: 16.5px; letter-spacing: .02em; text-transform: uppercase; white-space: nowrap;
+  }
+  .brandmark .sub {
+    font-family: "Geist Mono", monospace; font-size: 9px; font-weight: 500;
+    letter-spacing: .22em; text-transform: uppercase; color: var(--head-muted);
+  }
+  nav.main { display: flex; gap: 2px; flex: 1; }
+  nav.main a {
+    color: var(--head-muted); text-decoration: none; font-size: 13px; font-weight: 500;
+    padding: 7px 11px; border-radius: var(--r);
+  }
+  nav.main a:hover, nav.main a:focus-visible { color: var(--head-text); outline: none; }
+  nav.main a[aria-current] { color: var(--head-text); font-weight: 600; }
+  .head-tools { display: flex; align-items: center; gap: 6px; }
+  .icon-btn {
+    background: none; border: 0; color: var(--head-muted);
+    padding: 8px; border-radius: var(--r); position: relative; display: grid; place-items: center;
+    text-decoration: none;
+  }
+  .icon-btn:hover, .icon-btn:focus-visible { color: var(--head-text); outline: none; }
+  .icon-btn[aria-current] { color: var(--head-text); }
+  .icon-btn .n {
+    position: absolute; top: 2px; right: 0;
+    font-family: "Geist Mono", monospace; font-size: 9.5px; font-weight: 600;
+    background: var(--head-text); color: var(--cta-text);
+    min-width: 14px; height: 14px; border-radius: var(--r);
+    display: grid; place-items: center; padding: 0 3px;
+  }
+
+  .wrap { max-width: 980px; margin: 0 auto; padding: 18px 24px 64px; }
+  .page-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; }
+  .page-head h1 { font-size: 19px; font-weight: 700; letter-spacing: -.02em; margin: 0; }
+  .page-head .stamp { margin-left: auto; color: var(--text-3); font-size: 12px; }
+
+  .views { display: inline-flex; border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; margin-bottom: 12px; }
+  .views button {
+    background: var(--panel); border: 0; padding: 8px 14px;
+    font-size: 12.5px; font-weight: 600; color: var(--text-2);
+    display: flex; align-items: center; gap: 7px;
+  }
+  .views button + button { border-left: 1px solid var(--line); }
+  .views button:hover { color: var(--text); }
+  .views button .c { font-family: "Geist Mono", monospace; font-variant-numeric: tabular-nums; font-size: 11px; color: var(--text-3); }
+  .views button.active { background: var(--head-bg); color: var(--head-text); }
+  .views button.active .c { color: inherit; opacity: .7; }
+
+  .view-bar { display: flex; align-items: center; margin-bottom: 12px; }
+  .view-bar .views { margin-bottom: 0; }
+  .view-bar .grow { flex: 1; }
+  .btn-line {
+    border: 1px solid var(--line-strong); background: var(--panel); color: var(--text);
+    border-radius: var(--r); font-size: 12.5px; font-weight: 600; padding: 7px 14px;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .btn-line:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-line:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+  .panel { border: 1px solid var(--line); border-radius: var(--r); background: var(--panel); overflow: hidden; }
+  .empty { text-align: center; color: var(--text-3); padding: 44px 0; font-size: 13px; }
+
+  /* ---------- alert feed ---------- */
+  .alert-row {
+    display: grid; align-items: center; gap: 12px;
+    grid-template-columns: 28px 1fr 74px 108px;
+    padding: 11px 14px; border-top: 1px solid var(--line);
+    cursor: pointer;
+  }
+  #feed-list .alert-row:first-child { border-top: 0; }
+  .alert-row:hover { background: var(--panel-2); }
+  .alert-row:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+  .alert-row.unread { box-shadow: inset 3px 0 0 var(--accent); }
+  .alert-row.unread .a-text { font-weight: 600; }
+  .tile {
+    width: 28px; height: 28px; border-radius: var(--r);
+    display: grid; place-items: center;
+  }
+  .tile.drop { background: var(--cta-soft); color: var(--cta-text); }
+  .tile.restock { background: var(--accent-soft); color: var(--accent-hover); }
+  .a-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .a-text { font-size: 13px; line-height: 1.35; }
+  .a-text .amt { font-family: "Geist Mono", monospace; font-variant-numeric: tabular-nums; font-weight: 700; }
+  .a-sku { font-family: "Geist Mono", monospace; font-variant-numeric: tabular-nums; font-size: 11px; color: var(--text-3); }
+  .a-when { font-size: 12px; color: var(--text-3); text-align: right; white-space: nowrap; }
+  .btn-cart {
+    border: 1px solid var(--cta); background: var(--cta-soft); color: var(--cta-text);
+    border-radius: var(--r); font-size: 12px; font-weight: 700; padding: 5px 2px; white-space: nowrap;
+    width: 100%;
+  }
+  .btn-cart:hover { background: #fce0c6; border-color: var(--cta-hover); }
+  .btn-cart:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+  /* ---------- watched items ---------- */
+  .w-cols {
+    display: grid; align-items: center; gap: 12px;
+    grid-template-columns: minmax(240px, 1fr) 96px 72px 108px 96px 30px;
+    padding: 0 14px;
+  }
+  .w-cols.head { background: var(--panel-2); border-bottom: 1px solid var(--line); }
+  .w-cols.head > span { padding: 7px 0; }
+  .w-cols.head .rr { text-align: right; }
+  .w-row { padding-top: 9px; padding-bottom: 9px; border-top: 1px solid var(--line); }
+  #watch-list .w-row:first-child { border-top: 0; }
+  .w-row:hover { background: var(--panel-2); }
+  .p-name { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .title {
+    font-weight: 500; font-size: 13px; line-height: 1.3;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .sku { font-family: "Geist Mono", monospace; font-variant-numeric: tabular-nums; font-size: 11px; color: var(--text-3); }
+  .num { font-family: "Geist Mono", monospace; font-variant-numeric: tabular-nums; font-size: 12.5px; }
+  .num.b { font-weight: 700; font-size: 13px; }
+  .rr { text-align: right; }
+  .soldtag { font-size: 11px; font-weight: 700; color: var(--bad); text-transform: uppercase; letter-spacing: .04em; }
+  .chk { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; color: var(--text-2); cursor: pointer; user-select: none; }
+  .chk input {
+    appearance: none; -webkit-appearance: none; margin: 0; cursor: pointer;
+    width: 15px; height: 15px; border: 1px solid var(--line-strong); border-radius: var(--r);
+    background: var(--panel); display: grid; place-items: center; flex: none;
+  }
+  .chk input:checked {
+    background: var(--accent) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-6.5" fill="none" stroke="%23fdf8ef" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>') center / 11px 11px no-repeat;
+    border-color: var(--accent);
+  }
+  .chk input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .unwatch {
+    background: none; border: 1px solid var(--line-strong); color: var(--text-3);
+    width: 28px; height: 28px; border-radius: var(--r); display: grid; place-items: center; padding: 0;
+  }
+  .unwatch:hover { border-color: var(--bad); color: var(--bad); }
+  .unwatch:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+  #toast {
+    position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(6px);
+    background: var(--head-bg); color: var(--head-text); border: 1px solid var(--head-line);
+    border-radius: var(--r); padding: 10px 16px; font-size: 12.5px; font-weight: 500;
+    opacity: 0; pointer-events: none; transition: opacity .15s, transform .15s;
+    max-width: 90vw;
+  }
+  #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, #toast { transition: none !important; }
+    button:active { transform: none; }
+  }
+</style>
+
+<div class="announce"><b>Get notified the moment prices drop or stock returns.</b> Watch any item from the Shop grid.</div>
+
+<header class="site">
+  <div class="brandmark">
+    <span class="word">Digital World Shop</span>
+    <span class="sub">B2B Electronics</span>
+  </div>
+  <nav class="main" aria-label="Main">
+    <a href="01-main-selling-page.html">Shop</a>
+    <a href="04-price-list.html">Price List</a>
+    <a href="03-past-purchases.html">Past Purchases</a>
+    <a href="02-my-offers.html">My Offers</a>
+  </nav>
+  <div class="head-tools">
+    <a class="icon-btn" href="#" aria-current="page" aria-label="Notifications, 2 unread">
+      <i class="ph-fill ph-bell" aria-hidden="true"></i><span class="n" id="bell-n">2</span>
+    </a>
+    <button class="icon-btn" aria-label="Cart, 2 items">
+      <i class="ph ph-shopping-cart-simple" aria-hidden="true"></i><span class="n">2</span>
+    </button>
+    <a class="icon-btn" href="06-account-apply.html" aria-label="Account">
+      <i class="ph ph-user-circle" aria-hidden="true"></i>
+    </a>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="page-head">
+    <h1>Notifications</h1>
+    <span class="stamp">Alerts email you at imran@digitalworldshopus.com</span>
+  </div>
+
+  <div class="view-bar">
+    <div class="views" role="tablist" aria-label="Notification views">
+      <button class="active" data-view="feed">Alert Feed <span class="c" id="count-feed">4</span></button>
+      <button data-view="watch">Watched Items <span class="c" id="count-watch">5</span></button>
+    </div>
+    <div class="grow"></div>
+    <button class="btn-line" id="mark-all">
+      <i class="ph ph-checks" aria-hidden="true"></i> Mark All Read
+    </button>
+  </div>
+
+  <section id="view-feed">
+    <div class="panel">
+      <div id="feed-list"></div>
+      <div class="empty" id="feed-empty" hidden>No alerts yet.</div>
+    </div>
+  </section>
+
+  <section id="view-watch" hidden>
+    <div class="panel">
+      <div class="w-cols head">
+        <span class="lbl">Product</span>
+        <span class="lbl rr">Current Price</span>
+        <span class="lbl rr">Stock</span>
+        <span class="lbl">Alert On</span>
+        <span class="lbl" aria-hidden="true"></span>
+        <span class="lbl" aria-hidden="true"></span>
+      </div>
+      <div id="watch-list"></div>
+      <div class="empty" id="watch-empty" hidden>You are not watching any items. Tap the bell on any product in the Shop.</div>
+    </div>
+  </section>
+</main>
+
+<div id="toast" role="status"></div>
+
+<script>
+  const ALERTS = [
+    {
+      id: 1, kind: "drop", sku: "A05FXUA#ABA", unread: true, when: "2 h ago", inStock: true,
+      text: 'HP 17-CN4047 dropped from <span class="amt">$519</span> to <span class="amt">$489</span>',
+    },
+    {
+      id: 2, kind: "restock", sku: "SDSSDE62-2T00-GAO", unread: true, when: "5 h ago", inStock: true,
+      text: 'SanDisk Extreme 2TB SSD is back in stock, <span class="amt">410</span> units available',
+    },
+    {
+      id: 3, kind: "drop", sku: "SM-X210NZAAXAR", unread: false, when: "Yesterday", inStock: true,
+      text: 'Samsung Galaxy Tab A9+ dropped from <span class="amt">$159</span> to <span class="amt">$148</span>',
+    },
+    {
+      id: 4, kind: "restock", sku: "MTJV3AM/A", unread: false, when: "Jul 15", inStock: true,
+      text: 'AirPods Pro 2 master carton is back in stock, <span class="amt">8</span> cartons available',
+    },
+  ];
+
+  const WATCHED = [
+    { sku: "A05FXUA#ABA", title: "HP 17-CN4047 Core 7 150U 512GB SSD 16GB 17.3\" FHD WIN11 Natural Silver", price: 489, qty: 140, drop: true, restock: true },
+    { sku: "SDSSDE62-2T00-GAO", title: "SanDisk Extreme Portable SSD 2TB USB-C 3.2 Gen 2 IP65, Bulk Brown Box", price: 118, qty: 410, drop: true, restock: false },
+    { sku: "SM-X210NZAAXAR", title: "Samsung Galaxy Tab A9+ 11\" 64GB Wi-Fi Graphite, Retail Packaging", price: 148, qty: 320, drop: true, restock: true },
+    { sku: "A2NVM7-469US", title: "MSI Codex R2 AI A2NVM7-469 Gaming Desktop Core Ultra 7 265 2TB 32GB WIN11 RTX 5060 Ti Black", price: 1890, qty: 0, drop: false, restock: true },
+    { sku: "21M5004QUS", title: "Lenovo ThinkPad E16 Gen 2 Core Ultra 5 125U 512GB SSD 16GB 16\" WUXGA WIN11 Pro Black", price: 724, qty: 12, drop: true, restock: true },
+  ];
+
+  const fmt = n => "$" + n.toLocaleString("en-US", { minimumFractionDigits: n % 1 ? 2 : 0 });
+
+  /* view switching */
+  document.querySelectorAll(".views button").forEach(t => t.onclick = () => {
+    document.querySelectorAll(".views button").forEach(x => x.classList.remove("active"));
+    t.classList.add("active");
+    const v = t.dataset.view;
+    document.getElementById("view-feed").hidden = v !== "feed";
+    document.getElementById("view-watch").hidden = v !== "watch";
+    document.getElementById("mark-all").hidden = v !== "feed";
+  });
+
+  function syncBadge() {
+    const unread = ALERTS.filter(a => a.unread).length;
+    const n = document.getElementById("bell-n");
+    n.textContent = unread;
+    n.hidden = unread === 0;
+  }
+
+  /* alert feed */
+  function renderFeed() {
+    const list = document.getElementById("feed-list");
+    list.innerHTML = "";
+    document.getElementById("feed-empty").hidden = ALERTS.length > 0;
+    document.getElementById("count-feed").textContent = ALERTS.length;
+
+    ALERTS.forEach(a => {
+      const row = document.createElement("div");
+      row.className = "alert-row" + (a.unread ? " unread" : "");
+      row.tabIndex = 0;
+      row.setAttribute("role", "button");
+      row.setAttribute("aria-label", `Alert for ${a.sku}${a.unread ? ", unread, activate to mark read" : ""}`);
+      row.innerHTML = `
+        <span class="tile ${a.kind}">
+          <i class="ph ${a.kind === "drop" ? "ph-trend-down" : "ph-package"}" aria-hidden="true"></i>
+        </span>
+        <span class="a-body">
+          <span class="a-text">${a.text}</span>
+          <span class="a-sku">${a.sku}</span>
+        </span>
+        <span class="a-when">${a.when}</span>
+        ${a.inStock ? '<button class="btn-cart">Add to Cart</button>' : "<span></span>"}`;
+
+      const markRead = () => {
+        if (!a.unread) return;
+        a.unread = false;
+        row.classList.remove("unread");
+        row.setAttribute("aria-label", `Alert for ${a.sku}`);
+        syncBadge();
+      };
+      row.onclick = markRead;
+      row.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); markRead(); } };
+
+      const cart = row.querySelector(".btn-cart");
+      if (cart) cart.onclick = ev => {
+        ev.stopPropagation();
+        markRead();
+        toast(`Added ${a.sku} to cart at current price`);
+      };
+      list.appendChild(row);
+    });
+  }
+
+  document.getElementById("mark-all").onclick = () => {
+    ALERTS.forEach(a => a.unread = false);
+    renderFeed();
+    syncBadge();
+    toast("All alerts marked read");
+  };
+
+  /* watched items */
+  function renderWatch() {
+    const list = document.getElementById("watch-list");
+    list.innerHTML = "";
+    document.getElementById("watch-empty").hidden = WATCHED.length > 0;
+    document.getElementById("count-watch").textContent = WATCHED.length;
+
+    WATCHED.forEach(w => {
+      const out = w.qty === 0;
+      const row = document.createElement("div");
+      row.className = "w-cols w-row";
+      row.innerHTML = `
+        <span class="p-name">
+          <span class="title">${w.title}</span>
+          <span class="sku">${w.sku}</span>
+        </span>
+        <span class="num b rr">${fmt(w.price)}</span>
+        <span class="num rr">${out ? '<span class="soldtag">Out</span>' : w.qty}</span>
+        <label class="chk">
+          <input type="checkbox" ${w.drop ? "checked" : ""} aria-label="Price drop alerts for ${w.sku}">
+          Price drop
+        </label>
+        <label class="chk">
+          <input type="checkbox" ${w.restock ? "checked" : ""} aria-label="Restock alerts for ${w.sku}">
+          Restock
+        </label>
+        <button class="unwatch" title="Stop watching" aria-label="Stop watching ${w.sku}">
+          <i class="ph ph-bell-slash" style="font-size:14px" aria-hidden="true"></i>
+        </button>`;
+
+      const boxes = row.querySelectorAll(".chk input");
+      boxes[0].onchange = e => { w.drop = e.target.checked; };
+      boxes[1].onchange = e => { w.restock = e.target.checked; };
+      row.querySelector(".unwatch").onclick = () => {
+        WATCHED.splice(WATCHED.indexOf(w), 1);
+        renderWatch();
+        toast(`Alerts off for ${w.sku}`);
+      };
+      list.appendChild(row);
+    });
+  }
+
+  let toastTimer;
+  function toast(msg) {
+    const t = document.getElementById("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove("show"), 2600);
+  }
+
+  renderFeed();
+  renderWatch();
+  syncBadge();
+</script>

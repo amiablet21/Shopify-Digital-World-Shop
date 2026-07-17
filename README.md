@@ -12,10 +12,17 @@ Redesign of a Shopify Dawn theme into a B2B wholesale electronics storefront (HU
 
 | File | Page |
 |---|---|
-| `design/01-main-selling-page.html` | Live Inventory grid (canonical, v3 final) |
+| `design/01-main-selling-page.html` | Live Inventory grid + slide-out cart drawer (canonical, v3 final) |
 | `design/02-my-offers.html` | My Offers with counteroffer threads |
+| `design/03-past-purchases.html` | Past Purchases order ledger with reorder |
+| `design/04-price-list.html` | Printable/exportable Price List |
+| `design/05-notifications.html` | Notification Center (alert feed + watched items) |
+| `design/06-account-apply.html` | Wholesale account application + sign in |
+| `design/07-product-detail.html` | Slim product detail page (no images by design) |
 | `design/00-compare.html` | Side-by-side viewer for the three explored variants |
 | `design/01A-ledger.html`, `01B-cloud.html`, `01C-counter.html` | Variant explorations (A won) |
+
+All pages cross-link through their headers, so the set browses like a real storefront.
 
 ## Design language (locked)
 

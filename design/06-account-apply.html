@@ -1,0 +1,399 @@
+<title>Digital World Shop, Business Account (Design v1)</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600;700&family=Archivo:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+
+<style>
+  /* Digital World Shop design language v3: cream ledger, navy structure, orange money actions. */
+  :root {
+    --bg: #f8f4ec;
+    --panel: #fffdf8;
+    --panel-2: #f3ecdf;
+    --line: #e6dfd2;
+    --line-strong: #d4cab6;
+    --text: #1c1b17;
+    --text-2: #6e6a5f;
+    --text-3: #a09a8c;
+    --accent: #3a6ccc;
+    --accent-hover: #2f5cb4;
+    --accent-soft: #eaf0fb;
+    --cta: #f97b28;
+    --cta-hover: #ef6c15;
+    --cta-soft: #fdeede;
+    --cta-text: #c25107;
+    --warn: #8a6d10;
+    --warn-soft: #f5ecd8;
+    --bad: #b3372e;
+    --bad-soft: #f7e7e5;
+    --head-bg: #1f3d6f;
+    --head-text: #f4f1e8;
+    --head-muted: #9fb3d4;
+    --head-line: #35558c;
+    --r: 4px;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font: 13.5px/1.45 "Geist", system-ui, sans-serif;
+  }
+  button { font: inherit; cursor: pointer; color: inherit; }
+  button:active { transform: translateY(1px); }
+  input, select, textarea { font: inherit; color: inherit; }
+  .mono { font-family: "Geist Mono", ui-monospace, monospace; font-variant-numeric: tabular-nums; }
+  .lbl {
+    font-size: 10.5px; font-weight: 600; letter-spacing: .07em;
+    text-transform: uppercase; color: var(--text-2);
+  }
+  i.ph, i.ph-fill { font-size: 16px; line-height: 1; }
+
+  .announce {
+    background: var(--bg); color: var(--text-2);
+    border-bottom: 1px solid var(--line);
+    text-align: center; padding: 6px 16px; font-size: 12px;
+  }
+  .announce b { color: var(--text); font-weight: 600; }
+
+  header.site {
+    background: var(--head-bg); color: var(--head-text);
+    height: 60px; padding: 0 24px;
+    display: flex; align-items: center; gap: 24px;
+  }
+  .brandmark { display: flex; flex-direction: column; line-height: 1.1; user-select: none; }
+  .brandmark .word {
+    font-family: "Archivo", "Geist", sans-serif; font-weight: 800;
+    font-size: 16.5px; letter-spacing: .02em; text-transform: uppercase; white-space: nowrap;
+  }
+  .brandmark .sub {
+    font-family: "Geist Mono", monospace; font-size: 9px; font-weight: 500;
+    letter-spacing: .22em; text-transform: uppercase; color: var(--head-muted);
+  }
+  nav.main { display: flex; gap: 2px; flex: 1; }
+  nav.main a {
+    color: var(--head-muted); text-decoration: none; font-size: 13px; font-weight: 500;
+    padding: 7px 11px; border-radius: var(--r);
+  }
+  nav.main a:hover, nav.main a:focus-visible { color: var(--head-text); outline: none; }
+  nav.main a[aria-current] { color: var(--head-text); font-weight: 600; }
+  .head-tools { display: flex; align-items: center; gap: 6px; }
+  .icon-btn {
+    background: none; border: 0; color: var(--head-muted); text-decoration: none;
+    padding: 8px; border-radius: var(--r); position: relative; display: grid; place-items: center;
+  }
+  .icon-btn:hover, .icon-btn:focus-visible { color: var(--head-text); outline: none; }
+  .icon-btn.current { color: var(--head-text); }
+  .icon-btn .n {
+    position: absolute; top: 2px; right: 0;
+    font-family: "Geist Mono", monospace; font-size: 9.5px; font-weight: 600;
+    background: var(--head-text); color: var(--cta-text);
+    min-width: 14px; height: 14px; border-radius: var(--r);
+    display: grid; place-items: center; padding: 0 3px;
+  }
+
+  .wrap { max-width: 1020px; margin: 0 auto; padding: 26px 24px 64px; }
+  .cols2 { display: grid; grid-template-columns: 1fr 380px; gap: 24px; align-items: start; }
+
+  h1 { font-size: 22px; font-weight: 700; letter-spacing: -.02em; margin: 0 0 6px; }
+  .intro { color: var(--text-2); font-size: 13px; margin: 0 0 18px; max-width: 52ch; }
+
+  /* fact rows */
+  .facts { border-top: 1px solid var(--line); margin-bottom: 20px; }
+  .fact {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 2px; border-bottom: 1px solid var(--line);
+    font-size: 13px;
+  }
+  .fact .tile {
+    width: 28px; height: 28px; flex: none; border-radius: var(--r);
+    background: var(--accent-soft); color: var(--accent-hover);
+    display: grid; place-items: center;
+  }
+  .fact .tile i { font-size: 16px; }
+
+  /* ledger panel */
+  .panel { border: 1px solid var(--line); border-radius: var(--r); background: var(--panel); overflow: hidden; }
+  .panel .strip {
+    background: var(--panel-2); border-bottom: 1px solid var(--line);
+    padding: 8px 16px;
+  }
+  .panel .body { padding: 16px; }
+
+  /* form */
+  .fgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 14px; }
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  .field.full { grid-column: 1 / -1; }
+  .field input, .field select, .field textarea {
+    background: var(--panel); border: 1px solid var(--line-strong); border-radius: var(--r);
+    padding: 8px 10px; font-size: 13px; width: 100%;
+  }
+  .field textarea { resize: vertical; }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    outline: 2px solid var(--accent); outline-offset: -1px;
+  }
+  .field input.mono { font-size: 12.5px; }
+  ::placeholder { color: var(--text-2); opacity: 1; }
+  .field input.invalid, .field select.invalid { border-color: var(--bad); }
+  .form-foot {
+    display: flex; align-items: center; justify-content: flex-end; gap: 14px;
+    margin-top: 16px;
+  }
+  .form-foot .note { font-size: 11.5px; color: var(--text-2); text-align: right; }
+  .btn-main {
+    border: 1px solid var(--cta); background: var(--cta-soft); color: var(--cta-text);
+    border-radius: var(--r); font-size: 13px; font-weight: 700; padding: 9px 18px;
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px; white-space: nowrap;
+  }
+  .btn-main:hover { background: #fce0c6; border-color: var(--cta-hover); }
+  .btn-line {
+    border: 1px solid var(--line-strong); background: var(--panel); color: var(--text);
+    border-radius: var(--r); font-size: 12.5px; font-weight: 600; padding: 8px 14px;
+    display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; text-decoration: none;
+  }
+  .btn-line:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* success state */
+  .success { text-align: center; padding: 34px 24px; }
+  .success .tile {
+    width: 40px; height: 40px; margin: 0 auto 12px; border-radius: var(--r);
+    background: var(--accent-soft); color: var(--accent-hover);
+    display: grid; place-items: center;
+  }
+  .success .tile i { font-size: 24px; }
+  .success h2 { font-size: 16px; font-weight: 700; margin: 0 0 6px; }
+  .success p { color: var(--text-2); font-size: 13px; margin: 0 0 16px; }
+
+  /* sign in */
+  .side { position: sticky; top: 18px; }
+  .side .fgrid { grid-template-columns: 1fr; }
+  .btn-signin {
+    width: 100%; margin-top: 2px;
+    border: 1px solid var(--accent); background: var(--panel); color: var(--accent);
+    border-radius: var(--r); font-size: 13px; font-weight: 700; padding: 9px 14px;
+  }
+  .btn-signin:hover { background: var(--accent-soft); }
+  .side-links { display: flex; gap: 16px; margin-top: 12px; }
+  .side-links a { color: var(--accent); font-size: 12px; text-decoration: none; font-weight: 500; }
+  .side-links a:hover { text-decoration: underline; }
+  .side-note { font-size: 11.5px; color: var(--text-3); margin-top: 10px; }
+
+  @media (max-width: 900px) {
+    .cols2 { grid-template-columns: 1fr; }
+    .side { position: static; }
+    .fgrid { grid-template-columns: 1fr; }
+    .form-foot { flex-direction: column; align-items: stretch; }
+    .form-foot .note { text-align: left; }
+    .btn-main { width: 100%; }
+  }
+
+  #toast {
+    position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(6px);
+    background: var(--head-bg); color: var(--head-text); border: 1px solid var(--head-line);
+    border-radius: var(--r); padding: 10px 16px; font-size: 12.5px; font-weight: 500;
+    opacity: 0; pointer-events: none; transition: opacity .15s, transform .15s;
+    max-width: 90vw;
+  }
+  #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, #toast { transition: none !important; }
+    button:active { transform: none; }
+  }
+</style>
+
+<div class="announce"><b>Wholesale pricing is visible to approved business accounts only.</b> Approval takes one business day.</div>
+
+<header class="site">
+  <div class="brandmark">
+    <span class="word">Digital World Shop</span>
+    <span class="sub">B2B Electronics</span>
+  </div>
+  <nav class="main" aria-label="Main">
+    <a href="01-main-selling-page.html">Shop</a>
+    <a href="04-price-list.html">Price List</a>
+    <a href="03-past-purchases.html">Past Purchases</a>
+    <a href="02-my-offers.html">My Offers</a>
+  </nav>
+  <div class="head-tools">
+    <a class="icon-btn" href="05-notifications.html" aria-label="Notifications, 3 unread">
+      <i class="ph ph-bell" aria-hidden="true"></i><span class="n">3</span>
+    </a>
+    <button class="icon-btn" aria-label="Cart, 2 items">
+      <i class="ph ph-shopping-cart-simple" aria-hidden="true"></i><span class="n">2</span>
+    </button>
+    <a class="icon-btn current" href="#" aria-label="Account" aria-current="page">
+      <i class="ph ph-user-circle" aria-hidden="true"></i>
+    </a>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="cols2">
+
+    <section aria-label="Apply for a business account">
+      <h1>Apply for a business account</h1>
+      <p class="intro">Bulk pricing, offers and Net 30 terms for verified resellers and businesses. No fees.</p>
+
+      <div class="facts">
+        <div class="fact">
+          <span class="tile"><i class="ph ph-stack" aria-hidden="true"></i></span>
+          <span>Wholesale prices on 500+ SKUs, EXW Miami, Newark and Dallas</span>
+        </div>
+        <div class="fact">
+          <span class="tile"><i class="ph ph-chats-circle" aria-hidden="true"></i></span>
+          <span>Make offers and negotiate directly with our sales team</span>
+        </div>
+        <div class="fact">
+          <span class="tile"><i class="ph ph-receipt" aria-hidden="true"></i></span>
+          <span>Net 30 invoice terms for qualified accounts</span>
+        </div>
+      </div>
+
+      <div class="panel" id="apply-panel">
+        <div class="strip"><span class="lbl">Application</span></div>
+        <form class="body" id="apply-form" novalidate>
+          <div class="fgrid">
+            <div class="field">
+              <label class="lbl" for="f-biz">Legal business name</label>
+              <input id="f-biz" name="biz" type="text" required autocomplete="organization">
+            </div>
+            <div class="field">
+              <label class="lbl" for="f-contact">Contact name</label>
+              <input id="f-contact" name="contact" type="text" required autocomplete="name">
+            </div>
+            <div class="field">
+              <label class="lbl" for="f-email">Work email</label>
+              <input id="f-email" name="email" type="email" required autocomplete="email">
+            </div>
+            <div class="field">
+              <label class="lbl" for="f-phone">Phone</label>
+              <input id="f-phone" name="phone" type="tel" required autocomplete="tel">
+            </div>
+            <div class="field">
+              <label class="lbl" for="f-ein">EIN</label>
+              <input id="f-ein" name="ein" type="text" class="mono" placeholder="12-3456789" required>
+            </div>
+            <div class="field">
+              <label class="lbl" for="f-cert">Resale certificate number</label>
+              <input id="f-cert" name="cert" type="text" class="mono">
+            </div>
+            <div class="field">
+              <label class="lbl" for="f-type">Business type</label>
+              <select id="f-type" name="type" required>
+                <option value="" selected>Select one</option>
+                <option>Reseller</option>
+                <option>Retailer</option>
+                <option>Refurbisher</option>
+                <option>Exporter</option>
+                <option>IT Service Provider</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="field">
+              <label class="lbl" for="f-vol">Estimated monthly volume</label>
+              <select id="f-vol" name="vol">
+                <option>Under $5,000</option>
+                <option>$5,000 to $25,000</option>
+                <option>$25,000 to $100,000</option>
+                <option>Over $100,000</option>
+              </select>
+            </div>
+            <div class="field full">
+              <label class="lbl" for="f-notes">Anything we should know (optional)</label>
+              <textarea id="f-notes" name="notes" rows="3"></textarea>
+            </div>
+          </div>
+          <div class="form-foot">
+            <span class="note">We review applications within one business day.</span>
+            <button type="submit" class="btn-main">Submit Application</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <aside class="side" aria-label="Sign in">
+      <div class="panel">
+        <div class="strip"><span class="lbl">Already approved? Sign in</span></div>
+        <form class="body" id="signin-form" novalidate>
+          <div class="fgrid">
+            <div class="field">
+              <label class="lbl" for="s-email">Work email</label>
+              <input id="s-email" name="semail" type="email" autocomplete="email">
+            </div>
+            <div class="field">
+              <label class="lbl" for="s-pass">Password</label>
+              <input id="s-pass" name="spass" type="password" autocomplete="current-password">
+            </div>
+          </div>
+          <button type="submit" class="btn-signin">Sign In</button>
+          <div class="side-links">
+            <a href="#">Forgot password</a>
+            <a href="#">Resend approval email</a>
+          </div>
+        </form>
+      </div>
+      <p class="side-note">Sign in is handled by Shopify customer accounts in production.</p>
+    </aside>
+
+  </div>
+</main>
+
+<div id="toast" role="status"></div>
+
+<script>
+  const form = document.getElementById("apply-form");
+  const panel = document.getElementById("apply-panel");
+
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    const required = [...form.querySelectorAll("[required]")];
+    let firstBad = null;
+    required.forEach(el => {
+      const ok = el.checkValidity();
+      el.classList.toggle("invalid", !ok);
+      if (!ok && !firstBad) firstBad = el;
+    });
+    if (firstBad) {
+      firstBad.focus();
+      toast("Please complete the required fields.");
+      return;
+    }
+    const email = document.getElementById("f-email").value.trim();
+    panel.innerHTML = `
+      <div class="success">
+        <span class="tile"><i class="ph ph-seal-check" aria-hidden="true"></i></span>
+        <h2>Application received</h2>
+        <p>We will email <b class="mono">${escapeHtml(email)}</b> within one business day.</p>
+        <a class="btn-line" href="01-main-selling-page.html">Browse the catalog</a>
+      </div>`;
+    panel.querySelector(".success h2").setAttribute("tabindex", "-1");
+    panel.querySelector(".success h2").focus();
+  });
+
+  form.querySelectorAll("[required]").forEach(el => {
+    el.addEventListener("input", () => el.classList.remove("invalid"));
+    el.addEventListener("change", () => el.classList.remove("invalid"));
+  });
+
+  document.getElementById("signin-form").addEventListener("submit", e => {
+    e.preventDefault();
+    toast("Sign in is a design placeholder on this page.");
+  });
+
+  function escapeHtml(s) {
+    return s.replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  }
+
+  let toastTimer;
+  function toast(msg) {
+    const t = document.getElementById("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove("show"), 2600);
+  }
+</script>

@@ -1,0 +1,366 @@
+<title>Digital World Shop, Price List (Design v1)</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600;700&family=Archivo:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+
+<style>
+  /* Digital World Shop design language v3: cream ledger, navy structure, orange money actions (none on this page). */
+  :root {
+    --bg: #f8f4ec;
+    --panel: #fffdf8;
+    --panel-2: #f3ecdf;
+    --line: #e6dfd2;
+    --line-strong: #d4cab6;
+    --text: #1c1b17;
+    --text-2: #6e6a5f;
+    --text-3: #a09a8c;
+    --accent: #3a6ccc;
+    --accent-hover: #2f5cb4;
+    --accent-soft: #eaf0fb;
+    --cta: #f97b28;
+    --cta-hover: #ef6c15;
+    --cta-soft: #fdeede;
+    --cta-text: #c25107;
+    --warn: #8a6d10;
+    --warn-soft: #f5ecd8;
+    --bad: #b3372e;
+    --bad-soft: #f7e7e5;
+    --head-bg: #1f3d6f;
+    --head-text: #f4f1e8;
+    --head-muted: #9fb3d4;
+    --head-line: #35558c;
+    --r: 4px;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font: 13.5px/1.45 "Geist", system-ui, sans-serif;
+  }
+  button { font: inherit; cursor: pointer; color: inherit; }
+  button:active { transform: translateY(1px); }
+  input, select { font: inherit; color: inherit; }
+  .mono { font-family: "Geist Mono", ui-monospace, monospace; font-variant-numeric: tabular-nums; }
+  .lbl {
+    font-size: 10.5px; font-weight: 600; letter-spacing: .07em;
+    text-transform: uppercase; color: var(--text-2);
+  }
+  i.ph, i.ph-fill { font-size: 16px; line-height: 1; }
+
+  .announce {
+    background: var(--bg); color: var(--text-2);
+    border-bottom: 1px solid var(--line);
+    text-align: center; padding: 6px 16px; font-size: 12px;
+  }
+  .announce b { color: var(--text); font-weight: 600; }
+
+  header.site {
+    background: var(--head-bg); color: var(--head-text);
+    height: 60px; padding: 0 24px;
+    display: flex; align-items: center; gap: 24px;
+  }
+  .brandmark { display: flex; flex-direction: column; line-height: 1.1; user-select: none; }
+  .brandmark .word {
+    font-family: "Archivo", "Geist", sans-serif; font-weight: 800;
+    font-size: 16.5px; letter-spacing: .02em; text-transform: uppercase; white-space: nowrap;
+  }
+  .brandmark .sub {
+    font-family: "Geist Mono", monospace; font-size: 9px; font-weight: 500;
+    letter-spacing: .22em; text-transform: uppercase; color: var(--head-muted);
+  }
+  nav.main { display: flex; gap: 2px; flex: 1; }
+  nav.main a {
+    color: var(--head-muted); text-decoration: none; font-size: 13px; font-weight: 500;
+    padding: 7px 11px; border-radius: var(--r);
+  }
+  nav.main a:hover, nav.main a:focus-visible { color: var(--head-text); outline: none; }
+  nav.main a[aria-current] { color: var(--head-text); font-weight: 600; }
+  .head-tools { display: flex; align-items: center; gap: 6px; }
+  .icon-btn {
+    background: none; border: 0; color: var(--head-muted); text-decoration: none;
+    padding: 8px; border-radius: var(--r); position: relative; display: grid; place-items: center;
+  }
+  .icon-btn:hover, .icon-btn:focus-visible { color: var(--head-text); outline: none; }
+  .icon-btn .n {
+    position: absolute; top: 2px; right: 0;
+    font-family: "Geist Mono", monospace; font-size: 9.5px; font-weight: 600;
+    background: var(--head-text); color: var(--cta-text);
+    min-width: 14px; height: 14px; border-radius: var(--r);
+    display: grid; place-items: center; padding: 0 3px;
+  }
+
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 18px 24px 64px; }
+  .page-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; }
+  .page-head h1 { font-size: 19px; font-weight: 700; letter-spacing: -.02em; margin: 0; }
+  .page-head .sub { color: var(--text-2); font-size: 12.5px; }
+  .page-head .stamp { margin-left: auto; color: var(--text-3); font-size: 12px; }
+
+  /* toolbar */
+  .toolbar-line { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+  .brands { display: flex; flex-wrap: wrap; gap: 6px; }
+  .brand {
+    border: 1px solid var(--line); background: var(--panel);
+    border-radius: var(--r); padding: 5px 11px;
+    font-size: 12.5px; font-weight: 600; display: flex; gap: 7px; align-items: baseline;
+  }
+  .brand .c { font-family: "Geist Mono", monospace; font-variant-numeric: tabular-nums; font-size: 11px; color: var(--text-3); }
+  .brand:hover { border-color: var(--accent); }
+  .brand.active { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+  .brand.active .c { color: inherit; opacity: .75; }
+  .toolbar-line select {
+    background: var(--panel); border: 1px solid var(--line-strong); border-radius: var(--r);
+    padding: 5px 8px; font-size: 12.5px;
+  }
+  .toolbar-line select:focus-visible { outline: 2px solid var(--accent); outline-offset: -1px; }
+  .searchbox {
+    display: flex; align-items: center; gap: 7px;
+    border: 1px solid var(--line-strong); background: var(--panel); border-radius: var(--r);
+    padding: 6px 10px; min-width: 220px; color: var(--text-3);
+  }
+  .searchbox input { border: 0; outline: none; background: none; width: 100%; font-size: 12.5px; color: var(--text); }
+  .searchbox:focus-within { border-color: var(--accent); }
+  .toolbar-line .grow { flex: 1; }
+  .btn-line {
+    border: 1px solid var(--line-strong); background: var(--panel); color: var(--text);
+    border-radius: var(--r); font-size: 12px; font-weight: 600; padding: 6px 12px;
+    display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
+  }
+  .btn-line:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* price table, ledger panel */
+  .panel { border: 1px solid var(--line); border-radius: var(--r); background: var(--panel); overflow-x: auto; }
+  .gridrows { min-width: 980px; }
+  .cols {
+    display: grid; align-items: center; gap: 12px;
+    grid-template-columns: 158px minmax(240px, 1fr) 78px 44px 56px 90px 78px 64px;
+    padding: 0 14px;
+  }
+  .cols.head { background: var(--panel-2); border-bottom: 1px solid var(--line); }
+  .cols.head > span { padding: 7px 0; }
+  .rr { text-align: right; }
+  .prow { border-top: 1px solid var(--line); padding-top: 8px; padding-bottom: 8px; }
+  .gridrows .prow:first-of-type { border-top: 0; }
+  .prow:hover { background: var(--panel-2); }
+  .sku { font-family: "Geist Mono", monospace; font-variant-numeric: tabular-nums; font-size: 11.5px; color: var(--text-2); }
+  .ptitle { font-size: 12.5px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pbrand { font-size: 12px; color: var(--text-2); }
+  .cond {
+    width: 24px; height: 24px; border-radius: var(--r);
+    display: grid; place-items: center;
+    font-family: "Geist Mono", monospace; font-size: 11.5px; font-weight: 700;
+    border: 1px solid;
+  }
+  .cond.N { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
+  .cond.R { color: var(--warn); border-color: var(--warn); background: var(--warn-soft); }
+  .num { font-family: "Geist Mono", monospace; font-variant-numeric: tabular-nums; font-size: 12.5px; }
+  .num.b { font-weight: 700; font-size: 13px; }
+  .was { font-family: "Geist Mono", monospace; font-variant-numeric: tabular-nums; font-size: 12px; color: var(--text-3); text-decoration: line-through; }
+  .soldtag { font-size: 11px; font-weight: 700; color: var(--bad); text-transform: uppercase; letter-spacing: .04em; }
+  .empty { text-align: center; color: var(--text-3); padding: 44px 0; font-size: 13px; }
+  .rowcount { font-size: 12px; color: var(--text-3); margin-top: 8px; }
+
+  #toast {
+    position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(6px);
+    background: var(--head-bg); color: var(--head-text); border: 1px solid var(--head-line);
+    border-radius: var(--r); padding: 10px 16px; font-size: 12.5px; font-weight: 500;
+    opacity: 0; pointer-events: none; transition: opacity .15s, transform .15s;
+    max-width: 90vw;
+  }
+  #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  .print-note { display: none; }
+
+  @media print {
+    body { background: #fff; color: #000; }
+    .announce, header.site, .toolbar-line, #toast { display: none !important; }
+    .print-note {
+      display: block; font-size: 11px; color: #000;
+      border-bottom: 1px solid #000; padding-bottom: 6px; margin-bottom: 10px;
+    }
+    .wrap { max-width: none; padding: 0; }
+    .page-head .stamp { color: #000; }
+    .page-head .sub { color: #000; }
+    .panel { border: 1px solid #000; border-radius: var(--r); background: #fff; overflow: visible; }
+    .gridrows { min-width: 0; }
+    .cols.head { background: #fff; border-bottom: 1px solid #000; }
+    .prow { border-top: 1px solid #bbb; }
+    .prow:hover { background: #fff; }
+    .lbl, .sku, .pbrand, .num, .rowcount { color: #000; }
+    .was { color: #555; }
+    .cond.N, .cond.R { color: #000; border-color: #000; background: #fff; }
+    .soldtag { color: #000; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, #toast { transition: none !important; }
+    button:active { transform: none; }
+  }
+</style>
+
+<div class="announce"><b>Prices are EXW warehouse and refresh daily.</b> Export or print this list for your purchasing team.</div>
+
+<header class="site">
+  <div class="brandmark">
+    <span class="word">Digital World Shop</span>
+    <span class="sub">B2B Electronics</span>
+  </div>
+  <nav class="main" aria-label="Main">
+    <a href="01-main-selling-page.html">Shop</a>
+    <a href="#" aria-current="page">Price List</a>
+    <a href="03-past-purchases.html">Past Purchases</a>
+    <a href="02-my-offers.html">My Offers</a>
+  </nav>
+  <div class="head-tools">
+    <a class="icon-btn" href="05-notifications.html" aria-label="Notifications, 3 unread">
+      <i class="ph ph-bell" aria-hidden="true"></i><span class="n">3</span>
+    </a>
+    <button class="icon-btn" aria-label="Cart, 2 items">
+      <i class="ph ph-shopping-cart-simple" aria-hidden="true"></i><span class="n">2</span>
+    </button>
+    <a class="icon-btn" href="06-account-apply.html" aria-label="Account">
+      <i class="ph ph-user-circle" aria-hidden="true"></i>
+    </a>
+  </div>
+</header>
+
+<main class="wrap">
+  <p class="print-note">Digital World Shop Price List, printed Jul 17, 2026. Prices subject to change.</p>
+
+  <div class="page-head">
+    <h1>Price List</h1>
+    <span class="sub">12 SKUs · updated Jul 17, 2026</span>
+    <span class="stamp">EXW pricing</span>
+  </div>
+
+  <div class="toolbar-line">
+    <div class="brands" id="brands" role="group" aria-label="Filter by brand"></div>
+    <select id="f-cond" aria-label="Condition">
+      <option value="">All Conditions</option>
+      <option value="N">New</option>
+      <option value="R">Refurbished</option>
+    </select>
+    <label class="searchbox">
+      <i class="ph ph-magnifying-glass" aria-hidden="true"></i>
+      <input type="search" id="q" placeholder="Search SKU or product" aria-label="Search price list">
+    </label>
+    <div class="grow"></div>
+    <button class="btn-line" id="print-btn">
+      <i class="ph ph-printer" aria-hidden="true"></i> Print
+    </button>
+    <button class="btn-line" id="export">
+      <i class="ph ph-download-simple" aria-hidden="true"></i> Export CSV
+    </button>
+  </div>
+
+  <div class="panel"><div class="gridrows">
+    <div class="cols head">
+      <span class="lbl">SKU</span>
+      <span class="lbl">Product</span>
+      <span class="lbl">Brand</span>
+      <span class="lbl">Cond</span>
+      <span class="lbl rr">MOQ</span>
+      <span class="lbl rr">Unit Price</span>
+      <span class="lbl rr">Was</span>
+      <span class="lbl rr">Stock</span>
+    </div>
+    <div id="grid"></div>
+    <div class="empty" id="empty" hidden>No products match these filters.</div>
+  </div></div>
+
+  <p class="rowcount" id="rowcount"></p>
+</main>
+
+<div id="toast" role="status"></div>
+
+<script>
+  const PRODUCTS = [
+    { brand: "HP", title: "HP Spectre x360 16-AA0000 2-in-1 Core Ultra 7 155H 1TB SSD 16GB 16\" 2.8K Touch WIN11 RTX 4050 Nightfall Black", sku: "9V2K8UA#ABA", cond: "N", moq: 5, price: 789, was: 845, loc: "Miami, FL", qty: 61, flags: ["drop"] },
+    { brand: "HP", title: "HP 17-CN4047 Core 7 150U 512GB SSD 16GB 17.3\" FHD WIN11 Natural Silver, US Sales Only", sku: "A05FXUA#ABA", cond: "R", moq: 10, price: 489, was: 519, loc: "Miami, FL", qty: 140, flags: ["drop"] },
+    { brand: "HP", title: "HP OmniBook 3 15-FN0105 AMD Ryzen AI 5 330 512GB SSD 16GB 15.6\" FHD Touch WIN11 Glacier Silver FP Reader", sku: "C20WBUA#ABA", cond: "N", moq: 10, price: 459, was: null, loc: "Miami, FL", qty: 72, flags: ["launch"] },
+    { brand: "Dell", title: "Dell Inspiron 16 5645 Ryzen 7 8840HS 1TB SSD 16GB 16\" FHD+ WIN11 Platinum Silver", sku: "I5645-A712SLV", cond: "N", moq: 8, price: 612, was: null, loc: "Newark, NJ", qty: 96, flags: [] },
+    { brand: "Lenovo", title: "Lenovo IdeaPad Slim 5 16IRL8 Core i7-1355U 512GB SSD 16GB 16\" WUXGA WIN11 Cloud Grey", sku: "82XF002GUS", cond: "R", moq: 12, price: 438, was: 472, loc: "Newark, NJ", qty: 34, flags: ["drop"] },
+    { brand: "Apple", title: "Apple MacBook Air 13.6\" M3 8-Core 256GB SSD 8GB Midnight, Sealed, US Spec", sku: "MRXV3LL/A", cond: "N", moq: 5, price: 869, was: null, loc: "Miami, FL", qty: 48, flags: [] },
+    { brand: "Samsung", title: "Samsung Galaxy Tab A9+ 11\" 64GB Wi-Fi Graphite, Retail Packaging", sku: "SM-X210NZAAXAR", cond: "N", moq: 20, price: 148, was: 159, loc: "Dallas, TX", qty: 320, flags: ["drop"] },
+    { brand: "Asus", title: "ASUS V16 V3607VM-DS79 Gaming Core 7 240H 1TB SSD 32GB 16\" WUXGA 144Hz WIN11 RTX 5060 Black", sku: "V3607VM-DS79", cond: "N", moq: 3, price: 1338, was: null, loc: "Miami, FL", qty: 23, flags: ["launch"] },
+    { brand: "MSI", title: "MSI Codex R2 AI A2NVM7-469 Gaming Desktop Core Ultra 7 265 2TB 32GB WIN11 RTX 5060 Ti Black", sku: "A2NVM7-469US", cond: "N", moq: 2, price: 1890, was: null, loc: "Miami, FL", qty: 0, flags: [] },
+    { brand: "SanDisk", title: "SanDisk Extreme Portable SSD 2TB USB-C 3.2 Gen 2 IP65, Bulk Brown Box", sku: "SDSSDE62-2T00-GAO", cond: "N", moq: 25, price: 118, was: 131, loc: "Dallas, TX", qty: 410, flags: ["drop"] },
+    { brand: "Lenovo", title: "Lenovo ThinkPad E16 Gen 2 Core Ultra 5 125U 512GB SSD 16GB 16\" WUXGA WIN11 Pro Black", sku: "21M5004QUS", cond: "N", moq: 6, price: 724, was: null, loc: "Newark, NJ", qty: 12, flags: ["launch"] },
+    { brand: "Apple", title: "Apple AirPods Pro 2 USB-C, Master Carton of 10, Sealed", sku: "MTJV3AM/A", cond: "N", moq: 10, price: 168, was: 174, loc: "Miami, FL", qty: 8, flags: ["drop"] },
+  ];
+
+  const fmt = n => "$" + n.toLocaleString("en-US", { minimumFractionDigits: n % 1 ? 2 : 0 });
+  const state = { brand: "", cond: "", query: "" };
+
+  /* brand chips */
+  const brandCounts = {};
+  PRODUCTS.forEach(p => brandCounts[p.brand] = (brandCounts[p.brand] || 0) + 1);
+  const brandsEl = document.getElementById("brands");
+  const allBtn = document.createElement("button");
+  allBtn.className = "brand active";
+  allBtn.innerHTML = `All Brands <span class="c">${PRODUCTS.length}</span>`;
+  allBtn.onclick = () => { state.brand = ""; render(); };
+  brandsEl.appendChild(allBtn);
+  Object.entries(brandCounts).forEach(([b, c]) => {
+    const el = document.createElement("button");
+    el.className = "brand";
+    el.innerHTML = `${b} <span class="c">${c}</span>`;
+    el.dataset.brand = b;
+    el.onclick = () => { state.brand = state.brand === b ? "" : b; render(); };
+    brandsEl.appendChild(el);
+  });
+
+  /* filters */
+  document.getElementById("f-cond").onchange = e => { state.cond = e.target.value; render(); };
+  document.getElementById("q").oninput = e => { state.query = e.target.value.trim().toLowerCase(); render(); };
+  document.getElementById("print-btn").onclick = () => window.print();
+  document.getElementById("export").onclick = () => toast("Price list exported as CSV");
+
+  function filtered() {
+    return PRODUCTS.filter(p =>
+      (!state.brand || p.brand === state.brand) &&
+      (!state.cond || p.cond === state.cond) &&
+      (!state.query || p.sku.toLowerCase().includes(state.query) || p.title.toLowerCase().includes(state.query))
+    );
+  }
+
+  function render() {
+    document.querySelectorAll(".brand").forEach(b =>
+      b.classList.toggle("active", (b.dataset.brand || "") === state.brand));
+    const grid = document.getElementById("grid");
+    grid.innerHTML = "";
+    const list = filtered();
+    document.getElementById("empty").hidden = list.length > 0;
+    document.getElementById("rowcount").textContent = `${list.length} SKUs shown`;
+
+    list.forEach(p => {
+      const row = document.createElement("div");
+      row.className = "cols prow";
+      row.innerHTML = `
+        <span class="sku">${p.sku}</span>
+        <span class="ptitle" title="${p.title.replace(/"/g, "&quot;")}">${p.title}</span>
+        <span class="pbrand">${p.brand}</span>
+        <span class="cond ${p.cond}" title="${p.cond === "N" ? "New" : "Refurbished"}">${p.cond}</span>
+        <span class="num rr">${p.moq}</span>
+        <span class="num b rr">${fmt(p.price)}</span>
+        <span class="rr">${p.was ? `<span class="was">${fmt(p.was)}</span>` : ""}</span>
+        <span class="num rr">${p.qty === 0 ? '<span class="soldtag">Out</span>' : p.qty}</span>`;
+      grid.appendChild(row);
+    });
+  }
+
+  let toastTimer;
+  function toast(msg) {
+    const t = document.getElementById("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove("show"), 2600);
+  }
+
+  render();
+</script>
