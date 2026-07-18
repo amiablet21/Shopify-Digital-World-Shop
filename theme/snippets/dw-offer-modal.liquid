@@ -1,0 +1,176 @@
+{% comment %}
+  Make Offer dialog + shared B2B styles (bells, toast). Render once per page
+  from any section whose buttons use data-dw-offer / data-dw-bell.
+{% endcomment %}
+
+<dialog class="dw-om" id="DwOfferModal" aria-labelledby="DwOfferTitle">
+  <form method="dialog">
+    <div class="dw-om__head">
+      <h2 id="DwOfferTitle">Make an Offer</h2>
+    </div>
+    <div class="dw-om__body">
+      <p class="dw-om__product" data-dw-offer-product></p>
+      <div class="dw-om__error" data-dw-offer-error hidden></div>
+      <div class="dw-om__field">
+        <label class="dw-lbl" for="DwOfferQty">Quantity, MOQ applies</label>
+        <input class="dw-mono" id="DwOfferQty" type="number" name="quantity" min="1" value="1" required>
+      </div>
+      <div class="dw-om__field">
+        <label class="dw-lbl" for="DwOfferPrice">Your unit price, USD</label>
+        <input class="dw-mono" id="DwOfferPrice" type="number" name="price" min="0.01" step="0.01" required>
+      </div>
+      <div class="dw-om__field">
+        <label class="dw-lbl" for="DwOfferDuration">Offer valid for</label>
+        <select id="DwOfferDuration" name="duration">
+          <option value="24">24 hours</option>
+          <option value="48">48 hours</option>
+          <option value="168">7 days</option>
+        </select>
+      </div>
+      <div class="dw-om__total">
+        <span>Total offer</span>
+        <span class="dw-mono" data-dw-offer-total>$0</span>
+      </div>
+      <div class="dw-om__actions">
+        <button type="button" class="dw-btn-line" data-dw-offer-cancel>Cancel</button>
+        <button type="submit" class="dw-btn-money">Send Offer</button>
+      </div>
+    </div>
+  </form>
+</dialog>
+
+{% style %}
+  .dw-om {
+    border: 1px solid var(--dw-line-strong);
+    border-radius: var(--dw-r);
+    padding: 0;
+    width: 38rem;
+    max-width: calc(100vw - 3.2rem);
+    background: var(--dw-panel);
+    color: var(--dw-text);
+    font-family: var(--dw-font);
+    box-shadow: 0 1.8rem 5rem rgba(28, 27, 23, 0.28);
+  }
+  .dw-om::backdrop {
+    background: rgba(31, 61, 111, 0.45);
+  }
+  .dw-om__head {
+    padding: 1.6rem 1.8rem 0;
+  }
+  .dw-om__head h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    font-family: var(--dw-font);
+  }
+  .dw-om__body {
+    padding: 1.2rem 1.8rem 1.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+  }
+  .dw-om__product {
+    font-size: 1.2rem;
+    color: var(--dw-text-2);
+    line-height: 1.45;
+    margin: 0;
+  }
+  .dw-om__error {
+    background: var(--dw-bad-soft);
+    color: var(--dw-bad);
+    border: 1px solid var(--dw-bad);
+    border-radius: var(--dw-r);
+    padding: 0.8rem 1.1rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+  .dw-om__field label {
+    display: block;
+    margin-bottom: 0.4rem;
+  }
+  .dw-om__field input,
+  .dw-om__field select {
+    width: 100%;
+    border: 1px solid var(--dw-line-strong);
+    border-radius: var(--dw-r);
+    background: var(--dw-panel);
+    padding: 0.8rem 1rem;
+    font-size: 1.3rem;
+    color: var(--dw-text);
+  }
+  .dw-om__field input:focus,
+  .dw-om__field select:focus {
+    outline: 2px solid var(--dw-accent);
+    outline-offset: -1px;
+  }
+  .dw-om__total {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-top: 1px solid var(--dw-line);
+    padding-top: 1.1rem;
+    font-weight: 600;
+    font-size: 1.3rem;
+  }
+  .dw-om__total .dw-mono {
+    font-size: 1.7rem;
+    font-weight: 700;
+  }
+  .dw-om__actions {
+    display: flex;
+    gap: 0.8rem;
+    justify-content: flex-end;
+  }
+
+  /* bells */
+  .dw-bell {
+    background: none;
+    border: 1px solid var(--dw-line-strong);
+    color: var(--dw-text-3);
+    width: 2.8rem;
+    height: 2.8rem;
+    border-radius: var(--dw-r);
+    display: inline-grid;
+    place-items: center;
+    padding: 0;
+    cursor: pointer;
+  }
+  .dw-bell:hover {
+    border-color: var(--dw-accent);
+    color: var(--dw-accent);
+  }
+  .dw-bell--on {
+    border-color: var(--dw-accent);
+    color: var(--dw-accent);
+    background: var(--dw-accent-soft);
+  }
+  .dw-bell svg {
+    width: 1.4rem;
+    height: 1.4rem;
+  }
+
+  /* toast */
+  .dw-toast {
+    position: fixed;
+    left: 50%;
+    bottom: 2.4rem;
+    transform: translateX(-50%) translateY(0.6rem);
+    background: var(--dw-head-bg);
+    color: var(--dw-head-text);
+    border: 1px solid var(--dw-head-line);
+    border-radius: var(--dw-r);
+    padding: 1rem 1.6rem;
+    font-family: var(--dw-font);
+    font-size: 1.25rem;
+    font-weight: 500;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s, transform 0.15s;
+    max-width: 90vw;
+    z-index: 60;
+  }
+  .dw-toast--show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+{% endstyle %}

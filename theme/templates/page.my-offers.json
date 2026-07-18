@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "main": {
+      "type": "dw-my-offers",
+      "settings": {
+        "heading": "My Offers"
+      }
+    }
+  },
+  "order": ["main"]
+}

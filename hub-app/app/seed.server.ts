@@ -35,7 +35,8 @@ const PAGES = [
   { title: "Past Purchases", handle: "past-purchases", templateSuffix: "past-purchases", body: "" },
   { title: "Price List", handle: "price-list", templateSuffix: "price-list", body: "" },
   { title: "Apply", handle: "apply", templateSuffix: "apply", body: "" },
-  { title: "My Offers", handle: "my-offers", templateSuffix: null, body: "<p>Offer management arrives with the app wiring.</p>" },
+  { title: "My Offers", handle: "my-offers", templateSuffix: "my-offers", body: "" },
+  { title: "Notifications", handle: "notifications", templateSuffix: "notifications", body: "" },
 ];
 
 async function gql(admin: AdminClient, query: string, variables?: Record<string, unknown>) {

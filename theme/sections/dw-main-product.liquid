@@ -22,7 +22,13 @@
   endif
 -%}
 
-<div class="dw-pdp">
+<div
+  class="dw-pdp"
+  data-dw-b2b
+  data-dw-login-url="{{ routes.account_login_url }}"
+  data-dw-customer-email="{{ customer.email }}"
+  data-dw-logged-in="{% if customer %}true{% else %}false{% endif %}"
+>
   <nav class="dw-pdp__crumbs" aria-label="Breadcrumb">
     <a href="{{ routes.all_products_collection_url }}">Shop</a>
     {%- if collection -%}
@@ -143,7 +149,38 @@
               </div>
               <button type="submit" class="dw-btn-money dw-pdp__cta">Add to Cart</button>
             </form>
+            <button
+              type="button"
+              class="dw-btn-line dw-pdp__cta"
+              data-dw-offer
+              data-variant-gid="gid://shopify/ProductVariant/{{ variant.id }}"
+              data-product-gid="gid://shopify/Product/{{ product.id }}"
+              data-sku="{{ variant.sku | escape }}"
+              data-title="{{ product.title | escape }}"
+              data-price-cents="{{ variant.price }}"
+              data-moq="{{ moq }}"
+            >
+              Make Offer
+            </button>
           {%- endif -%}
+          <div class="dw-pdp__watchrow">
+            <button
+              type="button"
+              class="dw-bell"
+              data-dw-bell
+              data-variant-gid="gid://shopify/ProductVariant/{{ variant.id }}"
+              data-product-gid="gid://shopify/Product/{{ product.id }}"
+              data-sku="{{ variant.sku | escape }}"
+              data-title="{{ product.title | escape }}"
+              aria-label="Toggle alerts for {{ variant.sku | default: product.title | escape }}"
+              aria-pressed="false"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M18 9a6 6 0 0 0-12 0c0 6-2 7-2 7h16s-2-1-2-7"/><path d="M10.3 20a2 2 0 0 0 3.4 0"/>
+              </svg>
+            </button>
+            <span class="dw-pdp__watchlabel">Watch price and stock</span>
+          </div>
         {%- else -%}
           <p class="dw-pdp__gatetext">Wholesale pricing is visible to approved business accounts.</p>
           <a class="dw-btn-line dw-pdp__cta" href="{{ routes.account_login_url }}">Sign In</a>
@@ -332,6 +369,18 @@
     color: var(--dw-text-2);
     margin: 1rem 0 0;
   }
+  .dw-pdp__watchrow {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    border-top: 1px solid var(--dw-line);
+    padding-top: 1rem;
+    margin-top: 0.4rem;
+  }
+  .dw-pdp__watchlabel {
+    font-size: 1.2rem;
+    color: var(--dw-text-2);
+  }
   @media screen and (max-width: 859px) {
     .dw-pdp__grid {
       grid-template-columns: 1fr;
@@ -342,7 +391,9 @@
   }
 {% endstyle %}
 
+{% render 'dw-offer-modal' %}
 <script src="{{ 'dw-inventory.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'dw-b2b.js' | asset_url }}" defer="defer"></script>
 
 {% schema %}
 {

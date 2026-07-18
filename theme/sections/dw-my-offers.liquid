@@ -1,0 +1,276 @@
+{% comment %}
+  Digital World Shop: My Offers. Renders the logged-in customer's offers from
+  the companion app via the App Proxy (/apps/dw/offers). Requires the app to
+  be installed and deployed; dw-b2b.js does the fetching and actions.
+{% endcomment %}
+
+<div
+  class="dw-mo"
+  data-dw-b2b
+  data-dw-login-url="{{ routes.account_login_url }}"
+  data-dw-customer-email="{{ customer.email }}"
+  data-dw-logged-in="{% if customer %}true{% else %}false{% endif %}"
+>
+  {%- if customer -%}
+    <div class="dw-mo__head">
+      <h1>{{ section.settings.heading }}</h1>
+    </div>
+    <p class="dw-mo__slots" id="DwOfferSlots">Loading your offers…</p>
+
+    <div class="dw-panel-box">
+      <div class="dw-mo__cols dw-mo__cols--head">
+        <span class="dw-lbl">Offer</span>
+        <span class="dw-lbl">Product</span>
+        <span class="dw-lbl dw-mo__r">Qty</span>
+        <span class="dw-lbl dw-mo__r">Unit Price</span>
+        <span class="dw-lbl dw-mo__r">Total</span>
+        <span class="dw-lbl">Status</span>
+        <span class="dw-lbl" aria-hidden="true"></span>
+      </div>
+      <div id="DwMyOffers">
+        <div class="dw-mo__empty">Loading…</div>
+      </div>
+    </div>
+  {%- else -%}
+    <div class="dw-panel-box dw-mo__gate">
+      <h1>{{ section.settings.heading }}</h1>
+      <p>Sign in with your business account to see and manage your offers.</p>
+      <a class="dw-btn-line" href="{{ routes.account_login_url }}">Sign In</a>
+    </div>
+  {%- endif -%}
+</div>
+
+{% style %}
+  .dw-mo {
+    font-family: var(--dw-font);
+    color: var(--dw-text);
+    max-width: 118rem;
+    margin: 0 auto;
+    padding: 1.8rem 2.4rem 6.4rem;
+  }
+  .dw-mo__head h1 {
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0 0 0.4rem;
+    font-family: var(--dw-font);
+  }
+  .dw-mo__slots {
+    color: var(--dw-text-2);
+    font-size: 1.25rem;
+    margin: 0 0 1.4rem;
+  }
+  .dw-mo__cols {
+    display: grid;
+    align-items: center;
+    gap: 1.2rem;
+    grid-template-columns: 7rem minmax(24rem, 1fr) 6rem 9.6rem 10rem 10.8rem 3rem;
+    padding: 0 1.4rem;
+  }
+  .dw-mo__cols--head {
+    background: var(--dw-panel-2);
+    border-bottom: 1px solid var(--dw-line);
+  }
+  .dw-mo__cols--head > span {
+    padding: 0.7rem 0;
+  }
+  .dw-mo__r {
+    text-align: right;
+  }
+  .dw-mo__offer {
+    border-top: 1px solid var(--dw-line);
+  }
+  .dw-mo__offer:first-of-type {
+    border-top: 0;
+  }
+  .dw-mo__row {
+    display: grid;
+    align-items: center;
+    gap: 1.2rem;
+    grid-template-columns: 7rem minmax(24rem, 1fr) 6rem 9.6rem 10rem 10.8rem 3rem;
+    padding: 0.9rem 1.4rem;
+    cursor: pointer;
+    list-style: none;
+  }
+  .dw-mo__row::-webkit-details-marker {
+    display: none;
+  }
+  .dw-mo__row:hover {
+    background: var(--dw-panel-2);
+  }
+  .dw-mo__id {
+    font-size: 1.15rem;
+    color: var(--dw-text-2);
+  }
+  .dw-mo__name {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    min-width: 0;
+  }
+  .dw-mo__title {
+    font-weight: 500;
+    font-size: 1.3rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .dw-mo__sku {
+    font-size: 1.1rem;
+    color: var(--dw-text-3);
+  }
+  .dw-mo__b {
+    font-weight: 700;
+  }
+  .dw-mo__status {
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border-radius: var(--dw-r);
+    padding: 0.2rem 0.7rem;
+    display: inline-block;
+  }
+  .dw-mo__status--pending {
+    background: var(--dw-warn-soft);
+    color: var(--dw-warn);
+  }
+  .dw-mo__status--countered {
+    background: var(--dw-accent-soft);
+    color: var(--dw-accent-hover);
+  }
+  .dw-mo__status--accepted {
+    background: var(--dw-cta-soft);
+    color: var(--dw-cta-text);
+  }
+  .dw-mo__status--declined {
+    background: var(--dw-bad-soft);
+    color: var(--dw-bad);
+  }
+  .dw-mo__status--expired,
+  .dw-mo__status--withdrawn {
+    background: var(--dw-panel-2);
+    color: var(--dw-text-3);
+    border: 1px solid var(--dw-line-strong);
+  }
+  .dw-mo__chev {
+    color: var(--dw-text-3);
+    text-align: right;
+  }
+  .dw-mo__thread {
+    border-top: 1px dashed var(--dw-line-strong);
+    background: var(--dw-panel-2);
+    padding: 1.4rem 1.6rem;
+  }
+  .dw-mo__msg {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    max-width: 62rem;
+    margin-bottom: 0.8rem;
+  }
+  .dw-mo__msg--you {
+    align-items: flex-end;
+    text-align: right;
+    margin-left: auto;
+  }
+  .dw-mo__who {
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--dw-text-3);
+  }
+  .dw-mo__bubble {
+    border: 1px solid var(--dw-line);
+    background: var(--dw-panel);
+    border-radius: var(--dw-r);
+    padding: 0.8rem 1.1rem;
+    font-size: 1.25rem;
+    line-height: 1.45;
+    display: inline-block;
+  }
+  .dw-mo__msg--you .dw-mo__bubble {
+    background: var(--dw-accent-soft);
+    border-color: var(--dw-accent);
+  }
+  .dw-mo__actions {
+    display: flex;
+    gap: 0.8rem;
+    margin-top: 1.2rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .dw-mo__actions .dw-btn-money {
+    text-decoration: none;
+  }
+  .dw-mo__quiet {
+    border: 0;
+    background: none;
+    color: var(--dw-text-2);
+    font-family: var(--dw-font);
+    font-size: 1.25rem;
+    font-weight: 600;
+    padding: 0.7rem 1rem;
+    cursor: pointer;
+  }
+  .dw-mo__quiet:hover {
+    color: var(--dw-bad);
+  }
+  .dw-mo__empty {
+    text-align: center;
+    color: var(--dw-text-3);
+    padding: 4.4rem 0;
+    font-size: 1.3rem;
+  }
+  .dw-mo__gate {
+    max-width: 48rem;
+    margin: 6rem auto;
+    padding: 2.4rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+  }
+  .dw-mo__gate h1 {
+    font-size: 1.9rem;
+    margin: 0;
+    font-family: var(--dw-font);
+  }
+  .dw-mo__gate p {
+    color: var(--dw-text-2);
+    margin: 0;
+  }
+  @media screen and (max-width: 899px) {
+    .dw-mo__cols,
+    .dw-mo__row {
+      grid-template-columns: minmax(16rem, 1fr) 8rem 10.8rem 3rem;
+    }
+    .dw-mo__cols > :nth-child(1),
+    .dw-mo__cols > :nth-child(3),
+    .dw-mo__cols > :nth-child(4),
+    .dw-mo__row > :nth-child(1),
+    .dw-mo__row > :nth-child(3),
+    .dw-mo__row > :nth-child(4) {
+      display: none;
+    }
+  }
+{% endstyle %}
+
+<script src="{{ 'dw-b2b.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "DW My Offers",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "My Offers"
+    }
+  ],
+  "presets": [{ "name": "DW My Offers" }]
+}
+{% endschema %}

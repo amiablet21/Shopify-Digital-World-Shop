@@ -1,0 +1,160 @@
+{% comment %}
+  Digital World Shop: Notification Center. Watched-items management backed by
+  the companion app (/apps/dw/watches). The alert feed itself arrives with the
+  HUBX sync, which is what detects price drops and restocks.
+{% endcomment %}
+
+<div
+  class="dw-nc"
+  data-dw-b2b
+  data-dw-login-url="{{ routes.account_login_url }}"
+  data-dw-customer-email="{{ customer.email }}"
+  data-dw-logged-in="{% if customer %}true{% else %}false{% endif %}"
+>
+  {%- if customer -%}
+    <div class="dw-nc__head">
+      <h1>{{ section.settings.heading }}</h1>
+      <span class="dw-nc__stamp">Alerts email you at {{ customer.email }}</span>
+    </div>
+    <p class="dw-nc__note">
+      You are alerted when a watched item drops in price or comes back in stock.
+      Watch items with the bell in the Shop.
+    </p>
+    <div class="dw-panel-box">
+      <div class="dw-nc__cols dw-nc__cols--head">
+        <span class="dw-lbl">Watched Item</span>
+        <span class="dw-lbl">Alerts</span>
+        <span class="dw-lbl" aria-hidden="true"></span>
+      </div>
+      <div id="DwWatchList">
+        <div class="dw-mo__empty">Loading…</div>
+      </div>
+    </div>
+  {%- else -%}
+    <div class="dw-panel-box dw-nc__gate">
+      <h1>{{ section.settings.heading }}</h1>
+      <p>Sign in with your business account to manage your alerts.</p>
+      <a class="dw-btn-line" href="{{ routes.account_login_url }}">Sign In</a>
+    </div>
+  {%- endif -%}
+</div>
+
+{% style %}
+  .dw-nc {
+    font-family: var(--dw-font);
+    color: var(--dw-text);
+    max-width: 102rem;
+    margin: 0 auto;
+    padding: 1.8rem 2.4rem 6.4rem;
+  }
+  .dw-nc__head {
+    display: flex;
+    align-items: baseline;
+    gap: 1.2rem;
+  }
+  .dw-nc__head h1 {
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0;
+    font-family: var(--dw-font);
+  }
+  .dw-nc__stamp {
+    margin-left: auto;
+    color: var(--dw-text-3);
+    font-size: 1.2rem;
+  }
+  .dw-nc__note {
+    color: var(--dw-text-2);
+    font-size: 1.25rem;
+    margin: 0.4rem 0 1.4rem;
+  }
+  .dw-nc__cols {
+    display: grid;
+    align-items: center;
+    gap: 1.2rem;
+    grid-template-columns: minmax(28rem, 1fr) 20rem 14rem;
+    padding: 0 1.4rem;
+  }
+  .dw-nc__cols--head {
+    background: var(--dw-panel-2);
+    border-bottom: 1px solid var(--dw-line);
+  }
+  .dw-nc__cols--head > span {
+    padding: 0.7rem 0;
+  }
+  .dw-nc__row {
+    display: grid;
+    align-items: center;
+    gap: 1.2rem;
+    grid-template-columns: minmax(28rem, 1fr) 20rem 14rem;
+    padding: 0.9rem 1.4rem;
+    border-top: 1px solid var(--dw-line);
+  }
+  .dw-nc__row:first-of-type {
+    border-top: 0;
+  }
+  .dw-nc__name {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    min-width: 0;
+  }
+  .dw-nc__title {
+    font-weight: 500;
+    font-size: 1.3rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .dw-nc__sku {
+    font-size: 1.1rem;
+    color: var(--dw-text-3);
+  }
+  .dw-nc__kinds {
+    font-size: 1.2rem;
+    color: var(--dw-text-2);
+  }
+  .dw-mo__empty {
+    text-align: center;
+    color: var(--dw-text-3);
+    padding: 4.4rem 0;
+    font-size: 1.3rem;
+  }
+  .dw-nc__gate {
+    max-width: 48rem;
+    margin: 6rem auto;
+    padding: 2.4rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+  }
+  .dw-nc__gate h1 {
+    font-size: 1.9rem;
+    margin: 0;
+    font-family: var(--dw-font);
+  }
+  .dw-nc__gate p {
+    color: var(--dw-text-2);
+    margin: 0;
+  }
+{% endstyle %}
+
+<script src="{{ 'dw-b2b.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "DW Notification Center",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Notifications"
+    }
+  ],
+  "presets": [{ "name": "DW Notification Center" }]
+}
+{% endschema %}
