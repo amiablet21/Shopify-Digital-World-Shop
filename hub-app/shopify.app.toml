@@ -9,23 +9,28 @@ name = "digital-world-hub"
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
 # products/inventory for seeding and the HUBX sync, draft orders for accepted
 # offers, customers for the approval flow, pages/navigation for store seeding.
-scopes = "write_products,write_inventory,write_draft_orders,read_customers,write_customers,read_locations,write_online_store_pages,write_online_store_navigation"
+scopes = "write_products,write_inventory,write_draft_orders,read_customers,write_customers,read_locations,write_online_store_pages,write_online_store_navigation,read_publications,write_publications"
 
-[app_proxy]
-url = "https://REPLACED_ON_DEPLOY.example.com/proxy"
-prefix = "apps"
-subpath = "dw"
+# App proxy: storefront pages call /apps/dw/offers and /apps/dw/watches.
+# Disabled while developing with --use-localhost (requires a public host).
+# Re-enable before deploying, with the deployed URL + /proxy.
+# [app_proxy]
+# url = "https://REPLACED_ON_DEPLOY.example.com/proxy"
+# prefix = "apps"
+# subpath = "dw"
 
 [webhooks]
 api_version = "2026-10"
 
-  [[webhooks.subscriptions]]
-  uri = "/webhooks/app/uninstalled"
-  topics = [ "app/uninstalled" ]
-
-  [[webhooks.subscriptions]]
-  uri = "/webhooks/app/scopes_update"
-  topics = [ "app/scopes_update" ]
+# Webhook subscriptions are disabled while developing with --use-localhost:
+# Shopify rejects localhost webhook URIs. Re-enable before deploying.
+#  [[webhooks.subscriptions]]
+#  uri = "/webhooks/app/uninstalled"
+#  topics = [ "app/uninstalled" ]
+#
+#  [[webhooks.subscriptions]]
+#  uri = "/webhooks/app/scopes_update"
+#  topics = [ "app/scopes_update" ]
 
 [auth]
 redirect_urls = [ "https://shopify.dev/apps/default-app-home/api/auth" ]

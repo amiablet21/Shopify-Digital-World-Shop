@@ -83,14 +83,17 @@ export async function seedStore(admin: AdminClient): Promise<SeedResult[]> {
     });
   }
 
-  // 2. Primary location for inventory
+  // 2. Location for inventory. Must be one that ships inventory and fulfills
+  //    online orders, or the storefront treats the stock as unsellable.
   const loc = await gql(admin, `#graphql
-    query { locations(first: 1) { nodes { id name } } }`);
-  const locationId = loc.data?.locations?.nodes?.[0]?.id;
+    query { locations(first: 10) { nodes { id name fulfillsOnlineOrders shipsInventory } } }`);
+  const locNodes = loc.data?.locations?.nodes ?? [];
+  const shippingLoc = locNodes.find((l: any) => l.shipsInventory && l.fulfillsOnlineOrders) ?? locNodes[0];
+  const locationId = shippingLoc?.id;
   results.push({
     step: "Locate warehouse",
     ok: Boolean(locationId),
-    detail: locationId ? loc.data.locations.nodes[0].name : "no location found",
+    detail: locationId ? shippingLoc.name : "no location found",
   });
 
   // 3. Products
