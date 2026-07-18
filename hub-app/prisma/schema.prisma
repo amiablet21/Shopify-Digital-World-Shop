@@ -1,0 +1,99 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Note that some adapters may set a maximum length for the String type by default, please ensure your strings are long
+// enough when changing adapters.
+// See https://www.prisma.io/docs/orm/reference/prisma-schema-reference#string for more information
+datasource db {
+  provider = "sqlite"
+  url      = "file:dev.sqlite"
+}
+
+model Session {
+  id                  String    @id
+  shop                String
+  state               String
+  isOnline            Boolean   @default(false)
+  scope               String?
+  expires             DateTime?
+  accessToken         String
+  userId              BigInt?
+  firstName           String?
+  lastName            String?
+  email               String?
+  accountOwner        Boolean   @default(false)
+  locale              String?
+  collaborator        Boolean?  @default(false)
+  emailVerified       Boolean?  @default(false)
+  refreshToken        String?
+  refreshTokenExpires DateTime?
+}
+
+// ---------- Digital World Shop B2B ----------
+
+// A customer's offer on a product. Statuses: PENDING, COUNTERED, ACCEPTED,
+// DECLINED, EXPIRED, WITHDRAWN. Concurrent PENDING/COUNTERED offers per
+// customer are capped by OFFER_SLOTS (default 3), enforced in code.
+model Offer {
+  id            Int            @id @default(autoincrement())
+  shop          String
+  customerId    String // Shopify customer gid
+  customerEmail String
+  productId     String // Shopify product gid
+  variantId     String // Shopify variant gid
+  sku           String
+  productTitle  String
+  quantity      Int
+  // money in cents, store currency
+  listPriceCents Int
+  offerCents     Int // buyer's current price
+  counterCents   Int? // seller's current counter, when present
+  status        String         @default("PENDING")
+  expiresAt     DateTime
+  draftOrderId  String? // set when accepted
+  invoiceUrl    String? // draft order invoice for Pay Now
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  messages      OfferMessage[]
+
+  @@index([shop, customerId, status])
+  @@index([shop, status])
+}
+
+// The negotiation thread on an offer, rendered chat-style on My Offers.
+model OfferMessage {
+  id        Int      @id @default(autoincrement())
+  offerId   Int
+  offer     Offer    @relation(fields: [offerId], references: [id], onDelete: Cascade)
+  from      String // BUYER or SELLER
+  body      String
+  cents     Int? // price attached to this message, when it is an offer/counter
+  createdAt DateTime @default(now())
+
+  @@index([offerId])
+}
+
+// A customer watching a product for restock and/or price-drop alerts.
+model Watch {
+  id            Int      @id @default(autoincrement())
+  shop          String
+  customerId    String
+  customerEmail String
+  productId     String
+  variantId     String
+  sku           String
+  productTitle  String
+  onPriceDrop   Boolean  @default(true)
+  onRestock     Boolean  @default(true)
+  // last observed state, so the sync can detect transitions
+  lastPriceCents Int?
+  lastAvailable  Boolean?
+  createdAt     DateTime @default(now())
+
+  @@unique([shop, customerId, variantId])
+  @@index([shop, variantId])
+}
