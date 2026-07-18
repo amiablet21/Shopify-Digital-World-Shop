@@ -1,0 +1,8 @@
+{
+  "sections": {
+    "main": {
+      "type": "dw-apply"
+    }
+  },
+  "order": ["main"]
+}

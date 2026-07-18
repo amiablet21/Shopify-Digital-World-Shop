@@ -1,0 +1,368 @@
+{% comment %}
+  Digital World Shop: Past Purchases. A storefront page (not a legacy
+  customers/ template, which new customer accounts bypass) that renders the
+  logged-in customer's order ledger with one-click reorder.
+{% endcomment %}
+
+<div class="dw-pp">
+  {%- if customer -%}
+    <div class="dw-pp__head">
+      <h1>{{ section.settings.heading }}</h1>
+      <span class="dw-pp__sub">
+        Orders placed by {{ customer.name | default: customer.email }}
+      </span>
+    </div>
+
+    <div class="dw-pp__stats">
+      <div class="dw-pp__stat">
+        <span class="dw-mono dw-pp__statv">{{ customer.orders_count }}</span>
+        <span class="dw-pp__statk">Orders placed</span>
+      </div>
+      <div class="dw-pp__stat">
+        <span class="dw-mono dw-pp__statv">{{ customer.total_spent | money }}</span>
+        <span class="dw-pp__statk">Total spent</span>
+      </div>
+    </div>
+
+    {%- paginate customer.orders by 20 -%}
+      <div class="dw-panel-box dw-pp__panel">
+        <div class="dw-pp__cols dw-pp__cols--head">
+          <span class="dw-lbl">Order</span>
+          <span class="dw-lbl">Date</span>
+          <span class="dw-lbl dw-pp__r">Units</span>
+          <span class="dw-lbl dw-pp__r">Total</span>
+          <span class="dw-lbl">Status</span>
+          <span class="dw-lbl">Reorder</span>
+        </div>
+
+        {%- for order in customer.orders -%}
+          {%- liquid
+            assign units = 0
+            for line in order.line_items
+              assign units = units | plus: line.quantity
+            endfor
+          -%}
+          <details class="dw-pp__order">
+            <summary class="dw-pp__cols dw-pp__row">
+              <span class="dw-mono dw-pp__num">
+                <a href="{{ order.customer_url }}">{{ order.name }}</a>
+              </span>
+              <span class="dw-pp__date">{{ order.created_at | date: '%b %-d, %Y' }}</span>
+              <span class="dw-mono dw-pp__r">{{ units }}</span>
+              <span class="dw-mono dw-pp__r dw-pp__total">{{ order.total_price | money }}</span>
+              <span>
+                {%- if order.cancelled -%}
+                  <span class="dw-pp__status dw-pp__status--cancelled">Cancelled</span>
+                {%- elsif order.fulfillment_status == 'fulfilled' -%}
+                  <span class="dw-pp__status dw-pp__status--done">Fulfilled</span>
+                {%- elsif order.fulfillment_status == 'partial' -%}
+                  <span class="dw-pp__status dw-pp__status--transit">Partial</span>
+                {%- else -%}
+                  <span class="dw-pp__status dw-pp__status--open">Processing</span>
+                {%- endif -%}
+              </span>
+              <span class="dw-pp__actions">
+                {%- capture reorder_items -%}
+                  [
+                    {%- for line in order.line_items -%}
+                      {%- if line.variant_id -%}
+                        {"id": {{ line.variant_id }}, "quantity": {{ line.quantity }}}
+                        {%- unless forloop.last -%},{%- endunless -%}
+                      {%- endif -%}
+                    {%- endfor -%}
+                  ]
+                {%- endcapture -%}
+                <button
+                  type="button"
+                  class="dw-btn-money"
+                  data-dw-reorder="{{ reorder_items | strip_newlines | strip | escape }}"
+                >
+                  Reorder All
+                </button>
+                <span class="dw-pp__chev" aria-hidden="true">&#9662;</span>
+              </span>
+            </summary>
+
+            <div class="dw-pp__items">
+              <div class="dw-pp__icols dw-pp__icols--head">
+                <span class="dw-lbl">Item</span>
+                <span class="dw-lbl">SKU</span>
+                <span class="dw-lbl dw-pp__r">Qty</span>
+                <span class="dw-lbl dw-pp__r">Unit Price</span>
+                <span class="dw-lbl dw-pp__r">Line Total</span>
+              </div>
+              {%- for line in order.line_items -%}
+                <div class="dw-pp__icols">
+                  <span class="dw-pp__ititle">{{ line.title }}</span>
+                  <span class="dw-mono dw-pp__isku">{{ line.sku }}</span>
+                  <span class="dw-mono dw-pp__r">{{ line.quantity }}</span>
+                  <span class="dw-mono dw-pp__r">{{ line.final_price | money }}</span>
+                  <span class="dw-mono dw-pp__r dw-pp__iline">{{ line.final_line_price | money }}</span>
+                </div>
+              {%- endfor -%}
+              <p class="dw-pp__note">Reordering uses current wholesale prices, which may differ from what you paid.</p>
+            </div>
+          </details>
+        {%- else -%}
+          <div class="dw-pp__empty">No orders yet. Your purchases will appear here.</div>
+        {%- endfor -%}
+
+        {%- if paginate.pages > 1 -%}
+          <div class="dw-pp__pagination">{% render 'pagination', paginate: paginate %}</div>
+        {%- endif -%}
+      </div>
+    {%- endpaginate -%}
+
+  {%- else -%}
+    <div class="dw-panel-box dw-pp__gate">
+      <h1>{{ section.settings.heading }}</h1>
+      <p>Sign in with your business account to see your order history and reorder in one click.</p>
+      <a class="dw-btn-line" href="{{ routes.account_login_url }}">Sign In</a>
+    </div>
+  {%- endif -%}
+</div>
+
+{% style %}
+  .dw-pp {
+    font-family: var(--dw-font);
+    color: var(--dw-text);
+    max-width: 118rem;
+    margin: 0 auto;
+    padding: 1.8rem 2.4rem 6.4rem;
+  }
+  .dw-pp__head {
+    display: flex;
+    align-items: baseline;
+    gap: 1.2rem;
+    margin-bottom: 1.4rem;
+  }
+  .dw-pp__head h1 {
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0;
+    font-family: var(--dw-font);
+  }
+  .dw-pp__sub {
+    color: var(--dw-text-2);
+    font-size: 1.25rem;
+  }
+  .dw-pp__stats {
+    display: flex;
+    gap: 0.8rem;
+    margin-bottom: 1.4rem;
+    flex-wrap: wrap;
+  }
+  .dw-pp__stat {
+    border: 1px solid var(--dw-line);
+    background: var(--dw-panel);
+    border-radius: var(--dw-r);
+    padding: 0.9rem 1.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    min-width: 13rem;
+  }
+  .dw-pp__statv {
+    font-size: 1.6rem;
+    font-weight: 700;
+  }
+  .dw-pp__statk {
+    font-size: 1.1rem;
+    color: var(--dw-text-2);
+  }
+  .dw-pp__panel {
+    overflow: hidden;
+  }
+  .dw-pp__cols {
+    display: grid;
+    align-items: center;
+    gap: 1.2rem;
+    grid-template-columns: 9.6rem 9.2rem 6rem 10rem 10.8rem 1fr;
+    padding: 0 1.4rem;
+  }
+  .dw-pp__cols--head {
+    background: var(--dw-panel-2);
+    border-bottom: 1px solid var(--dw-line);
+  }
+  .dw-pp__cols--head > span {
+    padding: 0.7rem 0;
+  }
+  .dw-pp__r {
+    text-align: right;
+  }
+  .dw-pp__order {
+    border-top: 1px solid var(--dw-line);
+  }
+  .dw-pp__order:first-of-type {
+    border-top: 0;
+  }
+  .dw-pp__row {
+    padding-top: 0.9rem;
+    padding-bottom: 0.9rem;
+    cursor: pointer;
+    list-style: none;
+  }
+  .dw-pp__row::-webkit-details-marker {
+    display: none;
+  }
+  .dw-pp__row:hover {
+    background: var(--dw-panel-2);
+  }
+  .dw-pp__num a {
+    color: var(--dw-text);
+    font-weight: 600;
+    font-size: 1.2rem;
+    text-decoration: none;
+  }
+  .dw-pp__num a:hover {
+    color: var(--dw-accent);
+  }
+  .dw-pp__date {
+    font-size: 1.2rem;
+    color: var(--dw-text-2);
+  }
+  .dw-pp__total {
+    font-weight: 700;
+  }
+  .dw-pp__status {
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border-radius: var(--dw-r);
+    padding: 0.2rem 0.7rem;
+    display: inline-block;
+  }
+  .dw-pp__status--open {
+    background: var(--dw-warn-soft);
+    color: var(--dw-warn);
+  }
+  .dw-pp__status--transit {
+    background: var(--dw-accent-soft);
+    color: var(--dw-accent-hover);
+  }
+  .dw-pp__status--done {
+    background: var(--dw-panel-2);
+    color: var(--dw-text-2);
+    border: 1px solid var(--dw-line-strong);
+  }
+  .dw-pp__status--cancelled {
+    background: var(--dw-bad-soft);
+    color: var(--dw-bad);
+  }
+  .dw-pp__actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1rem;
+  }
+  .dw-pp__chev {
+    color: var(--dw-text-3);
+  }
+  .dw-pp__order[open] .dw-pp__chev {
+    transform: rotate(180deg);
+  }
+  .dw-pp__items {
+    border-top: 1px dashed var(--dw-line-strong);
+    background: var(--dw-panel-2);
+    padding: 1rem 1.6rem 1.4rem;
+  }
+  .dw-pp__icols {
+    display: grid;
+    align-items: center;
+    gap: 1.2rem;
+    grid-template-columns: minmax(26rem, 1fr) 14rem 6rem 9.2rem 10rem;
+    padding: 0.6rem 0;
+  }
+  .dw-pp__icols--head {
+    border-bottom: 1px solid var(--dw-line);
+  }
+  .dw-pp__icols + .dw-pp__icols {
+    border-top: 1px solid var(--dw-line);
+  }
+  .dw-pp__icols--head + .dw-pp__icols {
+    border-top: 0;
+  }
+  .dw-pp__ititle {
+    font-size: 1.25rem;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .dw-pp__isku {
+    font-size: 1.1rem;
+    color: var(--dw-text-3);
+  }
+  .dw-pp__iline {
+    font-weight: 700;
+  }
+  .dw-pp__note {
+    font-size: 1.2rem;
+    color: var(--dw-text-2);
+    margin: 1.2rem 0 0;
+  }
+  .dw-pp__empty {
+    text-align: center;
+    color: var(--dw-text-3);
+    padding: 4.4rem 0;
+    font-size: 1.3rem;
+  }
+  .dw-pp__pagination {
+    padding: 1.2rem;
+    border-top: 1px solid var(--dw-line);
+  }
+  .dw-pp__gate {
+    max-width: 48rem;
+    margin: 6rem auto;
+    padding: 2.4rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+  }
+  .dw-pp__gate h1 {
+    font-size: 1.9rem;
+    margin: 0;
+    font-family: var(--dw-font);
+  }
+  .dw-pp__gate p {
+    color: var(--dw-text-2);
+    margin: 0;
+  }
+  @media screen and (max-width: 899px) {
+    .dw-pp__cols {
+      grid-template-columns: 8rem 8rem 8rem 1fr;
+    }
+    .dw-pp__cols > :nth-child(3),
+    .dw-pp__cols > :nth-child(5) {
+      display: none;
+    }
+    .dw-pp__icols {
+      grid-template-columns: 1fr 6rem 9rem;
+    }
+    .dw-pp__icols > :nth-child(2),
+    .dw-pp__icols > :nth-child(4) {
+      display: none;
+    }
+  }
+{% endstyle %}
+
+<script src="{{ 'dw-account.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "DW Past Purchases",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Past Purchases"
+    }
+  ],
+  "presets": [{ "name": "DW Past Purchases" }]
+}
+{% endschema %}

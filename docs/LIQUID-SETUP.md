@@ -10,11 +10,24 @@ Everything custom is prefixed `dw-` so Dawn upgrades stay easy to merge.
 | 01-main-selling-page.html | `sections/dw-main-inventory.liquid` + `templates/collection.json` + `assets/dw-inventory.js` |
 | Header + announcement | `sections/dw-header.liquid`, `sections/dw-announcement.liquid`, `sections/header-group.json` |
 | Design tokens | `assets/dw-tokens.css`, fonts via `snippets/dw-fonts.liquid` (loaded in `layout/theme.liquid`) |
-| Cart drawer | Dawn's built-in AJAX drawer, wired to our Add to Cart buttons (custom styling pass still to do) |
+| Cart drawer | Dawn's built-in AJAX drawer restyled by `assets/dw-cart-drawer.css` |
+| 03-past-purchases.html | `sections/dw-past-purchases.liquid` + `templates/page.past-purchases.json` + `assets/dw-account.js` (storefront page, works with new customer accounts) |
+| 04-price-list.html | `sections/dw-price-list.liquid` + `templates/page.price-list.json` |
+| 06-account-apply.html | `sections/dw-apply.liquid` + `templates/page.apply.json` (submissions arrive as contact-form emails) |
+| 07-product-detail.html | `sections/dw-main-product.liquid` + `templates/product.json` (specs from `custom.specs` metafield, one "Key: Value" per line) |
 
-Still to convert: Past Purchases (customer account templates), Price List page,
-product detail template, account application page, cart drawer restyle.
 My Offers and the Notification Center wait for the custom app (App Proxy).
+
+### Pages to create in admin (Online Store → Pages)
+
+| Page title | Theme template |
+|---|---|
+| Past Purchases | `page.past-purchases` |
+| Price List | `page.price-list` |
+| Apply | `page.apply` |
+
+Then point the main-menu links at these pages. Optional extra metafield for
+product pages: `custom.specs` (multi-line text), one `Key: Value` per line.
 
 ## One-time store setup (Shopify admin)
 

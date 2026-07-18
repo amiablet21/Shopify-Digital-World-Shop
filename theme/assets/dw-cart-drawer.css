@@ -1,0 +1,108 @@
+/* Digital World Shop restyle of Dawn's cart drawer.
+   Loaded after component-cart-drawer.css so these rules win on equal
+   specificity. Structure and behavior stay Dawn's; only the skin changes. */
+
+cart-drawer .drawer__inner {
+  background: var(--dw-panel);
+  color: var(--dw-text);
+  font-family: var(--dw-font);
+  border-left: 1px solid var(--dw-line-strong);
+}
+
+cart-drawer .drawer__header {
+  background: var(--dw-panel-2);
+  border-bottom: 1px solid var(--dw-line);
+  padding: 1.2rem 1.6rem;
+}
+
+cart-drawer .drawer__heading {
+  font-family: var(--dw-font);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--dw-text);
+}
+
+cart-drawer .drawer__close {
+  color: var(--dw-text-2);
+}
+
+cart-drawer .cart-item__name {
+  font-family: var(--dw-font);
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--dw-text);
+  text-decoration: none;
+}
+
+cart-drawer .cart-item__name:hover {
+  color: var(--dw-accent);
+}
+
+cart-drawer .cart-items thead,
+cart-drawer .cart-item {
+  border-color: var(--dw-line);
+}
+
+cart-drawer .price,
+cart-drawer .cart-item__price-wrapper,
+cart-drawer .totals__total-value {
+  font-family: var(--dw-mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--dw-text);
+}
+
+cart-drawer .totals__total {
+  font-family: var(--dw-font);
+  font-weight: 600;
+  color: var(--dw-text);
+}
+
+cart-drawer .quantity {
+  border: 1px solid var(--dw-line-strong);
+  border-radius: var(--dw-r);
+  background: var(--dw-panel);
+}
+
+cart-drawer .quantity__input {
+  font-family: var(--dw-mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--dw-text);
+}
+
+cart-drawer .quantity__button {
+  color: var(--dw-text-2);
+}
+
+cart-drawer .drawer__footer {
+  border-top: 1px solid var(--dw-line);
+  background: var(--dw-panel);
+}
+
+cart-drawer .cart__checkout-button,
+cart-drawer .button--primary {
+  background: var(--dw-cta-soft);
+  color: var(--dw-cta-text);
+  border: 1px solid var(--dw-cta);
+  border-radius: var(--dw-r);
+  font-family: var(--dw-font);
+  font-weight: 700;
+  box-shadow: none;
+}
+
+cart-drawer .cart__checkout-button:hover,
+cart-drawer .button--primary:hover {
+  background: #fce0c6;
+  border-color: var(--dw-cta-hover);
+  box-shadow: none;
+}
+
+cart-drawer .cart-item__error-text {
+  color: var(--dw-bad);
+}
+
+cart-drawer .cart-drawer__warnings .cart__login-title,
+cart-drawer .cart-drawer__warnings h2 {
+  font-family: var(--dw-font);
+  color: var(--dw-text);
+}

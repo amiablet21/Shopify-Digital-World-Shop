@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "main": {
+      "type": "dw-past-purchases",
+      "settings": {
+        "heading": "Past Purchases"
+      }
+    }
+  },
+  "order": ["main"]
+}

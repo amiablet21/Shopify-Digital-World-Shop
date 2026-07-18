@@ -19,14 +19,37 @@
   }
 
   // MOQ snapping: round up to the nearest multiple, never below the MOQ.
+  function updateLineTotal(input) {
+    var price = parseInt(input.dataset.dwPrice, 10);
+    if (!price) return;
+    var totalEl = input.closest('form') && input.closest('form').querySelector('[data-dw-total]');
+    if (!totalEl) return;
+    var cents = price * (parseInt(input.value, 10) || 0);
+    totalEl.textContent =
+      '$' + (cents / 100).toLocaleString('en-US', { minimumFractionDigits: cents % 100 ? 2 : 0 });
+  }
+
   document.querySelectorAll('[data-moq]').forEach(function (input) {
     input.addEventListener('change', function () {
       var moq = parseInt(input.dataset.moq, 10) || 1;
       var value = parseInt(input.value, 10) || moq;
       if (value < moq) value = moq;
-      var snapped = Math.ceil(value / moq) * moq;
-      if (snapped !== value) input.value = snapped;
-      else input.value = value;
+      input.value = Math.ceil(value / moq) * moq;
+      updateLineTotal(input);
+    });
+  });
+
+  // Stepper buttons (product page): adjust the sibling quantity input by one MOQ.
+  document.querySelectorAll('[data-dw-step]').forEach(function (button) {
+    button.addEventListener('click', function () {
+      var form = button.closest('form');
+      var input = form && form.querySelector('[data-moq]');
+      if (!input) return;
+      var moq = parseInt(input.dataset.moq, 10) || 1;
+      var value = (parseInt(input.value, 10) || moq) + parseInt(button.dataset.dwStep, 10) * moq;
+      if (value < moq) value = moq;
+      input.value = value;
+      updateLineTotal(input);
     });
   });
 

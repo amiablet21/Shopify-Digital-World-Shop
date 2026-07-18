@@ -1,0 +1,371 @@
+{% comment %}
+  Digital World Shop: slim, image-free product page. Buyers transact from the
+  grid; this page is the SEO/deep-link surface with specs and a sticky buy box.
+  Specs come from product.metafields.custom.specs (multi-line text, one
+  "Key: Value" per line); falls back to the product description.
+{% endcomment %}
+
+{%- liquid
+  assign variant = product.selected_or_first_available_variant
+  assign moq = product.metafields.custom.moq.value | default: 1
+  assign cond = product.metafields.custom.condition.value | slice: 0 | upcase
+  assign warehouse = product.metafields.custom.warehouse.value
+  assign soldout = false
+  unless variant.available
+    assign soldout = true
+  endunless
+  assign approved = false
+  if section.settings.enable_gating == false
+    assign approved = true
+  elsif customer and customer.tags contains section.settings.approved_tag
+    assign approved = true
+  endif
+-%}
+
+<div class="dw-pdp">
+  <nav class="dw-pdp__crumbs" aria-label="Breadcrumb">
+    <a href="{{ routes.all_products_collection_url }}">Shop</a>
+    {%- if collection -%}
+      <span>/</span><a href="{{ collection.url }}">{{ collection.title }}</a>
+    {%- endif -%}
+    {%- if product.vendor != blank -%}
+      <span>/</span><span>{{ product.vendor }}</span>
+    {%- endif -%}
+  </nav>
+
+  <h1 class="dw-pdp__title">{{ product.title }}</h1>
+  <div class="dw-pdp__meta">
+    {%- if variant.sku != blank -%}
+      <span class="dw-mono dw-pdp__sku">{{ variant.sku }}</span>
+    {%- endif -%}
+    {%- if cond == 'N' -%}
+      <span class="dw-cond dw-cond--n" title="New">N</span>
+    {%- elsif cond == 'R' -%}
+      <span class="dw-cond dw-cond--r" title="Refurbished">R</span>
+    {%- endif -%}
+    {%- if variant.compare_at_price > variant.price and approved -%}
+      <span class="dw-flag dw-flag--drop">Price Drop</span>
+    {%- endif -%}
+    {%- if product.tags contains 'just-launched' -%}
+      <span class="dw-flag dw-flag--launch">Just Launched</span>
+    {%- endif -%}
+    {%- if warehouse != blank -%}
+      <span class="dw-pdp__ship">Ships from {{ warehouse }}</span>
+    {%- endif -%}
+  </div>
+
+  <div class="dw-pdp__grid">
+    <div class="dw-pdp__left">
+      <div class="dw-panel-box dw-pdp__panel">
+        <div class="dw-pdp__panelhead dw-lbl">Specifications</div>
+        {%- assign specs = product.metafields.custom.specs.value -%}
+        {%- if specs != blank -%}
+          {%- assign lines = specs | newline_to_br | split: '<br />' -%}
+          {%- for line in lines -%}
+            {%- assign clean = line | strip -%}
+            {%- if clean contains ':' -%}
+              {%- assign key = clean | split: ':' | first | strip -%}
+              {%- assign val = clean | remove_first: key | remove_first: ':' | strip -%}
+              <div class="dw-pdp__spec">
+                <span class="dw-lbl">{{ key }}</span>
+                <span>{{ val }}</span>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- elsif product.description != blank -%}
+          <div class="dw-pdp__desc">{{ product.description }}</div>
+        {%- else -%}
+          <div class="dw-pdp__desc dw-pdp__desc--empty">Specifications coming soon.</div>
+        {%- endif -%}
+      </div>
+
+      <div class="dw-panel-box dw-pdp__panel">
+        <div class="dw-pdp__panelhead dw-lbl">Availability</div>
+        <div class="dw-pdp__spec">
+          <span class="dw-lbl">{{ warehouse | default: 'Warehouse' }}</span>
+          <span class="dw-mono dw-pdp__avqty">
+            {%- if soldout -%}
+              <span class="dw-soldtag">Sold out</span>
+            {%- elsif variant.inventory_management == 'shopify' -%}
+              {{ variant.inventory_quantity }} units
+            {%- else -%}
+              In stock
+            {%- endif -%}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="dw-pdp__right">
+      <div class="dw-panel-box dw-pdp__buy">
+        {%- if approved -%}
+          <div class="dw-pdp__priceline">
+            <span class="dw-mono dw-pdp__price">{{ variant.price | money }}</span>
+            {%- if variant.compare_at_price > variant.price -%}
+              <s class="dw-mono dw-pdp__was">{{ variant.compare_at_price | money }}</s>
+            {%- endif -%}
+          </div>
+          <span class="dw-pdp__unit">per unit, EXW</span>
+          <span class="dw-pdp__moq">MOQ {{ moq }}, sold in multiples of {{ moq }}</span>
+
+          {%- if soldout -%}
+            {%- if section.settings.waitlist_email != blank -%}
+              <a
+                class="dw-btn-ink dw-pdp__cta"
+                href="mailto:{{ section.settings.waitlist_email }}?subject=Waitlist%20request%3A%20{{ variant.sku | url_encode }}"
+              >
+                Join Waitlist
+              </a>
+            {%- else -%}
+              <span class="dw-soldtag">Sold out</span>
+            {%- endif -%}
+          {%- else -%}
+            <form class="dw-pdp__atc" data-dw-atc>
+              <input type="hidden" name="id" value="{{ variant.id }}">
+              <div class="dw-pdp__qtyrow">
+                <button type="button" class="dw-btn-line dw-pdp__step" data-dw-step="-1" aria-label="Decrease quantity">&minus;</button>
+                <input
+                  class="dw-pdp__qtyin dw-mono"
+                  type="number"
+                  name="quantity"
+                  value="{{ moq }}"
+                  min="{{ moq }}"
+                  step="{{ moq }}"
+                  data-moq="{{ moq }}"
+                  data-dw-price="{{ variant.price }}"
+                  aria-label="Quantity"
+                >
+                <button type="button" class="dw-btn-line dw-pdp__step" data-dw-step="1" aria-label="Increase quantity">+</button>
+              </div>
+              <div class="dw-pdp__totalrow">
+                <span>Line total</span>
+                <span class="dw-mono dw-pdp__total" data-dw-total>{{ variant.price | times: moq | money }}</span>
+              </div>
+              <button type="submit" class="dw-btn-money dw-pdp__cta">Add to Cart</button>
+            </form>
+          {%- endif -%}
+        {%- else -%}
+          <p class="dw-pdp__gatetext">Wholesale pricing is visible to approved business accounts.</p>
+          <a class="dw-btn-line dw-pdp__cta" href="{{ routes.account_login_url }}">Sign In</a>
+        {%- endif -%}
+      </div>
+      {%- if approved and soldout == false -%}
+        <p class="dw-pdp__offer-note">Volume above {{ moq | times: 10 }} units? Contact sales for tier pricing.</p>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% style %}
+  .dw-pdp {
+    font-family: var(--dw-font);
+    color: var(--dw-text);
+    max-width: 102rem;
+    margin: 0 auto;
+    padding: 1.8rem 2.4rem 6.4rem;
+  }
+  .dw-pdp__crumbs {
+    font-size: 1.2rem;
+    color: var(--dw-text-3);
+    display: flex;
+    gap: 0.6rem;
+    margin-bottom: 1.2rem;
+  }
+  .dw-pdp__crumbs a {
+    color: var(--dw-text-2);
+    text-decoration: none;
+  }
+  .dw-pdp__crumbs a:hover {
+    color: var(--dw-accent);
+  }
+  .dw-pdp__title {
+    font-family: var(--dw-font);
+    font-size: 1.8rem;
+    font-weight: 700;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+    margin: 0 0 0.8rem;
+    max-width: 86rem;
+  }
+  .dw-pdp__meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.8rem;
+  }
+  .dw-pdp__sku {
+    font-size: 1.2rem;
+    color: var(--dw-text-2);
+  }
+  .dw-pdp__ship {
+    font-size: 1.2rem;
+    color: var(--dw-text-2);
+  }
+  .dw-pdp__grid {
+    display: grid;
+    grid-template-columns: 1fr 34rem;
+    gap: 2.4rem;
+    align-items: start;
+  }
+  .dw-pdp__left {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+    min-width: 0;
+  }
+  .dw-pdp__panelhead {
+    background: var(--dw-panel-2);
+    border-bottom: 1px solid var(--dw-line);
+    padding: 0.8rem 1.4rem;
+    border-radius: var(--dw-r) var(--dw-r) 0 0;
+  }
+  .dw-pdp__spec {
+    display: grid;
+    grid-template-columns: 18rem 1fr;
+    gap: 1.2rem;
+    padding: 0.8rem 1.4rem;
+    font-size: 1.3rem;
+    align-items: baseline;
+  }
+  .dw-pdp__spec + .dw-pdp__spec {
+    border-top: 1px solid var(--dw-line);
+  }
+  .dw-pdp__desc {
+    padding: 1.2rem 1.4rem;
+    font-size: 1.3rem;
+    line-height: 1.55;
+  }
+  .dw-pdp__desc--empty {
+    color: var(--dw-text-3);
+  }
+  .dw-pdp__avqty {
+    font-weight: 600;
+    font-size: 1.3rem;
+  }
+  .dw-pdp__right {
+    position: sticky;
+    top: 1.8rem;
+  }
+  .dw-pdp__buy {
+    padding: 1.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+  .dw-pdp__priceline {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+  }
+  .dw-pdp__price {
+    font-size: 2.2rem;
+    font-weight: 700;
+  }
+  .dw-pdp__was {
+    font-size: 1.3rem;
+    color: var(--dw-text-3);
+  }
+  .dw-pdp__unit {
+    font-size: 1.15rem;
+    color: var(--dw-text-2);
+  }
+  .dw-pdp__moq {
+    font-size: 1.2rem;
+    color: var(--dw-text-2);
+    border-top: 1px solid var(--dw-line);
+    padding-top: 0.9rem;
+    margin-top: 0.4rem;
+  }
+  .dw-pdp__atc {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 0.4rem;
+  }
+  .dw-pdp__qtyrow {
+    display: flex;
+    gap: 0.6rem;
+  }
+  .dw-pdp__step {
+    width: 3.6rem;
+    padding: 0.6rem 0;
+    font-size: 1.5rem;
+  }
+  .dw-pdp__qtyin {
+    flex: 1;
+    text-align: center;
+    border: 1px solid var(--dw-line-strong);
+    border-radius: var(--dw-r);
+    background: var(--dw-panel);
+    padding: 0.6rem 0.2rem;
+    font-size: 1.35rem;
+  }
+  .dw-pdp__qtyin:focus {
+    outline: 2px solid var(--dw-accent);
+    outline-offset: -1px;
+  }
+  .dw-pdp__totalrow {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+  .dw-pdp__total {
+    font-size: 1.6rem;
+    font-weight: 700;
+  }
+  .dw-pdp__cta {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.35rem;
+    text-decoration: none;
+  }
+  .dw-pdp__gatetext {
+    font-size: 1.3rem;
+    color: var(--dw-text-2);
+    margin: 0;
+  }
+  .dw-pdp__offer-note {
+    font-size: 1.15rem;
+    color: var(--dw-text-2);
+    margin: 1rem 0 0;
+  }
+  @media screen and (max-width: 859px) {
+    .dw-pdp__grid {
+      grid-template-columns: 1fr;
+    }
+    .dw-pdp__right {
+      position: static;
+    }
+  }
+{% endstyle %}
+
+<script src="{{ 'dw-inventory.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "DW Product",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_gating",
+      "label": "Hide prices from non-approved customers",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "approved_tag",
+      "label": "Approved customer tag",
+      "default": "approved"
+    },
+    {
+      "type": "text",
+      "id": "waitlist_email",
+      "label": "Waitlist email",
+      "info": "Sold-out products show a Join Waitlist button that emails this address. Leave blank to hide."
+    }
+  ]
+}
+{% endschema %}
