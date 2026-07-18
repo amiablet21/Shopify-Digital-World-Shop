@@ -6,7 +6,7 @@ client_id = ""
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
 # products/inventory for the HUBX sync, draft orders for accepted offers,
 # customers for the approval flow and alert emails.
-scopes = "write_products,write_inventory,write_draft_orders,read_customers,write_customers,read_locations"
+scopes = "write_products,write_inventory,write_draft_orders,read_customers,write_customers,read_locations,write_online_store_pages,write_online_store_navigation"
 
 # Storefront pages call the app through this proxy:
 # /apps/dw/offers and /apps/dw/watches on the shop domain.
