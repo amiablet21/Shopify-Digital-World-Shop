@@ -1,0 +1,21 @@
+{
+  "name": "dw-identity",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Digital World Shop identity provider: custom OIDC login for Shopify customer accounts",
+  "scripts": {
+    "start": "node server.mjs",
+    "create-user": "node scripts/create-user.mjs"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.21.0",
+    "oidc-provider": "^8.5.1"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

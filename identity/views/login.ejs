@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Sign in, Digital World Shop</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&family=Archivo:wght@800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f8f4ec; --panel: #fffdf8; --panel-2: #f3ecdf;
+      --line: #e6dfd2; --line-strong: #d4cab6;
+      --text: #1c1b17; --text-2: #6e6a5f; --text-3: #a09a8c;
+      --accent: #3a6ccc; --accent-soft: #eaf0fb;
+      --bad: #b3372e; --bad-soft: #f7e7e5;
+      --head-bg: #1f3d6f; --head-text: #f4f1e8; --head-muted: #9fb3d4;
+      --r: 4px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; background: var(--bg); color: var(--text);
+      font: 14px/1.5 "Geist", system-ui, sans-serif;
+      display: flex; flex-direction: column;
+    }
+    header {
+      background: var(--head-bg); color: var(--head-text);
+      padding: 14px 24px; display: flex; flex-direction: column; line-height: 1.1;
+    }
+    header .word {
+      font-family: "Archivo", sans-serif; font-weight: 800; font-size: 16.5px;
+      letter-spacing: .02em; text-transform: uppercase;
+    }
+    header .sub {
+      font-family: "Geist Mono", monospace; font-size: 9px; font-weight: 500;
+      letter-spacing: .22em; text-transform: uppercase; color: var(--head-muted);
+    }
+    main { flex: 1; display: grid; place-items: center; padding: 24px; }
+    .card {
+      width: 380px; max-width: 100%;
+      background: var(--panel); border: 1px solid var(--line); border-radius: var(--r);
+    }
+    .card__head {
+      background: var(--panel-2); border-bottom: 1px solid var(--line);
+      padding: 10px 18px; font-size: 10.5px; font-weight: 600;
+      letter-spacing: .07em; text-transform: uppercase; color: var(--text-2);
+      border-radius: var(--r) var(--r) 0 0;
+    }
+    .card__body { padding: 18px; display: flex; flex-direction: column; gap: 12px; }
+    h1 { font-size: 16px; font-weight: 700; margin: 0; }
+    .note { font-size: 12px; color: var(--text-2); margin: 0; }
+    label {
+      display: block; margin-bottom: 4px; font-size: 10.5px; font-weight: 600;
+      letter-spacing: .07em; text-transform: uppercase; color: var(--text-2);
+    }
+    input {
+      width: 100%; border: 1px solid var(--line-strong); border-radius: var(--r);
+      background: var(--panel); padding: 9px 11px; font: inherit; color: inherit;
+    }
+    input:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+    button {
+      width: 100%; border: 1px solid var(--accent); background: var(--accent-soft);
+      color: var(--accent); border-radius: var(--r);
+      font: inherit; font-weight: 700; padding: 10px; cursor: pointer;
+    }
+    button:hover { background: #dde8fa; }
+    button:active { transform: translateY(1px); }
+    .error {
+      background: var(--bad-soft); color: var(--bad);
+      border: 1px solid var(--bad); border-radius: var(--r);
+      padding: 8px 11px; font-size: 12.5px; font-weight: 600;
+    }
+    .foot { font-size: 12px; color: var(--text-3); text-align: center; padding: 0 18px 18px; }
+    .foot a { color: var(--accent); text-decoration: none; }
+    .foot a:hover { text-decoration: underline; }
+    @media (prefers-reduced-motion: reduce) { button:active { transform: none; } }
+  </style>
+</head>
+<body>
+  <header>
+    <span class="word">Digital World Shop</span>
+    <span class="sub">B2B Electronics</span>
+  </header>
+  <main>
+    <div>
+      <form class="card" method="post" action="/interaction/<%= uid %>/login" autocomplete="on">
+        <div class="card__head">Business account sign in</div>
+        <div class="card__body">
+          <h1>Sign in to your account</h1>
+          <p class="note">Wholesale pricing and your order history unlock after sign in.</p>
+          <% if (error) { %><div class="error" role="alert"><%= error %></div><% } %>
+          <div>
+            <label for="email">Work email</label>
+            <input type="email" id="email" name="email" value="<%= email %>" autocomplete="username" required autofocus>
+          </div>
+          <div>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" autocomplete="current-password" required>
+          </div>
+          <button type="submit">Sign In</button>
+        </div>
+        <div class="foot">New to Digital World Shop? Apply for a business account on the store. Approval takes one business day.</div>
+      </form>
+    </div>
+  </main>
+</body>
+</html>
