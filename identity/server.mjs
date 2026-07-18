@@ -10,14 +10,42 @@
 //   - fast token/userinfo endpoints (in-memory adapter, no network hops)
 import 'dotenv/config';
 import express from 'express';
+import rateLimit from 'express-rate-limit';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import Provider from 'oidc-provider';
-import { findAccount, findUser, verifyPassword } from './accounts.mjs';
+import {
+  clearFailures,
+  findAccount,
+  findUser,
+  isLocked,
+  recordFailure,
+  verifyPassword,
+} from './accounts.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PORT = Number(process.env.PORT || 3000);
 const ISSUER = process.env.ISSUER || `http://localhost:${PORT}`;
+const PRODUCTION = process.env.NODE_ENV === 'production';
+
+// Refuse to boot in production with development fallbacks.
+if (PRODUCTION) {
+  const problems = [];
+  if (!process.env.COOKIE_KEY || process.env.COOKIE_KEY.includes('change-me') || process.env.COOKIE_KEY.length < 32) {
+    problems.push('COOKIE_KEY must be a random string of at least 32 characters');
+  }
+  if (!process.env.SHOPIFY_CLIENT_SECRET || process.env.SHOPIFY_CLIENT_SECRET.includes('change-me') || process.env.SHOPIFY_CLIENT_SECRET.length < 32) {
+    problems.push('SHOPIFY_CLIENT_SECRET must be a random string of at least 32 characters');
+  }
+  if (!ISSUER.startsWith('https://')) {
+    problems.push('ISSUER must be an https URL');
+  }
+  if (problems.length) {
+    console.error('Refusing to start in production:');
+    for (const p of problems) console.error(`  - ${p}`);
+    process.exit(1);
+  }
+}
 
 const configuration = {
   clients: [
@@ -105,6 +133,27 @@ const app = express();
 app.set('view engine', 'ejs');
 app.set('views', join(__dirname, 'views'));
 app.set('trust proxy', true);
+app.disable('x-powered-by');
+
+// Security headers on every response.
+app.use((req, res, next) => {
+  res.set('X-Frame-Options', 'DENY');
+  res.set('X-Content-Type-Options', 'nosniff');
+  res.set('Referrer-Policy', 'no-referrer');
+  if (PRODUCTION) res.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+  next();
+});
+
+// Per-IP rate limits: gentle on page loads, strict on credential attempts.
+const pageLimiter = rateLimit({ windowMs: 5 * 60 * 1000, limit: 300, standardHeaders: true, legacyHeaders: false });
+const loginLimiter = rateLimit({
+  windowMs: 5 * 60 * 1000,
+  limit: 20,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: 'Too many sign-in attempts. Wait a few minutes and try again.',
+});
+app.use('/interaction', pageLimiter);
 
 const parseForm = express.urlencoded({ extended: false });
 
@@ -128,15 +177,25 @@ app.get('/interaction/:uid', async (req, res, next) => {
   }
 });
 
-app.post('/interaction/:uid/login', parseForm, async (req, res, next) => {
+app.post('/interaction/:uid/login', loginLimiter, parseForm, async (req, res, next) => {
   try {
     await provider.interactionDetails(req, res);
     const email = String(req.body.email || '');
     const password = String(req.body.password || '');
     const user = findUser(email);
+    if (user && isLocked(user)) {
+      return res.status(429).render('login', {
+        uid: req.params.uid,
+        error: 'Too many failed attempts. This account is locked for 15 minutes.',
+        email,
+      });
+    }
     if (!user || !verifyPassword(user, password)) {
+      if (user) recordFailure(email);
+      // Same message whether the account exists or not: no account enumeration.
       return res.status(401).render('login', { uid: req.params.uid, error: 'Email or password is incorrect.', email });
     }
+    clearFailures(email);
     return await provider.interactionFinished(
       req,
       res,

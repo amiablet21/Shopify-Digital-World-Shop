@@ -40,7 +40,18 @@ npm start
    what the Shopify connect screen specifies.
 4. Test with a staff account before enforcing for all customers.
 
-## Before real traffic (known gaps, by design in v1)
+## Hardening in place
+
+- Per-IP rate limits (20 credential attempts per 5 minutes) and per-account
+  lockout (5 failed passwords locks the account for 15 minutes).
+- Identical error for wrong password and unknown email: no account enumeration.
+- Security headers (frame denial, nosniff, no-referrer, HSTS in production).
+- Production boot guards: refuses to start without strong COOKIE_KEY and
+  SHOPIFY_CLIENT_SECRET values and an https ISSUER.
+- bcrypt cost 12 password hashes; accounts exist only via the approval flow
+  (no open registration surface).
+
+## Before real traffic (remaining gaps)
 
 - **Persistence**: users live in a JSON file and sessions/tokens in memory, so
   every redeploy logs buyers out. Swap in the Postgres (or Redis) adapter for
@@ -50,4 +61,5 @@ npm start
   approval flow in the custom app should create the identity user AND the
   Shopify customer (with the `approved` tag) in one step, so the same approval
   unlocks login and pricing.
-- **Rate limiting / lockout**: add basic brute-force protection before launch.
+- **Monitoring**: point an uptime check at /healthz; login being down means
+  buyers cannot see prices.

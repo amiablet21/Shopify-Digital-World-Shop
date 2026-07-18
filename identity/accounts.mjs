@@ -42,6 +42,39 @@ export function verifyPassword(user, password) {
   return bcrypt.compareSync(password, user.hash);
 }
 
+// ---- brute-force lockout: 5 failed attempts locks the account for 15 minutes ----
+const MAX_ATTEMPTS = 5;
+const LOCK_MS = 15 * 60 * 1000;
+
+export function isLocked(user) {
+  return Boolean(user.lockedUntil && user.lockedUntil > Date.now());
+}
+
+export function recordFailure(email) {
+  const users = load();
+  const id = String(email).trim().toLowerCase();
+  const user = users[id];
+  if (!user) return;
+  user.failedAttempts = (user.failedAttempts || 0) + 1;
+  if (user.failedAttempts >= MAX_ATTEMPTS) {
+    user.lockedUntil = Date.now() + LOCK_MS;
+    user.failedAttempts = 0;
+  }
+  save(users);
+}
+
+export function clearFailures(email) {
+  const users = load();
+  const id = String(email).trim().toLowerCase();
+  const user = users[id];
+  if (!user) return;
+  if (user.failedAttempts || user.lockedUntil) {
+    delete user.failedAttempts;
+    delete user.lockedUntil;
+    save(users);
+  }
+}
+
 // oidc-provider hook: resolves an account id (we use the email) into claims.
 // email_verified is always true because accounts are created only through
 // the approved wholesale-application flow, never open self-signup.
