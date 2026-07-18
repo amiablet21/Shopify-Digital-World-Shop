@@ -9,7 +9,27 @@ import bcrypt from 'bcryptjs';
 const DATA_FILE = join(dirname(fileURLToPath(import.meta.url)), 'data', 'users.json');
 
 function load() {
-  if (!existsSync(DATA_FILE)) return {};
+  if (!existsSync(DATA_FILE)) {
+    // First boot on a fresh volume: seed one user from env, if provided.
+    // BOOTSTRAP_USER_HASH is a bcrypt hash, never a plaintext password.
+    const email = process.env.BOOTSTRAP_USER_EMAIL;
+    const hash = process.env.BOOTSTRAP_USER_HASH;
+    if (email && hash) {
+      const id = email.trim().toLowerCase();
+      const users = {
+        [id]: {
+          id,
+          email: id,
+          name: process.env.BOOTSTRAP_USER_NAME || '',
+          hash,
+          createdAt: new Date().toISOString(),
+        },
+      };
+      save(users);
+      return users;
+    }
+    return {};
+  }
   return JSON.parse(readFileSync(DATA_FILE, 'utf8'));
 }
 
