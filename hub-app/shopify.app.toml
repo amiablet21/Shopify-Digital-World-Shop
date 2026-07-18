@@ -1,51 +1,35 @@
-# This file stores configurations for your Shopify app.
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-client_id = ""
+client_id = "826209a98113fbe02069737437b31ebc"
+application_url = "https://shopify.dev/apps/default-app-home"
+embedded = true
+name = "digital-world-hub"
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
-# products/inventory for the HUBX sync, draft orders for accepted offers,
-# customers for the approval flow and alert emails.
+# products/inventory for seeding and the HUBX sync, draft orders for accepted
+# offers, customers for the approval flow, pages/navigation for store seeding.
 scopes = "write_products,write_inventory,write_draft_orders,read_customers,write_customers,read_locations,write_online_store_pages,write_online_store_navigation"
 
-# Storefront pages call the app through this proxy:
-# /apps/dw/offers and /apps/dw/watches on the shop domain.
 [app_proxy]
 url = "https://REPLACED_ON_DEPLOY.example.com/proxy"
 prefix = "apps"
 subpath = "dw"
 
 [webhooks]
-api_version = "2024-10"
+api_version = "2026-10"
 
-  # Handled by: /app/routes/webhooks.app.uninstalled.tsx
   [[webhooks.subscriptions]]
   uri = "/webhooks/app/uninstalled"
-  topics = ["app/uninstalled"]
+  topics = [ "app/uninstalled" ]
 
-  # Handled by: /app/routes/webhooks.app.scopes_update.tsx
   [[webhooks.subscriptions]]
-  topics = [ "app/scopes_update" ]
   uri = "/webhooks/app/scopes_update"
+  topics = [ "app/scopes_update" ]
 
-  # Webhooks can have filters
-  # Only receive webhooks for product updates with a product price >= 10.00
-  # See: https://shopify.dev/docs/apps/build/webhooks/customize/filters
-  # [[webhooks.subscriptions]]
-  # topics = ["products/update"]
-  # uri = "/webhooks/products/update"
-  # filter = "variants.price:>=10.00"
+[auth]
+redirect_urls = [ "https://shopify.dev/apps/default-app-home/api/auth" ]
 
-  # Mandatory compliance topic for public apps only
-  # See: https://shopify.dev/docs/apps/build/privacy-law-compliance
-  # [[webhooks.subscriptions]]
-  # uri = "/webhooks/customers/data_request"
-  # compliance_topics = ["customers/data_request"]
-
-  # [[webhooks.subscriptions]]
-  # uri = "/webhooks/customers/redact"
-  # compliance_topics = ["customers/redact"]
-
-  # [[webhooks.subscriptions]]
-  # uri = "/webhooks/shop/redact"
-  # compliance_topics = ["shop/redact"]
+[build]
+include_config_on_deploy = true
+automatically_update_urls_on_dev = true
