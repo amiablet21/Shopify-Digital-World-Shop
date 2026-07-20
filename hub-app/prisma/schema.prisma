@@ -77,6 +77,53 @@ model OfferMessage {
   @@index([offerId])
 }
 
+// A B2B company: the business entity behind one or more buyer logins.
+// Contacts each map to a Shopify customer (their login identity); company
+// addresses are synced into every contact's Shopify address book so they
+// can be selected at checkout.
+model Company {
+  id        Int              @id @default(autoincrement())
+  shop      String
+  name      String
+  ein       String           @default("")
+  note      String           @default("")
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  contacts  CompanyContact[]
+  addresses CompanyAddress[]
+
+  @@index([shop])
+}
+
+model CompanyContact {
+  id         Int     @id @default(autoincrement())
+  companyId  Int
+  company    Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  name       String
+  email      String
+  phone      String  @default("")
+  customerId String  @default("") // Shopify customer gid
+  isMain     Boolean @default(false)
+
+  @@index([companyId])
+}
+
+model CompanyAddress {
+  id           Int     @id @default(autoincrement())
+  companyId    Int
+  company      Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  label        String  @default("") // e.g. "Main warehouse"
+  address1     String
+  address2     String  @default("")
+  city         String
+  provinceCode String  @default("")
+  zip          String
+  countryCode  String  @default("US")
+  phone        String  @default("")
+
+  @@index([companyId])
+}
+
 // A wholesale account application from the storefront gate.
 // Statuses: PENDING, APPROVED, REJECTED. Approval creates/tags the
 // Shopify customer so the storefront unlocks for them.
