@@ -4,6 +4,7 @@ import { useState } from "react";
 import {
   Badge,
   BlockStack,
+  Box,
   Button,
   Card,
   Divider,
@@ -24,9 +25,37 @@ import {
 } from "../companies.server";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const { session } = await authenticate.admin(request);
+  const { session, admin } = await authenticate.admin(request);
   const companies = await listCompanies(session.shop);
-  return { companies };
+
+  // Every customer on the store, newest first.
+  const response = await admin.graphql(
+    `#graphql
+    query {
+      customers(first: 100, sortKey: CREATED_AT, reverse: true) {
+        nodes {
+          id
+          displayName
+          email
+          tags
+          numberOfOrders
+          amountSpent { amount currencyCode }
+          createdAt
+        }
+      }
+    }`,
+  );
+  const customers = ((await response.json()).data?.customers?.nodes ?? []) as Array<{
+    id: string;
+    displayName: string;
+    email: string | null;
+    tags: string[];
+    numberOfOrders: string;
+    amountSpent: { amount: string; currencyCode: string };
+    createdAt: string;
+  }>;
+
+  return { companies, customers };
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -195,7 +224,7 @@ function AddressFields({
 }
 
 export default function Customers() {
-  const { companies } = useLoaderData<typeof loader>();
+  const { companies, customers } = useLoaderData<typeof loader>();
   const submit = useSubmit();
   const navigation = useNavigation();
   const busy = navigation.state === "submitting";
@@ -230,6 +259,53 @@ export default function Customers() {
       <Layout>
         <Layout.Section>
           <BlockStack gap="400">
+            <Card>
+              <BlockStack gap="300">
+                <Text as="h2" variant="headingMd">
+                  All customers
+                </Text>
+                {customers.length === 0 && (
+                  <Text as="p" tone="subdued">
+                    No customers yet. Approved applications and company contacts appear here.
+                  </Text>
+                )}
+                {customers.map((customer) => {
+                  const approved = customer.tags.includes("approved");
+                  const companyTag = customer.tags.find((tag) => tag.startsWith("company:"));
+                  return (
+                    <Box
+                      key={customer.id}
+                      borderBlockStartWidth="025"
+                      borderColor="border"
+                      paddingBlockStart="200"
+                    >
+                      <InlineStack align="space-between" blockAlign="center" wrap>
+                        <BlockStack gap="050">
+                          <InlineStack gap="200" blockAlign="center">
+                            <Text as="p" fontWeight="semibold">
+                              {customer.displayName || customer.email || "Unnamed"}
+                            </Text>
+                            {approved ? (
+                              <Badge tone="success">Approved</Badge>
+                            ) : (
+                              <Badge>Not approved</Badge>
+                            )}
+                            {companyTag && <Badge tone="info">{companyTag.replace("company:", "")}</Badge>}
+                          </InlineStack>
+                          <Text as="p" tone="subdued">
+                            {customer.email || "no email"}
+                          </Text>
+                        </BlockStack>
+                        <Text as="p" tone="subdued">
+                          {customer.numberOfOrders} orders · ${Number(customer.amountSpent.amount).toFixed(2)}
+                        </Text>
+                      </InlineStack>
+                    </Box>
+                  );
+                })}
+              </BlockStack>
+            </Card>
+
             <Card>
               <BlockStack gap="400">
                 <Text as="h2" variant="headingMd">
