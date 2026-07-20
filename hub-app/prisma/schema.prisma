@@ -77,6 +77,30 @@ model OfferMessage {
   @@index([offerId])
 }
 
+// A wholesale account application from the storefront gate.
+// Statuses: PENDING, APPROVED, REJECTED. Approval creates/tags the
+// Shopify customer so the storefront unlocks for them.
+model Application {
+  id           Int      @id @default(autoincrement())
+  shop         String
+  company      String
+  contact      String
+  email        String
+  phone        String
+  ein          String
+  resaleCert   String   @default("")
+  businessType String   @default("")
+  volume       String   @default("")
+  message      String   @default("")
+  status       String   @default("PENDING")
+  customerId   String? // Shopify customer gid once approved
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@unique([shop, email])
+  @@index([shop, status])
+}
+
 // A customer watching a product for restock and/or price-drop alerts.
 model Watch {
   id            Int      @id @default(autoincrement())

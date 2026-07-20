@@ -8,6 +8,24 @@
     "theme_support_url": "https://support.shopify.com/"
   },
   {
+    "name": "B2B Wholesale Gate",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "dw_gate_enabled",
+        "label": "Lock storefront to approved accounts",
+        "info": "Visitors see a landing gate with Apply and Sign In. Approved customers (by tag) see the full store.",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "dw_approved_tag",
+        "label": "Approved customer tag",
+        "default": "approved"
+      }
+    ]
+  },
+  {
     "name": "t:settings_schema.logo.name",
     "settings": [
       {

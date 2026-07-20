@@ -343,7 +343,26 @@
       tabindex="-1"
       data-template="{{ template.name }}"
     >
-      {{ content_for_layout }}
+      {%- liquid
+        # Wholesale gate: anonymous and unapproved visitors see the gate
+        # instead of the storefront. The apply page, customer/auth pages and
+        # policies stay reachable so people can actually get in.
+        assign dw_gate_open = false
+        if settings.dw_gate_enabled
+          assign dw_gate_open = true
+          if customer and customer.tags contains settings.dw_approved_tag
+            assign dw_gate_open = false
+          endif
+          if template.suffix == 'apply' or template.name == 'password' or template.name == 'gift_card' or template.name == 'policy' or template.name contains 'customers'
+            assign dw_gate_open = false
+          endif
+        endif
+      -%}
+      {%- if dw_gate_open -%}
+        {% render 'dw-gate' %}
+      {%- else -%}
+        {{ content_for_layout }}
+      {%- endif -%}
     </main>
 
     {% sections 'footer-group' %}

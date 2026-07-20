@@ -25,123 +25,115 @@
       <div class="dw-apply__panel dw-panel-box">
         <div class="dw-apply__strip"><span class="dw-lbl">Application</span></div>
 
-        {%- form 'contact', class: 'dw-apply__form' -%}
-          {%- if form.posted_successfully? -%}
-            <div class="dw-apply__success">
-              <span class="dw-apply__success-tile" aria-hidden="true">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M4 12.5l5.5 5.5L20 6.5"/>
-                </svg>
-              </span>
-              <h2 class="dw-apply__success-h" tabindex="-1">Application received</h2>
-              <p class="dw-apply__success-p">We review applications within one business day and email you the decision.</p>
-              <a class="dw-btn-line" href="{{ routes.all_products_collection_url }}">Browse the catalog</a>
-            </div>
-          {%- else -%}
-            {%- if form.errors -%}
-              <div class="dw-apply__errors" role="alert">
-                <ul>
-                  {%- for field in form.errors -%}
-                    <li>{{ form.errors.messages[field] }}</li>
-                  {%- endfor -%}
-                </ul>
-              </div>
-            {%- endif -%}
+        <form class="dw-apply__form" id="DwApplyForm">
+          <div class="dw-apply__success" id="DwApplySuccess" hidden>
+            <span class="dw-apply__success-tile" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 12.5l5.5 5.5L20 6.5"/>
+              </svg>
+            </span>
+            <h2 class="dw-apply__success-h" tabindex="-1">Application received</h2>
+            <p class="dw-apply__success-p">We review applications within one business day and email you the decision.</p>
+          </div>
 
-            <div class="dw-apply__grid">
-              <div class="dw-apply__field">
-                <label class="dw-lbl" for="DwApplyEmail">Work email</label>
-                <input
-                  id="DwApplyEmail"
-                  type="email"
-                  name="contact[email]"
-                  value="{{ form.email }}"
-                  autocomplete="email"
-                  required
-                >
-              </div>
-              <div class="dw-apply__field">
-                <label class="dw-lbl" for="DwApplyCompany">Legal business name</label>
-                <input
-                  id="DwApplyCompany"
-                  type="text"
-                  name="contact[Company]"
-                  autocomplete="organization"
-                  required
-                >
-              </div>
-              <div class="dw-apply__field">
-                <label class="dw-lbl" for="DwApplyContact">Contact name</label>
-                <input
-                  id="DwApplyContact"
-                  type="text"
-                  name="contact[Contact name]"
-                  autocomplete="name"
-                  required
-                >
-              </div>
-              <div class="dw-apply__field">
-                <label class="dw-lbl" for="DwApplyPhone">Phone</label>
-                <input
-                  id="DwApplyPhone"
-                  type="tel"
-                  name="contact[Phone]"
-                  autocomplete="tel"
-                  required
-                >
-              </div>
-              <div class="dw-apply__field">
-                <label class="dw-lbl" for="DwApplyEin">EIN</label>
-                <input
-                  id="DwApplyEin"
-                  type="text"
-                  class="dw-mono"
-                  name="contact[EIN]"
-                  placeholder="12-3456789"
-                  required
-                >
-              </div>
-              <div class="dw-apply__field">
-                <label class="dw-lbl" for="DwApplyCert">Resale certificate number</label>
-                <input
-                  id="DwApplyCert"
-                  type="text"
-                  class="dw-mono"
-                  name="contact[Resale certificate]"
-                >
-              </div>
-              <div class="dw-apply__field">
-                <label class="dw-lbl" for="DwApplyType">Business type</label>
-                <select id="DwApplyType" name="contact[Business type]">
-                  <option>Reseller</option>
-                  <option>Retailer</option>
-                  <option>Refurbisher</option>
-                  <option>Exporter</option>
-                  <option>IT Service Provider</option>
-                  <option>Other</option>
-                </select>
-              </div>
-              <div class="dw-apply__field">
-                <label class="dw-lbl" for="DwApplyVolume">Estimated monthly volume</label>
-                <select id="DwApplyVolume" name="contact[Monthly volume]">
-                  <option>Under $5,000</option>
-                  <option>$5,000 to $25,000</option>
-                  <option>$25,000 to $100,000</option>
-                  <option>Over $100,000</option>
-                </select>
-              </div>
-              <div class="dw-apply__field dw-apply__field--full">
-                <label class="dw-lbl" for="DwApplyBody">Anything we should know (optional)</label>
-                <textarea id="DwApplyBody" name="contact[body]" rows="3">{{ form.body }}</textarea>
-              </div>
-            </div>
+          <div class="dw-apply__errors" id="DwApplyError" role="alert" hidden></div>
 
-            <div class="dw-apply__foot">
-              <span class="dw-apply__note">We review applications within one business day.</span>
-              <button type="submit" class="dw-btn-money">Submit Application</button>
+          <div class="dw-apply__grid" id="DwApplyGrid">
+            <div class="dw-apply__field">
+              <label class="dw-lbl" for="DwApplyEmail">Work email</label>
+              <input id="DwApplyEmail" type="email" name="email" autocomplete="email" required>
             </div>
-          {%- endif -%}
-        {%- endform -%}
+            <div class="dw-apply__field">
+              <label class="dw-lbl" for="DwApplyCompany">Legal business name</label>
+              <input id="DwApplyCompany" type="text" name="company" autocomplete="organization" required>
+            </div>
+            <div class="dw-apply__field">
+              <label class="dw-lbl" for="DwApplyContact">Contact name</label>
+              <input id="DwApplyContact" type="text" name="contact" autocomplete="name" required>
+            </div>
+            <div class="dw-apply__field">
+              <label class="dw-lbl" for="DwApplyPhone">Phone</label>
+              <input id="DwApplyPhone" type="tel" name="phone" autocomplete="tel" required>
+            </div>
+            <div class="dw-apply__field">
+              <label class="dw-lbl" for="DwApplyEin">EIN</label>
+              <input id="DwApplyEin" type="text" class="dw-mono" name="ein" placeholder="12-3456789" required>
+            </div>
+            <div class="dw-apply__field">
+              <label class="dw-lbl" for="DwApplyCert">Resale certificate number</label>
+              <input id="DwApplyCert" type="text" class="dw-mono" name="resaleCert">
+            </div>
+            <div class="dw-apply__field">
+              <label class="dw-lbl" for="DwApplyType">Business type</label>
+              <select id="DwApplyType" name="businessType">
+                <option>Reseller</option>
+                <option>Retailer</option>
+                <option>Refurbisher</option>
+                <option>Exporter</option>
+                <option>IT Service Provider</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="dw-apply__field">
+              <label class="dw-lbl" for="DwApplyVolume">Estimated monthly volume</label>
+              <select id="DwApplyVolume" name="volume">
+                <option>Under $5,000</option>
+                <option>$5,000 to $25,000</option>
+                <option>$25,000 to $100,000</option>
+                <option>Over $100,000</option>
+              </select>
+            </div>
+            <div class="dw-apply__field dw-apply__field--full">
+              <label class="dw-lbl" for="DwApplyBody">Anything we should know (optional)</label>
+              <textarea id="DwApplyBody" name="message" rows="3"></textarea>
+            </div>
+          </div>
+
+          <div class="dw-apply__foot" id="DwApplyFoot">
+            <span class="dw-apply__note">We review applications within one business day.</span>
+            <button type="submit" class="dw-btn-money">Submit Application</button>
+          </div>
+        </form>
+
+        <script>
+          (function () {
+            var form = document.getElementById('DwApplyForm');
+            if (!form) return;
+            form.addEventListener('submit', function (event) {
+              event.preventDefault();
+              var errorEl = document.getElementById('DwApplyError');
+              var button = form.querySelector('[type="submit"]');
+              var data = {};
+              new FormData(form).forEach(function (value, key) { data[key] = value; });
+              button.disabled = true;
+              errorEl.hidden = true;
+              fetch('/apps/dw/apply', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+              })
+                .then(function (response) {
+                  return response.json().then(function (payload) {
+                    if (!response.ok) throw new Error(payload.error || 'Something went wrong. Try again.');
+                  });
+                })
+                .then(function () {
+                  document.getElementById('DwApplyGrid').hidden = true;
+                  document.getElementById('DwApplyFoot').hidden = true;
+                  var success = document.getElementById('DwApplySuccess');
+                  success.hidden = false;
+                  success.querySelector('.dw-apply__success-h').focus();
+                })
+                .catch(function (error) {
+                  errorEl.textContent = error.message;
+                  errorEl.hidden = false;
+                })
+                .finally(function () {
+                  button.disabled = false;
+                });
+            });
+          })();
+        </script>
       </div>
     </section>
 
