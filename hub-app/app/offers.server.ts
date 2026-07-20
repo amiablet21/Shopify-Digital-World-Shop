@@ -134,7 +134,10 @@ export async function buyerWithdraw(shop: string, customerId: string, offerId: n
 export async function sellerCounter(shop: string, offerId: number, cents: number, note?: string) {
   const offer = await db.offer.findFirst({ where: { id: offerId, shop } });
   if (!offer) throw new OfferError("Offer not found.");
-  if (offer.status !== "PENDING") throw new OfferError("Only pending offers can be countered.");
+  if (!ACTIVE_STATUSES.includes(offer.status)) {
+    throw new OfferError("Only active offers can be countered.");
+  }
+  if (cents < 1) throw new OfferError("Counter must be positive.");
   return db.offer.update({
     where: { id: offer.id },
     data: {
@@ -149,6 +152,22 @@ export async function sellerCounter(shop: string, offerId: number, cents: number
       },
     },
   });
+}
+
+/** Plain chat message on an active offer, from either side. */
+export async function addMessage(shop: string, offerId: number, from: "BUYER" | "SELLER", body: string, customerId?: string) {
+  const where: Record<string, unknown> = { id: offerId, shop };
+  if (customerId) where.customerId = customerId;
+  const offer = await db.offer.findFirst({ where: where as any });
+  if (!offer) throw new OfferError("Offer not found.");
+  if (!ACTIVE_STATUSES.includes(offer.status)) {
+    throw new OfferError("This offer is closed. Messages can only be added to active offers.");
+  }
+  const text = body.trim();
+  if (!text) throw new OfferError("Message is empty.");
+  if (text.length > 1000) throw new OfferError("Message is too long.");
+  await db.offerMessage.create({ data: { offerId: offer.id, from, body: text } });
+  return db.offer.findFirst({ where: { id: offer.id }, include: { messages: { orderBy: { createdAt: "asc" } } } });
 }
 
 export async function sellerDecline(shop: string, offerId: number, note?: string) {

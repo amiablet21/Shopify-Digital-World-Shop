@@ -4,6 +4,7 @@ import {
   OFFER_SLOTS,
   OfferError,
   activeOfferCount,
+  addMessage,
   buyerAcceptCounter,
   buyerCounter,
   buyerWithdraw,
@@ -67,6 +68,10 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         return json({ offer: await buyerCounter(session.shop, customerId, Number(body.offerId), Number(body.cents)) });
       case "withdraw":
         return json({ offer: await buyerWithdraw(session.shop, customerId, Number(body.offerId)) });
+      case "message":
+        return json({
+          offer: await addMessage(session.shop, Number(body.offerId), "BUYER", String(body.body || ""), customerId),
+        });
       default:
         return json({ error: "Unknown action" }, 400);
     }

@@ -65,14 +65,14 @@ function Stat({
   tone?: "attention";
 }) {
   return (
-    <Link to={to} style={{ textDecoration: "none" }}>
+    <Link to={to} style={{ textDecoration: "none", color: "inherit" }}>
       <Card>
         <BlockStack gap="100">
           <InlineStack gap="200" blockAlign="center">
             <Text as="p" variant="heading2xl">
               {value}
             </Text>
-            {tone === "attention" && value > 0 && <Badge tone="attention">Action needed</Badge>}
+            {tone === "attention" && value > 0 && <Badge tone="info">Needs review</Badge>}
           </InlineStack>
           <Text as="p" tone="subdued">
             {label}

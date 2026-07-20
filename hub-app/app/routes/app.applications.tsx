@@ -103,7 +103,6 @@ export default function Applications() {
                           Approve
                         </Button>
                         <Button
-                          tone="critical"
                           onClick={() =>
                             submit({ id: String(application.id), act: "reject" }, { method: "post" })
                           }

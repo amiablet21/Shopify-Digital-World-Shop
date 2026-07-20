@@ -240,6 +240,13 @@
                 '<a class="dw-btn-money" href="' + offer.invoiceUrl + '">Pay Invoice, ' +
                 money(offer.offerCents * offer.quantity) + '</a>';
             }
+            var isActive = offer.status === 'PENDING' || offer.status === 'COUNTERED';
+            var composer = isActive
+              ? '<div class="dw-mo__composer">' +
+                '<input class="dw-mo__msginput" type="text" placeholder="Message our sales team" maxlength="1000" aria-label="Message">' +
+                '<button class="dw-btn-line" data-act="message">Send</button>' +
+                '</div>'
+              : '';
             details.innerHTML =
               '<summary class="dw-mo__row">' +
               '<span class="dw-mono dw-mo__id">#' + offer.id + '</span>' +
@@ -251,13 +258,24 @@
               '<span><span class="dw-mo__status ' + statusClass + '">' + (STATUS_LABELS[offer.status] || offer.status) + '</span></span>' +
               '<span class="dw-mo__chev">&#9662;</span>' +
               '</summary>' +
-              '<div class="dw-mo__thread">' + messages +
+              '<div class="dw-mo__thread">' + messages + composer +
               '<div class="dw-mo__actions">' + actions + '</div></div>';
 
             details.querySelectorAll('[data-act]').forEach(function (button) {
               button.addEventListener('click', function (event) {
                 event.preventDefault();
                 var act = button.dataset.act;
+                if (act === 'message') {
+                  var input = details.querySelector('.dw-mo__msginput');
+                  var text = (input && input.value || '').trim();
+                  if (!text) return;
+                  api('offers', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'message', offerId: offer.id, body: text }),
+                  }).then(renderOffers).catch(function (e) { toast(e.message); });
+                  return;
+                }
                 if (act === 'counter') {
                   var value = window.prompt('Your new unit price (USD):');
                   if (!value) return;
